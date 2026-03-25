@@ -1,0 +1,65 @@
+{
+  "samples": [
+    {
+      "sample_name": "KJW020",
+      "mineral": "Quartz",
+      "analytical_method": "Rb-Sr isotopic (fluid inclusions)",
+      "rb_ppm": 0.975,
+      "sr_ppm": 7.546,
+      "87rb/86sr_ppm": 0.373,
+      "87sr/86sr_ppm": 0.71159,
+      "1\u03c3_ppm": 4e-05
+    },
+    {
+      "sample_name": "KJW032(2)",
+      "mineral": "Quartz",
+      "analytical_method": "Rb-Sr isotopic (fluid inclusions)",
+      "rb_ppm": 0.222,
+      "sr_ppm": 0.232,
+      "87rb/86sr_ppm": 2.759,
+      "87sr/86sr_ppm": 0.71689,
+      "1\u03c3_ppm": 3e-05
+    },
+    {
+      "sample_name": "KJW033",
+      "mineral": "Quartz",
+      "analytical_method": "Rb-Sr isotopic (fluid inclusions)",
+      "rb_ppm": 0.227,
+      "sr_ppm": 0.455,
+      "87rb/86sr_ppm": 1.438,
+      "87sr/86sr_ppm": 0.71408,
+      "1\u03c3_ppm": 5e-05
+    },
+    {
+      "sample_name": "KJW44-4",
+      "mineral": "Quartz",
+      "analytical_method": "Rb-Sr isotopic (fluid inclusions)",
+      "rb_ppm": 0.722,
+      "sr_ppm": 3.252,
+      "87rb/86sr_ppm": 0.64,
+      "87sr/86sr_ppm": 0.7124,
+      "1\u03c3_ppm": 2e-05
+    },
+    {
+      "sample_name": "KJW47",
+      "mineral": "Quartz",
+      "analytical_method": "Rb-Sr isotopic (fluid inclusions)",
+      "rb_ppm": 0.327,
+      "sr_ppm": 1.846,
+      "87rb/86sr_ppm": 0.51,
+      "87sr/86sr_ppm": 0.71225,
+      "1\u03c3_ppm": 1e-05
+    },
+    {
+      "sample_name": "KJW50",
+      "mineral": "Quartz",
+      "analytical_method": "Rb-Sr isotopic (fluid inclusions)",
+      "rb_ppm": 1.009,
+      "sr_ppm": 10.71,
+      "87rb/86sr_ppm": 0.272,
+      "87sr/86sr_ppm": 0.71163,
+      "1\u03c3_ppm": 7e-05
+    }
+  ],
+  "extraction_notes": "Extracted 6 individual analyses from Table 1 (Rb-Sr isotopic data of quartz-hosted fluid inclusions). Table 2 (EPMA wt.%) and Table 3 (LA-ICP-MS ppm) are present in the images but the spot-level numeric values are too small/unclear to read reliably from the provided page renders, so they were not extracted."
+}

@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find d:/GitHub/geochem_benchmark -name *omlinson* -type f)",
+      "WebSearch",
+      "Bash(ls -lh d:/GitHub/batch_results_v12/*.xlsx)",
+      "Read(//d/GitHub/**)",
+      "Bash(python -c \":*)",
+      "Bash(pip install:*)"
+    ]
+  }
+}

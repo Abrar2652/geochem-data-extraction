@@ -1,0 +1,63 @@
+﻿Column_Header,Description,Units
+SAMPLE,Sample name (in double quotes),not applicable
+NUMBER,Sample number,not applicable
+TAKEOFF,Take off angle of instrument,degrees
+KILOVOLT,Accelerating voltage,kiloelectron volts
+CURRENT,Beam current,nanoamperes
+BEAMSIZE,Electron beam diameter,micrometers
+LINE,Line number,not applicable
+EL_WT_PCT,Elemental weight percent,percent
+EL_O2,Oxide weight percent,percent
+EL_AT_PCT,Atomic weight percent (elemental mole percent),percent
+EL_OXMOL_PCT,Oxide mole percents,percent
+TOTAL,Total weight percent,percent
+FORMULA,Formula basis element (or none for sum of cations),Atoms
+BASIS,Formula basis element number (or total cations),Atoms
+EL_FORMULA,Formula basis calculation based on FORMULA and BASIS,Atoms
+MINERAL,"Mineral end member basis (olivine, feldspar, etc)",not applicable
+ENDMEMBER1,Value for end member 1,not applicable
+ENDMEMBER2,Value for end member 2,not applicable
+ENDMEMBER3,Value for end member 3,not applicable
+ENDMEMBER4,Value for end member 4,not applicable
+EL_CDL99,Detection limit in elemental weight percent at 99% confidence,percent
+EL_PCT_ERR,Analytical error in relative percent (one sigma),percent
+XPOS,X stage position,millimeters
+YPOS,Y stage position,millimeters
+ZPOS,Z stage position,millimeters
+RELDIST,Relative distance,micrometers
+BEAMCURR,Beam or probe current (in nA) (array if combined conditions sample),nanoamperes
+ABSCURR,Absorbed current (in nA) (array if combined conditions sample),nanoamperes
+BEAMCURR2,Beam or probe current (in nA) (array if combined conditions sample),nanoamperes
+ABSCURR2,Absorbed current (in nA) (array if combined conditions sample),nanoamperes
+EL_XRAY_CHANNEL_CRYSTAL_ONTIM,"On_peak counting time(includes x_ray line, spectro number and crystal)",seconds
+EL_XRAY_CHANNEL_CRYSTAL_HITIM,"High off_peak counting time (x_ray, spectro and crystal)",seconds
+EL_XRAY_CHANNEL_CRYSTAL_LOTIM,"Low off_peak counting time (x_ray, spectro and crystal)",seconds
+EL_XRAY_CHANNEL_CRYSTAL_ONCNT,"Raw On_peak count intensity (cps/nominal beam) (x_ray, spectro and crystal)",counts per nanoampere
+EL_XRAY_CHANNEL_CRYSTAL_OFCNT,"Calculated Off_peak count intensity (cps/nominal beam) (x_ray,spectro and crystal)",counts per nanoampere
+EL_XRAY_CHANNEL_CRYSTAL_NECNT,"Net (off_peak, interference, etc corrected) count intensity (cps/nominal beam) (x_ray, spectro and crystal)",counts per nanoampere
+EL_KRAT,"Elemental k_ratio (normalized to pure element) (x_ray, spectro and crystal)",not applicable
+DATETIME,Acquisition date and time (Excel format),not applicable
+EL_Z_COR,Atomic number correction factor,not applicable
+EL_A_COR,Absorption correction factor,not applicable
+EL_F_COR,Fluorescence correction factor,not applicable
+EL_ZAF,Z*A*F correction factor,not applicable
+EL_MAC,Elemental Mass Absorption Coefficient,not applicable
+EL_K_RAW,Elemental raw k_ratio (unk counts/standard counts),not applicable
+EL_STD_NUM,Primary standard assignment number,not applicable
+EL_STD_NAM,Primary standard assignment name,not applicable
+TOTALWT_PCT,Total weight percent,percent
+TOTALOXYGEN,Total weight percent oxygen (excess plus calculated),percent
+TOTALCATIONS,Total cations,Atoms
+OXYGENCalc,The calculated weight percent oxygen (from stoichiometry),percent
+OXYGENExcess,The weight percent excess oxygen (specified or measured),percent
+ZBAR,The average atomic number (weight fraction normalized),not applicable
+AVG_ATWT,The average atomic weight,not applicable
+OXYGENHalogen_Equiv,The oxygen equivalent of all halogens,weight percent
+OXYGENHalogen_Corr,The halogen corrected stoichiometric oxygen,weight percent
+CHARGE,The calculated total charge balance for all cations and anions,not applicable
+FE_CHARGE,The averge calculated charge balance for Fe,not applicable
+EL_INTF_PCT,Interference correction percent (relative),percent
+EL_MANABSCOR_PCT,MAN continuum absorption correction percent (relative),percent
+EL_APF,Area peak factor corrections (10 = none),not applicable
+EL_TDI_COR_PCT,Time dependent intensity correction percents (relative),percent
+EL_TDI_DEV_PCT,Time dependent intensity correction fit average deviation,percent

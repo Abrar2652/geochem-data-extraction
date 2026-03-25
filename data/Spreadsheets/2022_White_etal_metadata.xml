@@ -1,0 +1,343 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<metadata>
+  <idinfo>
+    <citation>
+      <citeinfo>
+        <origin>White, Sarah Jane O.</origin>
+        <origin>Piatak, Nadine M.</origin>
+        <origin>McAleer, Ryan J.</origin>
+        <origin>Hayes. Sarah M.</origin>
+        <origin>Seal, Robert R. II</origin>
+        <origin>Schaider, Laurel A.</origin>
+        <origin>Shine, James P.</origin>
+        <origin>Green, Carlin J.</origin>
+        <origin>Hoppe, Darryl A.</origin>
+        <origin>Croke, Mary R.</origin>
+        <pubdate>20220520</pubdate>
+        <title>Electron microprobe analyses of sphalerite and hemimorphite from mine wastes from the Tar Creek Superfund Site, Tri-State Mining District, Oklahoma, U.S.A.</title>
+        <geoform>Tabular</geoform>
+        <pubinfo>
+          <pubplace>Reston, VA</pubplace>
+          <publish>U.S. Geological Survey</publish>
+        </pubinfo>
+        <onlink>https://doi.org/10.5066/P9ALZZ3E</onlink>
+        <lworkcit>
+          <citeinfo>
+            <origin>Sarah Jane O. White</origin>
+            <origin>Nadine M. Piatak</origin>
+            <origin>Ryan J. McAleer</origin>
+            <origin>Sarah M. Hayes</origin>
+            <origin>Robert R. Seal</origin>
+            <origin>Laurel A. Schaider</origin>
+            <origin>James P. Shine</origin>
+            <pubdate>2022</pubdate>
+            <title>Germanium redistribution during weathering of Zn mine wastes: implications for environmental mobility and recovery of a critical mineral</title>
+            <geoform>publication</geoform>
+            <pubinfo>
+              <pubplace>Applied Geochemistry</pubplace>
+              <publish>Elsevier BV</publish>
+            </pubinfo>
+            <othercit>143: 105341</othercit>
+            <onlink>http://dx.doi.org/10.1016/j.apgeochem.2022.105341</onlink>
+          </citeinfo>
+        </lworkcit>
+      </citeinfo>
+    </citation>
+    <descript>
+      <abstract>Electron microprobe analyses of sphalerite (ZnS) and hemimorphite (Zn4Si2O7(OH)2·H2O) from sampled historical waste piles were conducted with a specific focus on germanium (Ge). In mine wastes at the Tar Creek Superfund Site, Oklahoma, USA, Ge is associated with ZnS (sphalerite) as expected, but weathering in the waste piles has led to a significant amount of Ge being incorporated into a zinc-silicate, hemimorphite. Data and methods reported are part of a research study published here: White, S.J.O., Piatak, N.M., McAleer, R.J., Hayes. S.M., Seal, R.R. II, Schaider, L.A., Shine, J.P. Germanium redistribution during weathering of Zn mine wastes: implications for environmental mobility and recovery of a critical mineral"</abstract>
+      <purpose>Data were obtained to determine the microchemical composition of minerals in mine wastes from the Tar Creek Superfund Site in Oklahoma, USA, an historical zinc and lead mining area.  Ultimately these data are a part of a greater characterization of the environmental behavior of Ge and potential for recovery from mine wastes.</purpose>
+    </descript>
+    <timeperd>
+      <timeinfo>
+        <sngdate>
+          <caldate>2022</caldate>
+        </sngdate>
+      </timeinfo>
+      <current>publication date</current>
+    </timeperd>
+    <status>
+      <progress>Complete</progress>
+      <update>None planned</update>
+    </status>
+    <spdom>
+      <bounding>
+        <westbc>-95.190999999996</westbc>
+        <eastbc>-94.625199999997</eastbc>
+        <northbc>36.98</northbc>
+        <southbc>36.726</southbc>
+      </bounding>
+    </spdom>
+    <keywords>
+      <theme>
+        <themekt>USGS Thesaurus</themekt>
+        <themekey>Germanium</themekey>
+        <themekey>Hemimorphite</themekey>
+        <themekey>Sphalerite</themekey>
+        <themekey>Mine wastes</themekey>
+      </theme>
+      <theme>
+        <themekt>USGS Metadata Identifier</themekt>
+        <themekey>USGS:624b1d1cd34e21f827635bf5</themekey>
+      </theme>
+      <place>
+        <placekt>Geographic Names Information System (GNIS): https://geonames.usgs.gov/apex/f?p=138:1::::::</placekt>
+        <placekey>Oklahoma</placekey>
+        <placekey>Tar Creek</placekey>
+      </place>
+      <stratum>
+        <stratkt>Geolex, https://ngmdb.usgs.gov/Geolex/search</stratkt>
+        <stratkey>Earth surface</stratkey>
+      </stratum>
+      <temporal>
+        <tempkt>USGS Thesaurus: Time Periods</tempkt>
+        <tempkey>Cenozoic Era</tempkey>
+        <tempkey>Quaternary Period</tempkey>
+        <tempkey>Holocene Epoch</tempkey>
+      </temporal>
+    </keywords>
+    <accconst>none</accconst>
+    <useconst>none</useconst>
+    <ptcontac>
+      <cntinfo>
+        <cntperp>
+          <cntper>Sarah Jane O White</cntper>
+          <cntorg>NORTHEAST REGION: GEOLOGY, ENERGY&amp;MINERALS SC</cntorg>
+        </cntperp>
+        <cntpos>Research Chemist</cntpos>
+        <cntaddr>
+          <addrtype>mailing and physical</addrtype>
+          <address>Mail Stop 954, 12201 Sunrise Valley Dr</address>
+          <city>Reston</city>
+          <state>VA</state>
+          <postal>20192</postal>
+          <country>US</country>
+        </cntaddr>
+        <cntvoice>703-648-6361</cntvoice>
+        <cntemail>sjowhite@usgs.gov</cntemail>
+      </cntinfo>
+    </ptcontac>
+  </idinfo>
+  <dataqual>
+    <attracc>
+      <attraccr>No formal attribute accuracy tests were conducted</attraccr>
+    </attracc>
+    <logic>No formal logical accuracy tests were conducted</logic>
+    <complete>Data set is considered complete for the information presented, as described in the abstract. Users are advised to read the rest of the metadata record carefully for additional details.</complete>
+    <posacc>
+      <horizpa>
+        <horizpar>No formal positional accuracy tests were conducted</horizpar>
+      </horizpa>
+      <vertacc>
+        <vertaccr>No formal positional accuracy tests were conducted</vertaccr>
+      </vertacc>
+    </posacc>
+    <lineage>
+      <procstep>
+        <procdesc>Samples were collected in 2005 from the surface of six mine waste piles (locally called chat). Gravel-sized particles (&gt; ~1 cm) were brushed away before sampling ~500-1000 g of the underlying chat (~2-4 cm depth) from an ~100 cm2 area.  Additional samples were collected in 2018, located as close as possible to the 2005 sampling sites but at depths of 15-25 cm.  For micro-analytical analyses, bulk chat samples were mounted in epoxy and prepared as polished thin sections on quartz.</procdesc>
+        <procdate>2018</procdate>
+      </procstep>
+      <procstep>
+        <procdesc>The electron microprobe data were collected by personnel of the Florence Bascom Geoscience Center in Reston, Virginia.  Thin sections were examined using a fully automated JEOL 8900 Electron Microprobe with five wavelength dispersive analyzers operated at 20keV accelerating voltage, a 40 nA (hemimorphite) or 100 nA (sphalerite) beam current, and an electron beam diameter of 1 to 10 micrometers. The microprobe was operated using Probe for EPMA software (Donovan 2015). &#13;
+&#13;
+Analyzed sphalerite grains were generally &gt;50 μm in diameter.  For sphalerite we report all analyses with totals between 98 and 102 weight percent (wt. %) (~20% of analyses culled).  The expected analytical total for hemimorphite is less certain because it may contain variable amounts of water.  The variation in water content (0-1 water per unit formula) results in expected analytical totals that vary from 92.5 to 96.1 wt. %.  Additionally, many of the hemimorphite analyses were on aggregates of fine-grained (a few micrometers wide) laths that occurred at the margins of quartz grains.  This resulted in both non-ideal sample polish as well as the potential for mixed analyses.  Because of the above considerations we report all analyses with totals between 90 and 98 wt.% and Zn/Si cation ratios (more specifically, cations/[Si+Al]) between 1.7 and 2.3 (~30% of analyses culled).  The latter criterion was used to cull analyses that clearly included a significant contribution from another mineral.  &#13;
+&#13;
+Hemimorphite data were collected in 2018. The spectrometer configuration (analyzing crystal; X-ray line, on-peak count times) were as follows:  &#13;
+&#13;
+Spectrometer 1: TAP crystal; SiKα, 40s; AlKα, 130s.  &#13;
+Spectrometer 2: LIFH crystal; ZnKα, 40s; FeKα, 60s; CuKα, 60s.  &#13;
+Spectrometer 3: TAP crystal; GeLα, 180s.  &#13;
+Spectrometer 4: LIF crystal; GaKα, 180s.  &#13;
+Spectrometer 5: PETJ crystal; CaKα, 40s; SKα, 40s; PbKα, 80s.  &#13;
+&#13;
+The GaKα background was fit with an exponential function, all other background corrections were done by linear interpolation of off-peak backgrounds, and off-peak background count times were half the on-peak time for each background position. The matrix correction algorithm of Armstrong/Love Scott phi-rho-z (Armstrong, 1988) was used along with the mass absorption coefficients of Henke and others (1982) for all analyses. Oxide detection limits (3σ) based on counting statistics were: ~0.02 wt% for SiO2, FeO, CuO, Ga2O3, CaO; 0.03 wt% for GeO2, ZnO; 0.04 wt% for SO3; 0.06 wt% for PbO; and 0.008 wt% for Al2O3. Data are reported to either the hundredths or thousandths place but the detection limits should be considered in data interpretation. Machine stability throughout the analyses and between sessions was documented by the analysis two secondary standards: willemite from SPI Inc. to evaluate the major element (Zn and Si) determinations as well as the reproducibility of zero values for elements absent in the standard; and ghanite from Minais Gerias Brazil to test the measurement methodology for trace gallium.  These secondary standards were run in sets of 5 analyses every ~12 hours. For major element oxides (&gt;10 wt%) the relative standard deviation is &lt; 1%. The published value for willemite (SPI Inc.) and the value and uncertainty (1σ) measured during this study are as follows: SiO2, 28.00, 27.98 ± 0.27; Al2O3 0.00, 0.01 ± 0.004; ZnO, 66.89, 66.91 ± 0.70; FeO, 0.00, 0.02 ± 0.08; Cu2O, 0.00, 0.00 ± 0.01; GeO2 0.00, -0.01 ± 0.01; Ga2O3, 0.00, -0.01 ± 0.01; CaO, 0.00, 0.00 ± 0.01; SO3 0.00, -0.01 ± 0.02; PbO, 0.00, -0.03 ± 0.03.  The published values for ghanite (Huebner and Woodruff, 1985) and the value and uncertainty measured during this study are as follows: SiO2, 0.00, 0.01 ± 0.01; Al2O3 55.59, 54.58 ± 0.23; ZnO, 41.22, 42.06 ± 0.45; FeO, 2.32, 1.91 ± 0.02; Cu2O, 0.00, 0.00 ± 0.01; GeO2 0.00, 0.00 ± 0.01; Ga2O3, 0.026, 0.033 ± 0.008; CaO, 0.00, 0.00 ± 0.01; SO3 0.00, -0.02 ± 0.01; PbO, 0.00, -0.02 ± 0.03.  &#13;
+&#13;
+Sphalerite data were collected in 2017-2019. Analyses times varied slightly for some elements among the different sessions. The spectrometer configuration (analyzing crystal; X-ray line, nominal on-peak count times) were as follows:  &#13;
+&#13;
+Spectrometer 1: LIF crystal; ZnKα, 65s; CoKα, 65s; NiKα, 65s.  &#13;
+Spectrometer 2: LIFH crystal; MnKα, 65s; FeKα, 65s; CuKα 65s. &#13;
+Spectrometer 3: TAP crystal; AsLα, 100s; SeLα, 100s.  &#13;
+Spectrometer 4: LIF crystal; GaKα, 100s; GeKα, 100s.  &#13;
+Spectrometer 5: PETJ crystal; SKα, 50s; CdLα, 50s; SbLα, 40s; AgLα, 40s.     &#13;
+&#13;
+PbMα was measured for 45 seconds on Spectrometer 5 using the PETJ crystal in a subset of the analyses. A mean atomic background correction was applied to all elements (Donovan and Tingle, 1996) in conjunction with a blank correction (Donovan et al., 2016) based on the analysis of synthetic sphalerite (SZNS, Huebner and Woodruff, 1985). The matrix correction algorithm of Armstrong/Love Scott phi-rho-z (Armstrong, 1988) was used along with the mass absorption coefficients of Henke and others (1982) for all analyses. Elemental detection limits (3σ) based on counting statistics varied slightly among the analyses but were: ~0.004 wt% for Mn, Fe; ~0.005 wt% for S; ~0.007 wt% for Cu; ~0.008 wt% for Ga, Se; ~0.009 wt% for As; ~0.01 wt% for Ge, Co; ~0.02 wt% for Cd, Ni, Sb, Ag, Pb; and ~0.03 wt% for Zn. Data are reported to either the hundredths or thousandths place but detection limits should be considered in data interpretation. Machine stability throughout the analyses and between sessions was documented by the analysis of synthetic sphalerite as an unknown in sets of 5 analyses every ~12 hours. The reproducibility of zero values for elements absent in this synthetic standard provide a measure of the accuracy of trace element analyses in the unknowns. For major element oxides (&gt;10 wt%) the relative standard deviation is &lt; 0.5%. The published values for synthetic sphalerite (Huebner and Woodruff, 1985) and the value and uncertainty measured during this study are as follows: Zn, 67.09, 67.50 ± 0.61; S, 32.91, 33.08 ± 0.28; Ga, 0.00, 0.000 ± 0.004; Ge, 0.00, 0.002 ± 0.005; Mn, 0.00, 0.001 ± 0.002; Co, 0.00, 0.002 ± 0.006; Fe, 0.00, 0.001 ± 0.002; As, 0.00, 0.003 ± 0.006; Se, 0.00, 0.003 ± 0.006; Cd, 0.00, 0.008 ± 0.015; Cu, 0.00, 0.001 ± 0.005; Ni, 0.00, 0.000 ± 0.007; Sb, 0.00, 0.005 ± 0.007; Ag, 0.00, 0.005 ± 0.01; Pb, 0.00, 0.002 ± 0.015. &#13;
+&#13;
+Armstrong, J.T., 1988. Quantitative analysis of silicates and oxide minerals: Comparison of Monte-Carlo, ZAF and Phi-Rho-Z procedures, in Newbury, D.E., ed., Microbeam analysis: San Francisco, California, San Francisco Press, p. 239–246. &#13;
+&#13;
+Donovan, J.J., and Tingle, T.N., 1996. An improved mean atomic number background correction for quantitative microanalysis. Microscopy and Microanalysis, 2(1), pp.1-7. &#13;
+&#13;
+Donovan, J.J., Probe for EPMA User Guide and Reference, 2015. online @ http://www.probesoftware.com/Technical.html. &#13;
+&#13;
+Donovan, J.J., Singer, J.W., and Armstrong, J.T., 2016. A new EPMA method for fast trace element analysis in simple matrices. American Mineralogist, 101(8), pp.1839-1853. &#13;
+&#13;
+Henke, B.L., Lee, T.P., Tanaka, T.J., Shimabukuro, R.L, and Fijikawa, B.K., 1982. Atomic Data Nucl. Data Tables 27, 1. &#13;
+&#13;
+Huebner, J.S., and Woodruff, M.E., 1985. Chemical compositions and critical evaluation of microprobe standards available from the Reston microprobe facility. US Geological Survey Open File Report, 85(718), p.45.</procdesc>
+        <procdate>2022</procdate>
+      </procstep>
+    </lineage>
+  </dataqual>
+  <spdoinfo>
+    <indspref>Geographic Names Information System (GNIS): https://geonames.usgs.gov/apex/f?p=138:1::::::</indspref>
+    <direct>Raster</direct>
+  </spdoinfo>
+  <eainfo>
+    <detailed>
+      <enttyp>
+        <enttypl>Sphalerite</enttypl>
+        <enttypd>EMPA data from sphalerite samples</enttypd>
+        <enttypds>Producer defined</enttypds>
+      </enttyp>
+      <attr>
+        <attrlabl>DESCRIP</attrlabl>
+        <attrdef>Description of sample</attrdef>
+        <attrdefs>Producer defined</attrdefs>
+        <attrdomv>
+          <udom>Sample notes and description</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>REL_LINE</attrlabl>
+        <attrdef>Relative line location of sample analysis</attrdef>
+        <attrdefs>Producer defined</attrdefs>
+        <attrdomv>
+          <rdom>
+            <rdommin>1</rdommin>
+            <rdommax>29</rdommax>
+            <attrunit>Relative line location</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>Sphalerite Secondaries</enttypl>
+        <enttypd>Secondary sphalerite samples examined using electron microprobe analysis</enttypd>
+        <enttypds>Producer defined</enttypds>
+      </enttyp>
+      <attr>
+        <attrlabl>DESCRIP</attrlabl>
+        <attrdef>Description of sample</attrdef>
+        <attrdefs>Producer defined</attrdefs>
+        <attrdomv>
+          <udom>Sample notes and description</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>REL_LINE</attrlabl>
+        <attrdef>Relative line location of sample analysis</attrdef>
+        <attrdefs>Producer defined</attrdefs>
+        <attrdomv>
+          <rdom>
+            <rdommin>1</rdommin>
+            <rdommax>5</rdommax>
+            <attrunit>Relative line location</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>Hemimorphite</enttypl>
+        <enttypd>EMPA data from hemimorphite samples</enttypd>
+        <enttypds>Producer defined</enttypds>
+      </enttyp>
+      <attr>
+        <attrlabl>DESCRIP</attrlabl>
+        <attrdef>Description of sample</attrdef>
+        <attrdefs>Producer defined</attrdefs>
+        <attrdomv>
+          <udom>Sample notes and description</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>REL_LINE</attrlabl>
+        <attrdef>Relative line location of sample analysis</attrdef>
+        <attrdefs>Producer defined</attrdefs>
+        <attrdomv>
+          <rdom>
+            <rdommin>1</rdommin>
+            <rdommax>16</rdommax>
+            <attrunit>Relative line location</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>Hemimorphite Secondaries</enttypl>
+        <enttypd>Secondary hemimorphite samples examined using electron microprobe analysis</enttypd>
+        <enttypds>Producer defined</enttypds>
+      </enttyp>
+      <attr>
+        <attrlabl>DESCRIP</attrlabl>
+        <attrdef>Description of sample</attrdef>
+        <attrdefs>Producer defined</attrdefs>
+        <attrdomv>
+          <udom>Sample notes and description</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>REL_LINE</attrlabl>
+        <attrdef>Relative line location of sample analysis</attrdef>
+        <attrdefs>Producer defined</attrdefs>
+        <attrdomv>
+          <rdom>
+            <rdommin>1</rdommin>
+            <rdommax>5</rdommax>
+            <attrunit>Relative line location</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+    </detailed>
+    <overview>
+      <eaover>Data dictionary was used to specify definitions of EMPA measurements. A "DESCRIP" column was added in order to provide additional descriptions of samples analyzed. A "REL_LINE" column was added to track the relative location of sample analysis.</eaover>
+      <eadetcit>Lowers, H.A., 2019, Data Dictionary for Electron Microprobe Data Collected with Probe for EPMA Software Package Developed by Probe Software: U.S. Geological Survey data release, https://doi.org/10.5066/P91HKRPM.</eadetcit>
+    </overview>
+  </eainfo>
+  <distinfo>
+    <distrib>
+      <cntinfo>
+        <cntperp>
+          <cntper>GS ScienceBase</cntper>
+          <cntorg>U.S. Geological Survey</cntorg>
+        </cntperp>
+        <cntaddr>
+          <addrtype>mailing and physical</addrtype>
+          <address>Denver Federal Center, Building 810, Mail Stop 302</address>
+          <city>Denver</city>
+          <state>CO</state>
+          <postal>80225</postal>
+          <country>United States</country>
+        </cntaddr>
+        <cntvoice>1-888-275-8747</cntvoice>
+        <cntemail>sciencebase@usgs.gov</cntemail>
+      </cntinfo>
+    </distrib>
+    <distliab>Unless otherwise stated, all data, metadata and related materials are considered to satisfy the quality standards relative to the purpose for which the data were collected. Although these data and associated metadata have been reviewed for accuracy and completeness and approved for release by the U.S. Geological Survey (USGS), no warranty expressed or implied is made regarding the display or utility of the data for other purposes, nor on all computer systems, nor shall the act of distribution constitute any such warranty. Any use of trade, firm, or product names is for descriptive purposes only and does not imply endorsement by the U.S. Government.</distliab>
+    <techpreq>The file contains data available in comma separated value (.csv) file format. The user must have software capable of opening and viewing a .csv file.</techpreq>
+  </distinfo>
+  <metainfo>
+    <metd>20220721</metd>
+    <metc>
+      <cntinfo>
+        <cntperp>
+          <cntper>Mary R. Croke</cntper>
+          <cntorg>NORTHEAST REGION: GEOLOGY, ENERGY&amp;MINERALS SC</cntorg>
+        </cntperp>
+        <cntpos>Pathways Student</cntpos>
+        <cntaddr>
+          <addrtype>mailing and physical</addrtype>
+          <address>Mail Stop 954, 12201 Sunrise Valley Dr</address>
+          <city>Reston</city>
+          <state>VA</state>
+          <postal>20192</postal>
+          <country>US</country>
+        </cntaddr>
+        <cntvoice>703-648-6454</cntvoice>
+        <cntemail>mcroke@usgs.gov</cntemail>
+      </cntinfo>
+    </metc>
+    <metstdn>Content Standard for Digital Geospatial Metadata</metstdn>
+    <metstdv>FGDC-STD-001-1998</metstdv>
+  </metainfo>
+</metadata>

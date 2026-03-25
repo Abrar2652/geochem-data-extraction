@@ -1,0 +1,22 @@
+# Core
+pdfplumber>=0.11.0        # PDF text extraction
+pdftext>=0.6.0            # Fast PDF text layer extraction (used by default backend)
+pandas>=2.0.0             # DataFrame operations
+openpyxl>=3.1.0           # Excel read/write (.xlsx)
+xlrd>=2.0.0               # Legacy Excel read (.xls)
+pydantic>=2.0.0           # Schema validation
+python-dotenv>=1.0.0      # Load .env files for API keys
+
+# LLM providers (install whichever you need)
+anthropic>=0.40.0         # Claude API
+openai>=1.50.0            # OpenAI GPT API
+google-genai>=1.0.0       # Gemini API
+
+# PDF table extraction backends
+PyMuPDF>=1.24.0           # Render pages as images for LLM vision API
+# marker-pdf>=1.10.0      # Full PDF parsing with layout/OCR (requires Python ≤3.12 for torch)
+docling>=0.18.0           # Document understanding and table extraction
+camelot-py[base]>=1.0.0   # Stream mode: detects borderless/whitespace tables
+
+# Optional: fuzzy string matching (improves metadata evaluation)
+# rapidfuzz>=3.0.0
