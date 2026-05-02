@@ -1,0 +1,95 @@
+@prefix minmod: <https://minmod.isi.edu/resource/> .
+@prefix mno: <https://minmod.isi.edu/ontology/> .
+@prefix schema: <https://schema.org/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+
+minmod:Zhang_et_al_2022
+    a mno:MineralSite ;
+    schema:identifier "Zhang_et_al_2022" ;
+    rdfs:label "Bayan qagan dongshan"@en ;
+    schema:url <geochem-benchmark:Zhang_et_al_2022> ;
+    schema:addressCountry "CHN" ;
+    schema:addressRegion "Inner Mongolia" ;
+    schema:datePublished "2024"^^xsd:integer ;
+    mno:deposit_type_candidate _:deptype_Zhang_et_al_2022_0 ;
+_:deptype_Zhang_et_al_2022_0
+    rdfs:label "Skarn tin ± copper ± Mo"@en ;
+    mno:confidence "0.42"^^xsd:decimal ;
+    mno:source "geochem-benchmark extraction pipeline v1, Jahin et al." ;
+    mno:normalized_uri <https://minmod.isi.edu/resource/Q448> ;
+    .
+    mno:deposit_type_candidate _:deptype_Zhang_et_al_2022_1 ;
+_:deptype_Zhang_et_al_2022_1
+    rdfs:label "Vein tin"@en ;
+    mno:confidence "0.28"^^xsd:decimal ;
+    mno:source "geochem-benchmark extraction pipeline v1, Jahin et al." ;
+    mno:normalized_uri <https://minmod.isi.edu/resource/Q426> ;
+    .
+    mno:deposit_type_candidate _:deptype_Zhang_et_al_2022_2 ;
+_:deptype_Zhang_et_al_2022_2
+    rdfs:label "Vein tin polymetallic"@en ;
+    mno:confidence "0.18"^^xsd:decimal ;
+    mno:source "geochem-benchmark extraction pipeline v1, Jahin et al." ;
+    mno:normalized_uri <https://minmod.isi.edu/resource/Q428> ;
+    .
+    mno:deposit_type_candidate _:deptype_Zhang_et_al_2022_3 ;
+_:deptype_Zhang_et_al_2022_3
+    rdfs:label "Skarn zinc-lead-silver"@en ;
+    mno:confidence "0.08"^^xsd:decimal ;
+    mno:source "geochem-benchmark extraction pipeline v1, Jahin et al." ;
+    mno:normalized_uri <https://minmod.isi.edu/resource/Q450> ;
+    .
+    mno:deposit_type_candidate _:deptype_Zhang_et_al_2022_4 ;
+_:deptype_Zhang_et_al_2022_4
+    rdfs:label "Replacement tin"@en ;
+    mno:confidence "0.04"^^xsd:decimal ;
+    mno:source "geochem-benchmark extraction pipeline v1, Jahin et al." ;
+    mno:normalized_uri <https://minmod.isi.edu/resource/Q439> ;
+    .
+    mno:mineral_inventory _:inv_Zhang_et_al_2022_0 ;
+_:inv_Zhang_et_al_2022_0
+    rdfs:label "Sn"@en ;
+    schema:url <geochem-benchmark:Zhang_et_al_2022> ;
+    .
+    mno:mineral_inventory _:inv_Zhang_et_al_2022_1 ;
+_:inv_Zhang_et_al_2022_1
+    rdfs:label "Pb"@en ;
+    schema:url <geochem-benchmark:Zhang_et_al_2022> ;
+    .
+    mno:mineral_inventory _:inv_Zhang_et_al_2022_2 ;
+_:inv_Zhang_et_al_2022_2
+    rdfs:label "Zn"@en ;
+    schema:url <geochem-benchmark:Zhang_et_al_2022> ;
+    .
+    mno:mineral_inventory _:inv_Zhang_et_al_2022_3 ;
+_:inv_Zhang_et_al_2022_3
+    rdfs:label "Ag"@en ;
+    schema:url <geochem-benchmark:Zhang_et_al_2022> ;
+    .
+    mno:mineral_inventory _:inv_Zhang_et_al_2022_4 ;
+_:inv_Zhang_et_al_2022_4
+    rdfs:label "Cu"@en ;
+    schema:url <geochem-benchmark:Zhang_et_al_2022> ;
+    .
+    mno:mineral_inventory _:inv_Zhang_et_al_2022_5 ;
+_:inv_Zhang_et_al_2022_5
+    rdfs:label "Sb"@en ;
+    schema:url <geochem-benchmark:Zhang_et_al_2022> ;
+    .
+    mno:mineral_inventory _:inv_Zhang_et_al_2022_6 ;
+_:inv_Zhang_et_al_2022_6
+    rdfs:label "Bi"@en ;
+    schema:url <geochem-benchmark:Zhang_et_al_2022> ;
+    .
+    mno:mineral_inventory _:inv_Zhang_et_al_2022_7 ;
+_:inv_Zhang_et_al_2022_7
+    rdfs:label "Te"@en ;
+    schema:url <geochem-benchmark:Zhang_et_al_2022> ;
+    .
+    mno:mineral_inventory _:inv_Zhang_et_al_2022_8 ;
+_:inv_Zhang_et_al_2022_8
+    rdfs:label "sphalerite"@en ;
+    schema:url <geochem-benchmark:Zhang_et_al_2022> ;
+    . .

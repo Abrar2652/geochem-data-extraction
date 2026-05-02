@@ -37,6 +37,13 @@ _SUMMARY_ROW_PATTERNS = re.compile(
     r")\b",
     re.IGNORECASE,
 )
+# Matches summary stats ANYWHERE in the name (e.g., "Py2(n=24)")
+_SUMMARY_EMBEDDED_PATTERN = re.compile(
+    r"\(n\s*=\s*\d+\)|"            # (n=24) — average of N spots
+    r"\bmean\b|\baverage\b|\bmedian\b|\bstd\b|\bstdev\b|"
+    r"\bmin\b|\bmax\b|\brange\b",
+    re.IGNORECASE,
+)
 
 # Reference standard patterns — separate because they need flexible boundaries
 # (e.g., "G_NIST610" shouldn't require \b after "nist")
@@ -405,14 +412,14 @@ def read_pdf_table(
     df: pd.DataFrame,
     min_element_cols: int = 3,
     label: str = "pdf_table",
-    convert_units: bool = False,
+    convert_units: bool = True,
 ) -> Optional[SupplementaryTable]:
     """Process a raw DataFrame from PDF table extraction as if it were a
     supplementary table.  Reuses the same column mapping, unit detection,
     and row-filtering logic that works on Excel/CSV files.
 
-    By default, does NOT convert wt% → ppm for PDF tables because ground
-    truth files may store EPMA values in original wt% units.
+    Unit conversion is enabled by default — all values normalised to ppm.
+    (wt% × 10000, ppb ÷ 1000)
 
     Returns None if the DataFrame does not contain enough recognised element
     columns (< *min_element_cols*).
@@ -506,18 +513,24 @@ def read_pdf_table(
     )
     notes.append(f"Filtered from {len(raw_df)} → {len(data_df)} sample rows")
 
-    # Convert wt% to ppm if needed AND if convert_units is enabled.
-    # For PDF-extracted tables, conversion is typically disabled because
-    # ground truths often store EPMA values in original wt% units.
-    if convert_units and detected_unit in ("wt%", "mixed") and element_col_map:
-        if detected_unit == "mixed":
-            wt_cols = _detect_wt_pct_columns(raw_df, element_col_map)
+    # Unit conversion — normalise all values to ppm.
+    if convert_units and element_col_map:
+        if detected_unit in ("wt%", "mixed"):
+            if detected_unit == "mixed":
+                wt_cols = _detect_wt_pct_columns(raw_df, element_col_map)
+            else:
+                # Don't blindly convert all columns — use value-range heuristic
+                wt_cols = _detect_wt_pct_columns(raw_df, element_col_map)
+                if not wt_cols:
+                    wt_cols = _detect_wt_pct_by_value_range(data_df, element_col_map)
             if wt_cols:
                 data_df = _convert_wt_pct_to_ppm(data_df, wt_cols=wt_cols)
-                notes.append(f"Converted {len(wt_cols)}/{len(element_col_map)} wt% columns to ppm")
-        else:
-            data_df = _convert_wt_pct_to_ppm(data_df, wt_cols=set(element_col_map.keys()))
-            notes.append(f"Converted {len(element_col_map)} wt% columns to ppm")
+                notes.append(f"Converted {len(wt_cols)}/{len(element_col_map)} wt% columns to ppm (×10000)")
+        # Also handle ppb
+        ppb_cols = _detect_ppb_columns(data_df, element_col_map)
+        if ppb_cols:
+            data_df = _convert_ppb_to_ppm(data_df, ppb_cols=ppb_cols)
+            notes.append(f"Converted {len(ppb_cols)} ppb columns to ppm (÷1000)")
 
     if data_df.empty:
         return None
@@ -676,17 +689,29 @@ def _read_single_sheet(
     )
     notes.append(f"Filtered from {len(raw_df)} → {len(data_df)} sample rows")
 
-    # Convert wt% to ppm if needed
+    # Unit conversion — normalise all element values to ppm.
+    # The "_ppm" column suffix means the value MUST be in ppm.
+    #   wt% → ppm: multiply by 10,000
+    #   ppb → ppm: divide by 1,000
+    # Per-column detection handles mixed-unit tables correctly.
     if detected_unit in ("wt%", "mixed") and element_col_map:
-        if detected_unit == "mixed":
-            # Per-column detection: only convert columns that are actually in wt%
-            wt_cols = _detect_wt_pct_columns(raw_df, element_col_map, pre_header_rows)
+        wt_cols = _detect_wt_pct_columns(data_df, element_col_map, pre_header_rows)
+        if detected_unit == "wt%" and not wt_cols:
+            # Header-based detection found nothing specific.
+            # Use value-range heuristic: only convert columns whose median
+            # is in the wt% range (0.01-100). Columns with median >100
+            # are likely already in ppm and must NOT be multiplied by 10000.
+            wt_cols = _detect_wt_pct_by_value_range(data_df, element_col_map)
             if wt_cols:
-                data_df = _convert_wt_pct_to_ppm(data_df, wt_cols=wt_cols)
-                notes.append(f"Converted {len(wt_cols)}/{len(element_col_map)} element columns from wt% to ppm (×10000): {sorted(wt_cols)}")
-        else:
-            data_df = _convert_wt_pct_to_ppm(data_df, wt_cols=set(element_col_map.keys()))
-            notes.append(f"Converted {len(element_col_map)} element columns from wt% to ppm (×10000)")
+                notes.append(f"Detected {len(wt_cols)} wt% columns by value range (median 0.01-100)")
+        if wt_cols:
+            data_df = _convert_wt_pct_to_ppm(data_df, wt_cols=wt_cols)
+            notes.append(f"Converted {len(wt_cols)}/{len(element_col_map)} wt% columns to ppm (×10000)")
+    # Also handle ppb columns
+    ppb_cols = _detect_ppb_columns(data_df, element_col_map, pre_header_rows)
+    if ppb_cols:
+        data_df = _convert_ppb_to_ppm(data_df, ppb_cols=ppb_cols)
+        notes.append(f"Converted {len(ppb_cols)} ppb columns to ppm (÷1000)")
 
     return SupplementaryTable(
         raw_df=raw_df,
@@ -755,6 +780,15 @@ def _read_excel_all_sheets(
                                    pre_header_text=pre_header_text,
                                    pre_header_rows=pre_header_rows,
                                    hints=hints)
+
+            # USGS requirement: infer mineral from sheet name when no mineral
+            # column is present (e.g., sheets named "Chalcopyrite", "Sphalerite")
+            if not s.mineral_col:
+                inferred_mineral = _infer_mineral_from_label(name)
+                if inferred_mineral:
+                    s.inferred_mineral = inferred_mineral
+                    all_notes.append(f"Sheet '{name}': inferred mineral='{inferred_mineral}' from sheet name")
+
             supps.append(s)
             all_notes.append(f"Sheet '{name}': {s.n_samples} sample rows, "
                              f"{len(s.element_col_map)} elements")
@@ -1094,6 +1128,116 @@ def _detect_zone_col(df: pd.DataFrame) -> Optional[str]:
     return None
 
 
+# ──────────────────────────────────────────────────────────────────────────────
+# USGS: Mineral inference from sheet names and analysis_id abbreviations
+# ──────────────────────────────────────────────────────────────────────────────
+
+# Common abbreviations found in analysis_id strings (e.g., "5-2002063521cpy1-1.d")
+_MINERAL_ABBREVIATIONS: dict[str, str] = {
+    "cpy": "chalcopyrite",
+    "cp":  "chalcopyrite",
+    "ccp": "chalcopyrite",
+    "sph": "sphalerite",
+    "sp":  "sphalerite",
+    "sl":  "sphalerite",
+    "gal": "galena",
+    "gn":  "galena",
+    "py":  "pyrite",
+    "pyr": "pyrite",
+    "po":  "pyrrhotite",
+    "apy": "arsenopyrite",
+    "asp": "arsenopyrite",
+    "bn":  "bornite",
+    "bor": "bornite",
+    "cc":  "chalcocite",
+    "cv":  "covellite",
+    "en":  "enargite",
+    "tn":  "tennantite",
+    "td":  "tetrahedrite",
+    "tt":  "tetrahedrite",
+    "mol": "molybdenite",
+    "moly": "molybdenite",
+    "pn":  "pentlandite",
+    "mt":  "magnetite",
+    "mag": "magnetite",
+    "hem": "hematite",
+    "ilm": "ilmenite",
+    "cst": "cassiterite",
+    "cas": "cassiterite",
+    "wf":  "wolframite",
+    "sch": "scheelite",
+    "qtz": "quartz",
+    "qz":  "quartz",
+    "cal": "calcite",
+    "dol": "dolomite",
+    "fl":  "fluorite",
+    "brt": "barite",
+    "bar": "barite",
+}
+
+
+def _infer_mineral_from_label(label: str) -> Optional[str]:
+    """Infer mineral name from a sheet name, table caption, or label string.
+
+    Matches against the MINERAL_TAXONOMY from knowledge_base.py and common
+    abbreviations. Case-insensitive.
+
+    Examples:
+        "Chalcopyrite" → "chalcopyrite"
+        "Sph LA-ICPMS" → "sphalerite"
+        "Table 2 - pyrite data" → "pyrite"
+    """
+    if not label:
+        return None
+    from .knowledge_base import MINERAL_TAXONOMY
+    import re
+    label_lower = label.strip().lower()
+
+    # Direct match against known mineral names — longest first to avoid
+    # "pyrite" matching before "chalcopyrite" in "chalcopyrite"
+    sorted_minerals = sorted(MINERAL_TAXONOMY.keys(), key=len, reverse=True)
+    for mineral_name in sorted_minerals:
+        # Match as whole word (bounded by non-alpha or string edges)
+        pattern = r'(?:^|[^a-z])' + re.escape(mineral_name) + r'(?:[^a-z]|$)'
+        if re.search(pattern, label_lower):
+            return mineral_name
+
+    # Match against abbreviations
+    # Split on non-alpha to get tokens
+    tokens = re.split(r'[^a-zA-Z]+', label_lower)
+    for token in tokens:
+        if token in _MINERAL_ABBREVIATIONS:
+            return _MINERAL_ABBREVIATIONS[token]
+
+    return None
+
+
+def infer_mineral_from_analysis_id(analysis_id: str) -> Optional[str]:
+    """Extract mineral from analysis_id string using embedded abbreviations.
+
+    Per USGS protocol, analysis_id strings often contain mineral abbreviations:
+        "5-2002063521cpy1-1.d" → "chalcopyrite" (from "cpy")
+        "YK94-17-sph-3" → "sphalerite" (from "sph")
+        "PY-1-1" → "pyrite" (from "py")
+
+    Returns mineral name or None.
+    """
+    if not analysis_id:
+        return None
+    import re
+    aid_lower = analysis_id.strip().lower()
+
+    # Look for abbreviation tokens separated by non-alpha characters or at boundaries
+    # Try longer abbreviations first to avoid false matches
+    for abbrev, mineral in sorted(_MINERAL_ABBREVIATIONS.items(), key=lambda x: -len(x[0])):
+        # Match as a standalone token (bounded by non-alpha or string edges)
+        pattern = r'(?:^|[^a-z])' + re.escape(abbrev) + r'(?:[^a-z]|$)'
+        if re.search(pattern, aid_lower):
+            return mineral
+
+    return None
+
+
 def _detect_spot_number_col(
     df: pd.DataFrame,
     sample_id_col: Optional[str],
@@ -1239,16 +1383,112 @@ def _convert_wt_pct_to_ppm(
 ) -> pd.DataFrame:
     """Convert element columns from wt% to ppm (multiply by 10000).
 
-    Args:
-        df: DataFrame to convert.
-        wt_cols: Set of column names to convert. If None, converts all element columns.
-        element_col_map: Used as fallback when wt_cols is None — converts all.
+    Preserves original values in {col}_original_value and sets
+    {col}_original_unit = "wt%" before converting.
     """
     df = df.copy()
     cols_to_convert = wt_cols if wt_cols else (element_col_map or {})
     for raw_col in cols_to_convert:
         if raw_col in df.columns:
+            # Preserve original before conversion
+            orig_val_col = raw_col.replace("_ppm", "_original_value")
+            orig_unit_col = raw_col.replace("_ppm", "_original_unit")
+            df[orig_val_col] = pd.to_numeric(df[raw_col], errors="coerce")
+            df[orig_unit_col] = "wt%"
             df[raw_col] = pd.to_numeric(df[raw_col], errors="coerce") * 10000
+    return df
+
+
+def _detect_wt_pct_by_value_range(
+    df: pd.DataFrame,
+    element_col_map: dict[str, str],
+) -> set[str]:
+    """Detect wt% columns using value-range heuristics when headers are ambiguous.
+
+    Only major elements (Fe, Si, Al, Ca, Mg, Na, K, S, Mn, Ti, P, Cr) are
+    candidates for wt% conversion. Trace elements are never in wt%.
+
+    A column is classified as wt% if:
+    - The element is a known major element
+    - The median positive value is between 0.01 and 100
+    - Values >100 ppm would be unusual for wt% (max wt% = 100%)
+
+    This prevents trace elements already in ppm (e.g., Cu=369 ppm) from
+    being multiplied by 10,000.
+    """
+    _MAJOR_ELEMENTS = {"fe", "si", "al", "ca", "mg", "na", "k", "s", "mn", "ti", "p", "cr"}
+    wt_cols: set[str] = set()
+
+    for raw_col, sym in element_col_map.items():
+        if sym not in _MAJOR_ELEMENTS:
+            continue
+        if raw_col not in df.columns:
+            continue
+        vals = pd.to_numeric(df[raw_col], errors="coerce").dropna()
+        # Exclude BDL sentinels
+        vals = vals[(vals > 0) & (vals != -99999)]
+        if len(vals) < 2:
+            continue
+        median = vals.median()
+        # wt% range: 0.01% to 100% (100% = pure element)
+        # ppm range for major elements: typically >1000 ppm
+        if 0.01 <= median <= 100:
+            wt_cols.add(raw_col)
+
+    return wt_cols
+
+
+_PPB_HEADER_INDICATORS = ("ppb", "(ppb)", "ppb)", "ng/g", "(ng/g)")
+
+
+def _detect_ppb_columns(
+    df: pd.DataFrame,
+    element_col_map: dict[str, str],
+    pre_header_rows: list[list[str]] | None = None,
+) -> set[str]:
+    """Return column names that are in ppb (need ÷1000 conversion to ppm)."""
+    ppb_cols: set[str] = set()
+
+    # Check column header text
+    for raw_col in element_col_map:
+        col_lower = raw_col.lower()
+        if any(u in col_lower for u in _PPB_HEADER_INDICATORS):
+            ppb_cols.add(raw_col)
+
+    # Check pre-header unit rows
+    if pre_header_rows:
+        col_names = list(df.columns)
+        for unit_row in pre_header_rows:
+            if len(unit_row) != len(col_names):
+                continue
+            for i, col_name in enumerate(col_names):
+                if col_name not in element_col_map:
+                    continue
+                if i < len(unit_row):
+                    uv = str(unit_row[i]).strip().lower()
+                    if any(u in uv for u in _PPB_HEADER_INDICATORS):
+                        ppb_cols.add(col_name)
+
+    return ppb_cols
+
+
+def _convert_ppb_to_ppm(
+    df: pd.DataFrame,
+    ppb_cols: set[str],
+) -> pd.DataFrame:
+    """Convert element columns from ppb to ppm (divide by 1000).
+
+    Preserves original values in {col}_original_value and sets
+    {col}_original_unit = "ppb" before converting.
+    """
+    df = df.copy()
+    for raw_col in ppb_cols:
+        if raw_col in df.columns:
+            orig_val_col = raw_col.replace("_ppm", "_original_value")
+            orig_unit_col = raw_col.replace("_ppm", "_original_unit")
+            df[orig_val_col] = pd.to_numeric(df[raw_col], errors="coerce")
+            df[orig_unit_col] = "ppb"
+            df[raw_col] = pd.to_numeric(df[raw_col], errors="coerce") / 1000
     return df
 
 
@@ -1406,11 +1646,11 @@ def _pivot_transposed(df: pd.DataFrame) -> pd.DataFrame:
         # Ensure sample_name falls back to sample_local_id
         if "sample_name" not in rec or rec["sample_name"] is None:
             rec["sample_name"] = rec.get("sample_local_id")
-        # Element values (convert wt% → ppm where needed)
+        # Element values — keep in original units (no conversion).
+        # The "_ppm" suffix is a column name convention; ground truth stores
+        # values as-reported (wt%, ppm, ppb) without normalisation.
         for sym, vals in element_rows.items():
             val = _safe_float(vals[j]) if j < len(vals) else None
-            if val is not None and sym in wt_pct_elements:
-                val = val * 10000
             rec[f"{sym}_ppm"] = val
         records.append(rec)
 
@@ -1436,6 +1676,10 @@ def _filter_sample_rows(
         mask &= ~df[sample_id_col].apply(
             lambda v: bool(isinstance(v, str) and _SUMMARY_ROW_PATTERNS.match(v))
         )
+        # Also catch summary patterns embedded in names (e.g., "Py2(n=24)")
+        mask &= ~df[sample_id_col].apply(
+            lambda v: bool(isinstance(v, str) and _SUMMARY_EMBEDDED_PATTERN.search(v))
+        )
         # Exclude reference standard rows (NIST, MASS-1, etc.)
         mask &= ~df[sample_id_col].apply(
             lambda v: bool(isinstance(v, str) and _REFERENCE_STANDARD_PATTERNS.match(v.strip()))
@@ -1444,26 +1688,54 @@ def _filter_sample_rows(
         mask &= ~df[sample_id_col].apply(
             lambda v: isinstance(v, str) and _is_note_or_description(v)
         )
+        # Exclude rows where sample_id looks like a citation/source reference
+        _CITATION_PATTERN = re.compile(
+            r"Source:\s*|"                     # "Source: Author et al."
+            r"\bet\s+al\.?\s*\(\d{4}\)|"      # "et al. (2022)"
+            r"\bet\s+al\.?\s*,\s*\d{4}|"      # "et al., 2022"
+            r"^\d{4}[a-z]?\s+[A-Z][a-z]",     # "2022 Bertrandsson"
+            re.IGNORECASE,
+        )
+        mask &= ~df[sample_id_col].apply(
+            lambda v: bool(isinstance(v, str) and _CITATION_PATTERN.search(v))
+        )
         # Exclude rows with no sample ID
         mask &= df[sample_id_col].notna()
         mask &= df[sample_id_col].apply(
             lambda v: pd.notna(v) and str(v).strip() not in ("", "nan", "None", "NaN")
         )
 
-    # 2. Filter by reference column if present
+    # 1b. TAG rows by data source instead of removing them.
+    # Extract all, let downstream users decide what to keep.
+    # Tag: "this_study" | "reference_data" | "cited_study:AuthorYear"
+    if "data_source_tag" not in df.columns:
+        df["data_source_tag"] = "this_study"  # default
+
+    # Scan text columns for "Source:" pattern → tag as cited_study
+    for col in df.columns:
+        if col in (sample_id_col, "data_source_tag"):
+            continue
+        if df[col].dtype == object:
+            for idx in df.index:
+                val = df.at[idx, col]
+                if isinstance(val, str) and val.strip().lower().startswith("source:"):
+                    df.at[idx, "data_source_tag"] = f"cited_study:{val.strip()[:50]}"
+                elif isinstance(val, str):
+                    s = val.strip().lower()
+                    if s and s not in _THIS_PAPER_ALIASES and s != "":
+                        # Check if it looks like a citation
+                        if re.search(r'\bet\s+al\.?\s*[,(]\s*\d{4}', s):
+                            df.at[idx, "data_source_tag"] = f"cited_study:{val.strip()[:50]}"
+
+    # 2. TAG by reference column if present (don't filter)
     if reference_col and reference_col in df.columns:
-        def _is_this_paper(val) -> bool:
+        for idx in df.index:
+            val = df.at[idx, reference_col]
             if pd.isna(val):
-                return True  # assume "this paper" if reference is blank
+                continue
             s = str(val).strip().lower()
-            return s in _THIS_PAPER_ALIASES or s == ""
-        ref_mask = df[reference_col].apply(_is_this_paper)
-        # If the reference filter would remove >95% of rows, this is likely
-        # a compilation/review paper — keep all data rather than filtering
-        if ref_mask.sum() / max(len(df), 1) < 0.05 and len(df) > 50:
-            pass  # skip reference filter for compilation tables
-        else:
-            mask &= ref_mask
+            if s and s not in _THIS_PAPER_ALIASES:
+                df.at[idx, "data_source_tag"] = f"cited_study:{str(val).strip()[:50]}"
 
     # 3. Filter by deposit name if caller specified one and deposit col exists
     if this_paper_deposit and deposit_col and deposit_col in df.columns:
@@ -1491,22 +1763,103 @@ def _filter_sample_rows(
 # Type helpers
 # ──────────────────────────────────────────────────────────────────────────────
 
+# Sentinel value for "below detection limit" — the element WAS measured but
+# the concentration was too low to quantify.  This is distinct from None/blank
+# which means the element was NOT measured or NOT reported at all.
+# Using -99999 loses less information: blank implies "not attempted", while
+# -99999 means "attempted, but at very low concentration".
+BELOW_DETECTION_SENTINEL = -99999.0
+
+# Strings that mean "below detection limit" (element WAS analysed, too low to quantify).
+# USGS convention: "n/a" and "na" mean "not analyzed" = blank, NOT BDL.
 _BDL_STRINGS = frozenset({
     "bdl", "b.d.l.", "b.d.l", "bdl.", "<dl", "<d.l.", "nd", "n.d.", "n.d",
-    "-", "--", "n/a", "na", "below detection", "below detection limit",
+    "-", "--", "below detection", "below detection limit",
     "<mdl", "mdl", "<lod", "lod", "b.d.", "bd",
+    "below lod", "below dl", "below mdl",
 })
 
+# Strings that mean "not analyzed / not applicable" = blank (None).
+_NOT_ANALYZED_STRINGS = frozenset({
+    "n/a", "na", "n.a.", "n.a", "not analyzed", "not analysed",
+    "not measured", "not reported", "not determined", "n.r.", "nr",
+})
+
+
+def _is_below_detection(val) -> bool:
+    """Return True if a cell value represents below-detection-limit.
+
+    These are values where the analysis was performed but the element
+    concentration was too low to quantify. Distinct from truly missing
+    (not measured) values.
+    """
+    if val is None or (isinstance(val, float) and pd.isna(val)):
+        return False
+    if isinstance(val, str):
+        s = val.strip().lower()
+        if s in _BDL_STRINGS:
+            return True
+        # Leading < with a number (e.g., "<0.01", "< 5") is below detection
+        if s and s[0] == "<":
+            return True
+    return False
+
+
+def _extract_detection_limit(val) -> Optional[float]:
+    """Extract the numeric detection limit from a BDL cell value.
+
+    Per USGS protocol: if a specific detection limit is reported (e.g., "<0.5"),
+    return the negative of that limit (e.g., -0.5). If no specific limit is
+    given (e.g., "bdl", "n.d."), return None (caller should use -99999).
+
+    Returns:
+        Negative float (e.g., -0.5) if a specific LOD is embedded in the value.
+        None if no specific LOD can be extracted.
+    """
+    if not isinstance(val, str):
+        return None
+    import re
+    s = val.strip()
+    # Pattern: "<0.5", "< 0.01", "<0.5 ppm", etc.
+    m = re.match(r'^<\s*([0-9]*\.?[0-9]+)', s)
+    if m:
+        try:
+            lod = float(m.group(1))
+            if lod > 0:
+                return round(-lod, 6)
+        except (ValueError, TypeError):
+            pass
+    return None
+
+
 def _safe_float(val) -> Optional[float]:
-    """Convert a cell value to float, returning None for missing/bdl/non-numeric."""
+    """Convert a cell value to float.
+
+    USGS below-detection-limit convention:
+        - BDL with no specific LOD (e.g., "bdl", "n.d.", "-") → -99999
+        - BDL with specific LOD (e.g., "<0.5") → negative of that limit (-0.5)
+        - "n/a", "not analyzed" → None (blank = not measured)
+        - Normal numeric value → float
+    """
     if val is None or (isinstance(val, float) and pd.isna(val)):
         return None
     if isinstance(val, str):
         s = val.strip().lower()
-        if s in _BDL_STRINGS:
+        if not s:
             return None
-        # Strip leading < or > (detection limit indicators)
-        if s and s[0] in ("<", ">"):
+        # "not analyzed" strings → None (blank), NOT BDL
+        if s in _NOT_ANALYZED_STRINGS:
+            return None
+        if s in _BDL_STRINGS:
+            return BELOW_DETECTION_SENTINEL
+        # Leading < with a number → extract specific LOD as negative value
+        if s[0] == "<":
+            specific_lod = _extract_detection_limit(val)
+            if specific_lod is not None:
+                return specific_lod
+            return BELOW_DETECTION_SENTINEL
+        # Leading > strips the indicator and returns the numeric value
+        if s[0] == ">":
             s = s[1:].strip()
             try:
                 return round(float(s), 6)
@@ -1636,10 +1989,13 @@ def _parse_tables_from_text(
 
             if len(data_rows) >= min_data_rows:
                 df = pd.DataFrame(data_rows, columns=header_cols)
-                # Replace "-" and "b.d.l." with NaN for numeric columns
-                df = df.replace({"-": None, "b.d.l.": None, "bdl": None,
-                                 "n.d.": None, "nd": None, "BDL": None,
-                                 "N.D.": None, "<LOD": None})
+                # Replace below-detection-limit markers with -99999 sentinel.
+                # -99999 means "measured but below detection" (not the same as blank/None
+                # which means "not measured at all").
+                _bdl = BELOW_DETECTION_SENTINEL
+                df = df.replace({"-": _bdl, "b.d.l.": _bdl, "bdl": _bdl,
+                                 "n.d.": _bdl, "nd": _bdl, "BDL": _bdl,
+                                 "N.D.": _bdl, "<LOD": _bdl})
                 tables.append(df)
                 i = j
             else:

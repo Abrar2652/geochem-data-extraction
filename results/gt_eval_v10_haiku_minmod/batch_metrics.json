@@ -1,0 +1,915 @@
+{
+  "model": "claude-haiku-4-5-20251001",
+  "provider": "claude",
+  "aggregate": {
+    "n_papers": 28,
+    "mean_T1_metadata_%": 69.97831137147357,
+    "mean_T2_numerical_%": 76.368874563243,
+    "mean_T3_structural_%": 68.84481217436239,
+    "mean_T4_null_%": 90.89961222071008,
+    "mean_overall_%": 75.50270689600012,
+    "total_samples_predicted": 44650,
+    "total_samples_ground_truth": 5307,
+    "total_samples_matched": 4314
+  },
+  "per_paper": {
+    "Yuan_et_al_2018": {
+      "model": "claude-haiku-4-5-20251001",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 81.49,
+        "T2_numerical_%": 99.48,
+        "T3_structural_%": 86.73,
+        "T4_null_%": 99.04,
+        "overall_%": 92.11
+      },
+      "structural": {
+        "predicted_n": 111,
+        "ground_truth_n": 85,
+        "matched_n": 85,
+        "precision_%": 76.58,
+        "recall_%": 100.0,
+        "f1_%": 86.73,
+        "missing_samples": [],
+        "extra_samples": [
+          "B-10",
+          "B-6",
+          "BNC-10(8)",
+          "BNC-3(10)",
+          "DBS-1(10)",
+          "DBS-2(8)",
+          "DBS-6(8)",
+          "H-22",
+          "HTP-163(8)",
+          "HTP-174(8)"
+        ]
+      }
+    },
+    "Tomlinson_et_al_2021": {
+      "model": "claude-haiku-4-5-20251001",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 61.04,
+        "T2_numerical_%": 53.74,
+        "T3_structural_%": 8.99,
+        "T4_null_%": 98.21,
+        "overall_%": 55.89
+      },
+      "structural": {
+        "predicted_n": 845,
+        "ground_truth_n": 8,
+        "matched_n": 8,
+        "precision_%": 0.95,
+        "recall_%": 100.0,
+        "f1_%": 1.88,
+        "missing_samples": [],
+        "extra_samples": [
+          "Chalcopyrite-1",
+          "FF1-1-1",
+          "FF1-1-2",
+          "FF1-2-1",
+          "FF1-2-2",
+          "FF1-3-1",
+          "FF1-3-2",
+          "FF1-4-1",
+          "FF1-4-2",
+          "FF1-5-1"
+        ]
+      }
+    },
+    "Chu_et_al_2022": {
+      "model": "claude-haiku-4-5-20251001",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 66.34,
+        "T2_numerical_%": 100.0,
+        "T3_structural_%": 100.0,
+        "T4_null_%": 71.72,
+        "overall_%": 85.66
+      },
+      "structural": {
+        "predicted_n": 160,
+        "ground_truth_n": 160,
+        "matched_n": 160,
+        "precision_%": 100.0,
+        "recall_%": 100.0,
+        "f1_%": 100.0,
+        "missing_samples": [],
+        "extra_samples": []
+      }
+    },
+    "Yang_et_al_2022": {
+      "model": "claude-haiku-4-5-20251001",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 64.64,
+        "T2_numerical_%": 96.24,
+        "T3_structural_%": 87.55,
+        "T4_null_%": 91.03,
+        "overall_%": 84.68
+      },
+      "structural": {
+        "predicted_n": 1164,
+        "ground_truth_n": 615,
+        "matched_n": 524,
+        "precision_%": 45.02,
+        "recall_%": 85.2,
+        "f1_%": 58.91,
+        "missing_samples": [
+          "Maoping-pyrite-24",
+          "Maoping-pyrite-25",
+          "Maoping-pyrite-26",
+          "Maoping-pyrite-27",
+          "Maoping-pyrite-28",
+          "Maoping-pyrite-29",
+          "Maoping-pyrite-30",
+          "Maoping-pyrite-31",
+          "Maoping-pyrite-32",
+          "Maoping-pyrite-33"
+        ],
+        "extra_samples": [
+          "Maoping-1",
+          "Maoping-10",
+          "Maoping-11",
+          "Maoping-12",
+          "Maoping-13",
+          "Maoping-14",
+          "Maoping-15",
+          "Maoping-16",
+          "Maoping-17",
+          "Maoping-18"
+        ]
+      }
+    },
+    "Zhang_et_al_2022": {
+      "model": "claude-haiku-4-5-20251001",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 64.27,
+        "T2_numerical_%": 36.74,
+        "T3_structural_%": 74.86,
+        "T4_null_%": 99.46,
+        "overall_%": 60.12
+      },
+      "structural": {
+        "predicted_n": 75,
+        "ground_truth_n": 104,
+        "matched_n": 67,
+        "precision_%": 89.33,
+        "recall_%": 64.42,
+        "f1_%": 74.86,
+        "missing_samples": [
+          "BY-B19-L_1",
+          "BY-B19-L_2",
+          "BY-B19-L_3",
+          "BY-B19-L_4",
+          "BY-B19-L_5",
+          "BY-B19-L_6",
+          "BY-B29-L_1",
+          "BY-B29-L_2",
+          "BY-B29-L_3",
+          "BY-B29-L_4"
+        ],
+        "extra_samples": [
+          "BY-B19-1 BY-B19-2",
+          "BY-B29-1 BY-B29-2",
+          "BY-B29-3 BY-B29-4",
+          "BY-B37-2 BY-B37-3",
+          "BY-B37-5 BY-B37-6",
+          "BY-B37-7 BY-B37-8",
+          "BY-B37-9 BY-B9-2-1",
+          "Spot No."
+        ]
+      }
+    },
+    "Jiang_et_al_2023": {
+      "model": "claude-haiku-4-5-20251001",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 74.52,
+        "T2_numerical_%": 100.0,
+        "T3_structural_%": 100.0,
+        "T4_null_%": 37.05,
+        "overall_%": 82.91
+      },
+      "structural": {
+        "predicted_n": 52,
+        "ground_truth_n": 56,
+        "matched_n": 52,
+        "precision_%": 100.0,
+        "recall_%": 92.86,
+        "f1_%": 96.3,
+        "missing_samples": [],
+        "extra_samples": []
+      }
+    },
+    "Soster_et_al_2023": {
+      "model": "claude-haiku-4-5-20251001",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 81.39,
+        "T2_numerical_%": 99.52,
+        "T3_structural_%": 100.0,
+        "T4_null_%": 85.91,
+        "overall_%": 92.11
+      },
+      "structural": {
+        "predicted_n": 63,
+        "ground_truth_n": 63,
+        "matched_n": 63,
+        "precision_%": 100.0,
+        "recall_%": 100.0,
+        "f1_%": 100.0,
+        "missing_samples": [],
+        "extra_samples": []
+      }
+    },
+    "Sun_et_al_2023": {
+      "model": "claude-haiku-4-5-20251001",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 71.07,
+        "T2_numerical_%": 89.88,
+        "T3_structural_%": 45.26,
+        "T4_null_%": 97.83,
+        "overall_%": 78.74
+      },
+      "structural": {
+        "predicted_n": 496,
+        "ground_truth_n": 310,
+        "matched_n": 117,
+        "precision_%": 23.59,
+        "recall_%": 37.74,
+        "f1_%": 29.03,
+        "missing_samples": [
+          "Sun_etal_1",
+          "Sun_etal_10",
+          "Sun_etal_11",
+          "Sun_etal_12",
+          "Sun_etal_13",
+          "Sun_etal_14",
+          "Sun_etal_15",
+          "Sun_etal_16",
+          "Sun_etal_17",
+          "Sun_etal_18"
+        ],
+        "extra_samples": [
+          "Sp1-1",
+          "Sp1-10",
+          "Sp1-11",
+          "Sp1-12",
+          "Sp1-2",
+          "Sp1-3",
+          "Sp1-4",
+          "Sp1-5",
+          "Sp1-6",
+          "Sp1-7"
+        ]
+      }
+    },
+    "Chen_et_al_2024": {
+      "model": "claude-haiku-4-5-20251001",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 70.82,
+        "T2_numerical_%": 62.96,
+        "T3_structural_%": 98.01,
+        "T4_null_%": 100.0,
+        "overall_%": 76.13
+      },
+      "structural": {
+        "predicted_n": 179,
+        "ground_truth_n": 179,
+        "matched_n": 172,
+        "precision_%": 96.09,
+        "recall_%": 96.09,
+        "f1_%": 96.09,
+        "missing_samples": [],
+        "extra_samples": [
+          "DK-24-2-b-1-1",
+          "DK-44-3-a-3-1",
+          "DK-44-6-a-1-2",
+          "DK-44-6-a-1-3",
+          "DK-44-6-a-2-1",
+          "DK-44-6-a-4-2",
+          "DK-44-6-b-1-1"
+        ]
+      }
+    },
+    "Denisova_et_al_2024": {
+      "model": "claude-haiku-4-5-20251001",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 67.01,
+        "T2_numerical_%": 2.18,
+        "T3_structural_%": 86.9,
+        "T4_null_%": 95.72,
+        "overall_%": 48.37
+      },
+      "structural": {
+        "predicted_n": 5697,
+        "ground_truth_n": 855,
+        "matched_n": 720,
+        "precision_%": 12.64,
+        "recall_%": 84.21,
+        "f1_%": 21.98,
+        "missing_samples": [
+          "A348395-1-1-10",
+          "A348395-1-1-11",
+          "A348395-1-1-12",
+          "A348395-1-1-2",
+          "A348395-2-1-15",
+          "A348395-2-1-17",
+          "A348395-2-2-13",
+          "A348395-2-2-16",
+          "A348395-3-1-22",
+          "A348395-4-1-10"
+        ],
+        "extra_samples": [
+          "B264518-1-3",
+          "B264518-1-4",
+          "B264518-2-1.1",
+          "B264518-3-1*",
+          "B264518-4-1.1",
+          "B264518-4-2",
+          "B264518-5-1",
+          "B264518-5-2",
+          "B264518-5-3.1",
+          "B266543-1-1"
+        ]
+      }
+    },
+    "He_et_al_2024": {
+      "model": "claude-haiku-4-5-20251001",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 60.93,
+        "T2_numerical_%": 89.33,
+        "T3_structural_%": 99.51,
+        "T4_null_%": 100.0,
+        "overall_%": 83.94
+      },
+      "structural": {
+        "predicted_n": 309,
+        "ground_truth_n": 102,
+        "matched_n": 102,
+        "precision_%": 33.01,
+        "recall_%": 100.0,
+        "f1_%": 49.64,
+        "missing_samples": [],
+        "extra_samples": [
+          "\u201c - \u201d Below the detection limit for trace elements (typically 0.01 ppm)"
+        ]
+      }
+    },
+    "Lan_et_al_2024": {
+      "model": "claude-haiku-4-5-20251001",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 57.91,
+        "T2_numerical_%": 99.9,
+        "T3_structural_%": 100.0,
+        "T4_null_%": 89.03,
+        "overall_%": 85.69
+      },
+      "structural": {
+        "predicted_n": 87,
+        "ground_truth_n": 87,
+        "matched_n": 87,
+        "precision_%": 100.0,
+        "recall_%": 100.0,
+        "f1_%": 100.0,
+        "missing_samples": [],
+        "extra_samples": []
+      }
+    },
+    "Liu_et_al_2024": {
+      "model": "claude-haiku-4-5-20251001",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 75.49,
+        "T2_numerical_%": 89.98,
+        "T3_structural_%": 90.04,
+        "T4_null_%": 99.02,
+        "overall_%": 87.0
+      },
+      "structural": {
+        "predicted_n": 138,
+        "ground_truth_n": 113,
+        "matched_n": 113,
+        "precision_%": 81.88,
+        "recall_%": 100.0,
+        "f1_%": 90.04,
+        "missing_samples": [],
+        "extra_samples": [
+          "10KK-13@5-9",
+          "10KK-H@1-3",
+          "10KK-H@2-1",
+          "10kk-01@2-11",
+          "10kk-01@2-3",
+          "10kk-01@2-6",
+          "10kk-01@2-7",
+          "10kk-01@4-1",
+          "10kk-01@4-11",
+          "10kk-01@4-3"
+        ]
+      }
+    },
+    "Sun_et_al_2024": {
+      "model": "claude-haiku-4-5-20251001",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 78.24,
+        "T2_numerical_%": 100.0,
+        "T3_structural_%": 100.0,
+        "T4_null_%": 99.7,
+        "overall_%": 93.43
+      },
+      "structural": {
+        "predicted_n": 67,
+        "ground_truth_n": 67,
+        "matched_n": 67,
+        "precision_%": 100.0,
+        "recall_%": 100.0,
+        "f1_%": 100.0,
+        "missing_samples": [],
+        "extra_samples": []
+      }
+    },
+    "Wei_et_al_2024": {
+      "model": "claude-haiku-4-5-20251001",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 75.66,
+        "T2_numerical_%": 26.6,
+        "T3_structural_%": 0.58,
+        "T4_null_%": 64.59,
+        "overall_%": 43.11
+      },
+      "structural": {
+        "predicted_n": 9528,
+        "ground_truth_n": 101,
+        "matched_n": 28,
+        "precision_%": 0.29,
+        "recall_%": 27.72,
+        "f1_%": 0.58,
+        "missing_samples": [
+          "Wei-et-al-2024-1",
+          "Wei-et-al-2024-10",
+          "Wei-et-al-2024-100",
+          "Wei-et-al-2024-101",
+          "Wei-et-al-2024-11",
+          "Wei-et-al-2024-12",
+          "Wei-et-al-2024-13",
+          "Wei-et-al-2024-14",
+          "Wei-et-al-2024-15",
+          "Wei-et-al-2024-16"
+        ],
+        "extra_samples": [
+          "1220-1",
+          "1220-2",
+          "1220-3",
+          "1220-4",
+          "1390-11",
+          "1390-2",
+          "JP-1",
+          "JP-21",
+          "JP-5",
+          "LML-7"
+        ]
+      }
+    },
+    "Wu_et_al_2024": {
+      "model": "claude-haiku-4-5-20251001",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 88.38,
+        "T2_numerical_%": 99.38,
+        "T3_structural_%": 75.25,
+        "T4_null_%": 95.94,
+        "overall_%": 91.95
+      },
+      "structural": {
+        "predicted_n": 441,
+        "ground_truth_n": 438,
+        "matched_n": 266,
+        "precision_%": 60.32,
+        "recall_%": 60.73,
+        "f1_%": 60.52,
+        "missing_samples": [],
+        "extra_samples": [
+          "160-115-1-1-1",
+          "160-115-1-1-3",
+          "160-115-1-2-1",
+          "160-115-1-2-2",
+          "160-115-1-2-3",
+          "160-117-1-1-1",
+          "160-117-1-1-3",
+          "160-117-1-1-4",
+          "160-117-1-1-5",
+          "160-117-1-2-1"
+        ]
+      }
+    },
+    "Xia_et_al_2024": {
+      "model": "claude-haiku-4-5-20251001",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 73.37,
+        "T2_numerical_%": 68.78,
+        "T3_structural_%": 89.01,
+        "T4_null_%": 87.29,
+        "overall_%": 75.97
+      },
+      "structural": {
+        "predicted_n": 149,
+        "ground_truth_n": 127,
+        "matched_n": 85,
+        "precision_%": 57.05,
+        "recall_%": 66.93,
+        "f1_%": 61.59,
+        "missing_samples": [],
+        "extra_samples": [
+          "K21-01-04 K21-01-01",
+          "K21-01-05 K21-01-02",
+          "K21-01-06 K21-01-03",
+          "K21-01-07 K21-01-04",
+          "K21-01-08 K21-01-05",
+          "K21-01-09 K21-01-07",
+          "K21-01-10 K21-01-08",
+          "K21-01-11 K21-01-09",
+          "K21-01-12 K21-01-10",
+          "K21-03-05 K21-03-06"
+        ]
+      }
+    },
+    "Zhang_et_al_2024": {
+      "model": "claude-haiku-4-5-20251001",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 80.34,
+        "T2_numerical_%": 98.42,
+        "T3_structural_%": 33.06,
+        "T4_null_%": 91.94,
+        "overall_%": 82.22
+      },
+      "structural": {
+        "predicted_n": 606,
+        "ground_truth_n": 120,
+        "matched_n": 120,
+        "precision_%": 19.8,
+        "recall_%": 100.0,
+        "f1_%": 33.06,
+        "missing_samples": [],
+        "extra_samples": [
+          "1062HZF1",
+          "1062HZF2",
+          "1062HZF3",
+          "1062HZF4",
+          "1062HZF5",
+          "1062HZF6",
+          "1062HZF7",
+          "1062HZF8",
+          "10BNC1",
+          "10BNC2"
+        ]
+      }
+    },
+    "Zhao_et_al_2024": {
+      "model": "claude-haiku-4-5-20251001",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 63.6,
+        "T2_numerical_%": 100.0,
+        "T3_structural_%": 93.64,
+        "T4_null_%": 94.34,
+        "overall_%": 87.28
+      },
+      "structural": {
+        "predicted_n": 368,
+        "ground_truth_n": 162,
+        "matched_n": 162,
+        "precision_%": 44.02,
+        "recall_%": 100.0,
+        "f1_%": 61.13,
+        "missing_samples": [],
+        "extra_samples": [
+          "sph-10",
+          "sph-11",
+          "sph-12",
+          "sph-13",
+          "sph-13*",
+          "sph-14",
+          "sph-15",
+          "sph-2",
+          "sph-24",
+          "sph-25"
+        ]
+      }
+    },
+    "Zhu_et_al_2024": {
+      "model": "claude-haiku-4-5-20251001",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 77.17,
+        "T2_numerical_%": 67.06,
+        "T3_structural_%": 49.33,
+        "T4_null_%": 92.43,
+        "overall_%": 71.24
+      },
+      "structural": {
+        "predicted_n": 109,
+        "ground_truth_n": 59,
+        "matched_n": 37,
+        "precision_%": 33.94,
+        "recall_%": 62.71,
+        "f1_%": 44.05,
+        "missing_samples": [
+          "F11-20",
+          "F11-21",
+          "F11-22",
+          "F11-23",
+          "F11-24",
+          "F11-25",
+          "F11-26",
+          "F11-27",
+          "F11-28",
+          "F11-29"
+        ],
+        "extra_samples": [
+          "B14",
+          "B14-1",
+          "B14-2",
+          "B14-3",
+          "B14-4",
+          "B14-5",
+          "B14-6",
+          "B14-7",
+          "B14-8",
+          "B16"
+        ]
+      }
+    },
+    "Bertrandsson_Erlandsson_et_al_2025": {
+      "model": "claude-haiku-4-5-20251001",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 68.66,
+        "T2_numerical_%": 100.0,
+        "T3_structural_%": 37.97,
+        "T4_null_%": 86.88,
+        "overall_%": 79.32
+      },
+      "structural": {
+        "predicted_n": 2727,
+        "ground_truth_n": 213,
+        "matched_n": 213,
+        "precision_%": 7.81,
+        "recall_%": 100.0,
+        "f1_%": 14.49,
+        "missing_samples": [],
+        "extra_samples": [
+          "077-24-1 ccp1",
+          "077-24-1 ccp2",
+          "077-24-1 ccp3",
+          "077-24-1 ccp4",
+          "077-24-1 ccp5",
+          "077-24-1 ccp6",
+          "077-24-1 ccp7",
+          "077-24-1 ccp8",
+          "077-24-1 ccp9",
+          "077-24-1 sph1"
+        ]
+      }
+    },
+    "Bertrandsson_Erlandsson_et_al_2022_reprocessed": {
+      "model": "claude-haiku-4-5-20251001",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 65.57,
+        "T2_numerical_%": 100.0,
+        "T3_structural_%": 76.75,
+        "T4_null_%": 86.1,
+        "overall_%": 84.1
+      },
+      "structural": {
+        "predicted_n": 2727,
+        "ground_truth_n": 566,
+        "matched_n": 566,
+        "precision_%": 20.76,
+        "recall_%": 100.0,
+        "f1_%": 34.38,
+        "missing_samples": [],
+        "extra_samples": [
+          "B-1-2-1",
+          "B-1-2-10",
+          "B-1-2-11",
+          "B-1-2-12",
+          "B-1-2-13",
+          "B-1-2-15",
+          "B-1-2-5",
+          "B-1-2-6",
+          "B-1-2-7",
+          "B-1-2-8"
+        ]
+      }
+    },
+    "Ciccolella_et_al_2025": {
+      "model": "claude-haiku-4-5-20251001",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 55.6,
+        "T2_numerical_%": 42.08,
+        "T3_structural_%": 88.07,
+        "T4_null_%": 98.76,
+        "overall_%": 61.54
+      },
+      "structural": {
+        "predicted_n": 915,
+        "ground_truth_n": 240,
+        "matched_n": 240,
+        "precision_%": 26.23,
+        "recall_%": 100.0,
+        "f1_%": 41.56,
+        "missing_samples": [],
+        "extra_samples": [
+          "34",
+          "46",
+          "62",
+          "93",
+          "FA04, Ccp, p.100",
+          "FA04, Ccp, p.5",
+          "FA04, Ccp, p.6",
+          "FA04, Ccp, p.87",
+          "FA04, Ccp, p.88",
+          "FA04, Ccp, p.89"
+        ]
+      }
+    },
+    "Foltyn_et_al_2022_reprocessed": {
+      "model": "claude-haiku-4-5-20251001",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 75.29,
+        "T2_numerical_%": 6.82,
+        "T3_structural_%": 3.85,
+        "T4_null_%": 96.57,
+        "overall_%": 40.38
+      },
+      "structural": {
+        "predicted_n": 77,
+        "ground_truth_n": 131,
+        "matched_n": 4,
+        "precision_%": 5.19,
+        "recall_%": 3.05,
+        "f1_%": 3.85,
+        "missing_samples": [
+          "B-1-2-1",
+          "B-1-2-10",
+          "B-1-2-11",
+          "B-1-2-12",
+          "B-1-2-13",
+          "B-1-2-15",
+          "B-1-2-5",
+          "B-1-2-6",
+          "B-1-2-7",
+          "B-1-2-8"
+        ],
+        "extra_samples": [
+          "34.52",
+          "34.59",
+          "34.65",
+          "34.86",
+          "34.932",
+          "35.009",
+          "35.109",
+          "35.17",
+          "35.22",
+          "35.228"
+        ]
+      }
+    },
+    "Li_et_al_2025": {
+      "model": "claude-haiku-4-5-20251001",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 67.93,
+        "T2_numerical_%": 36.5,
+        "T3_structural_%": 0.89,
+        "T4_null_%": 89.6,
+        "overall_%": 48.55
+      },
+      "structural": {
+        "predicted_n": 12280,
+        "ground_truth_n": 55,
+        "matched_n": 55,
+        "precision_%": 0.45,
+        "recall_%": 100.0,
+        "f1_%": 0.89,
+        "missing_samples": [
+          "MWS-SP1-01",
+          "MWS-SP1-02",
+          "MWS-SP1-03",
+          "MWS-SP1-04",
+          "MWS-SP1-05",
+          "MWS-SP1-06",
+          "MWS-SP1-07",
+          "MWS-SP1-08",
+          "MWS-SP1-09",
+          "MWS-SP1-10"
+        ],
+        "extra_samples": [
+          "163HTP1-1",
+          "163HTP2-1",
+          "163HTP3-1",
+          "163HTP4-1",
+          "163HTP5-1",
+          "163HTP6-1",
+          "163HTP7-1",
+          "163HTP8-1",
+          "174HTP1-1",
+          "174HTP3-1"
+        ]
+      }
+    },
+    "Sun_et_al_2025": {
+      "model": "claude-haiku-4-5-20251001",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 65.53,
+        "T2_numerical_%": 72.73,
+        "T3_structural_%": 97.83,
+        "T4_null_%": 100.0,
+        "overall_%": 78.43
+      },
+      "structural": {
+        "predicted_n": 94,
+        "ground_truth_n": 180,
+        "matched_n": 90,
+        "precision_%": 95.74,
+        "recall_%": 50.0,
+        "f1_%": 65.69,
+        "missing_samples": [],
+        "extra_samples": [
+          "Sp1 n = 25",
+          "Sp2 n = 31",
+          "Sp2 n= 31",
+          "Sp3 n = 34"
+        ]
+      }
+    },
+    "Tan_et_al_2025": {
+      "model": "claude-haiku-4-5-20251001",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 65.2,
+        "T2_numerical_%": 100.0,
+        "T3_structural_%": 3.58,
+        "T4_null_%": 100.0,
+        "overall_%": 75.1
+      },
+      "structural": {
+        "predicted_n": 5106,
+        "ground_truth_n": 31,
+        "matched_n": 31,
+        "precision_%": 0.61,
+        "recall_%": 100.0,
+        "f1_%": 1.21,
+        "missing_samples": [],
+        "extra_samples": [
+          "0.01222",
+          "0.25122",
+          "0.25124",
+          "0.25132",
+          "0.25134",
+          "0.49024",
+          "0.49032",
+          "0.49047",
+          "0.72942",
+          "0.72949"
+        ]
+      }
+    },
+    "Wang_et_al_2025": {
+      "model": "claude-haiku-4-5-20251001",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 61.92,
+        "T2_numerical_%": 100.0,
+        "T3_structural_%": 100.0,
+        "T4_null_%": 97.02,
+        "overall_%": 88.13
+      },
+      "structural": {
+        "predicted_n": 80,
+        "ground_truth_n": 80,
+        "matched_n": 80,
+        "precision_%": 100.0,
+        "recall_%": 100.0,
+        "f1_%": 100.0,
+        "missing_samples": [],
+        "extra_samples": []
+      }
+    }
+  }
+}

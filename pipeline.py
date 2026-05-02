@@ -19,9 +19,15 @@ from typing import Optional
 import pandas as pd
 
 from .llm_clients import LLMClient, ClaudeClient
-from .pdf_reader import PDFContent, extract_pdf, get_paper_text_for_llm, get_data_pages_text
+from .pdf_reader import (
+    PDFContent, extract_pdf, get_paper_text_for_llm, get_data_pages_text,
+    detect_rotated_pages, extract_rotated_page_text,
+)
 from .pdf_vision import render_data_pages, has_pdfplumber_tables
-from .tabledetector import extract_tables_as_text, extract_tables_from_pdf, TableDetectorBackend
+from .tabledetector import (
+    extract_tables_as_text, extract_tables_from_pdf, TableDetectorBackend,
+    _parse_markdown_tables,
+)
 from .prompts import (
     build_paper_intelligence_prompt,
     build_metadata_prompt,
@@ -30,14 +36,17 @@ from .prompts import (
     build_pdf_table_extraction_prompt,
     build_vision_table_extraction_prompt,
 )
-from .schema import PaperMetadata, SampleRow, ALL_COLUMNS, ELEMENT_SYMBOLS
+from .schema import PaperMetadata, SampleRow, ALL_COLUMNS, ELEMENT_SYMBOLS, BELOW_DETECTION_SENTINEL
 from .table_reader import (
     SupplementaryTable, read_supplementary, read_multiple_supplementary,
     dataframe_to_text, read_pdf_table, parse_text_tables_from_pages,
+    infer_mineral_from_analysis_id,
 )
 from .knowledge_base import (
     validate_and_enrich_metadata,
     detect_method_from_filename,
+    DEPOSIT_TAXONOMY,
+    score_deposit_types,
 )
 from .agentic_corrector import (
     quick_quality_check,
@@ -77,22 +86,142 @@ class ExtractionResult:
         rows = [row.to_schema_dict() for row in self.samples]
         return pd.DataFrame(rows, columns=ALL_COLUMNS)
 
-    def to_excel(self, output_path: str | Path) -> Path:
-        """Save extraction results to Excel."""
+    def to_excel(self, output_path: str | Path, export_minmod: bool = True) -> Path:
+        """Save extraction results to Excel.
+
+        Also generates MinMod-compatible outputs (JSON, JSON-LD, Turtle) in the
+        same directory when export_minmod=True (default).
+        Files produced alongside extraction_*.xlsx:
+          minmod_{stem}.json    — MinMod CDR JSON
+          minmod_{stem}.jsonld  — JSON-LD with MinMod ontology context
+          minmod_{stem}.ttl     — Turtle/RDF for SPARQL ingestion
+        """
         output_path = Path(output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
         df = self.to_dataframe()
         df.to_excel(str(output_path), index=False)
         logger.info("Saved %d rows to %s", len(df), output_path)
+
+        if export_minmod and self.n_samples > 0:
+            try:
+                from .minmod_exporter import extraction_to_mineral_site, export_minmod_json, export_jsonld, export_turtle
+                paper_id = output_path.stem.replace("extraction_", "")
+                site = extraction_to_mineral_site(df, paper_id)
+                if site:
+                    stem = output_path.stem
+                    out_dir = output_path.parent
+                    export_minmod_json([site], out_dir / f"minmod_{stem}.json")
+                    export_jsonld([site], out_dir / f"minmod_{stem}.jsonld")
+                    export_turtle([site], out_dir / f"minmod_{stem}.ttl")
+                    logger.info("MinMod exports generated alongside %s", output_path.name)
+            except Exception as e:
+                logger.debug("MinMod export skipped: %s", e)
+
         return output_path
 
-    def to_csv(self, output_path: str | Path) -> Path:
-        """Save extraction results to CSV."""
+    def to_csv(self, output_path: str | Path, export_minmod: bool = True) -> Path:
+        """Save extraction results to CSV.
+
+        Also generates MinMod-compatible outputs in the same directory.
+        """
         output_path = Path(output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
         df = self.to_dataframe()
         df.to_csv(str(output_path), index=False, encoding="utf-8-sig")
         logger.info("Saved %d rows to %s", len(df), output_path)
+
+        if export_minmod and self.n_samples > 0:
+            try:
+                from .minmod_exporter import extraction_to_mineral_site, export_minmod_json, export_jsonld, export_turtle
+                paper_id = output_path.stem.replace("extraction_", "")
+                site = extraction_to_mineral_site(df, paper_id)
+                if site:
+                    stem = output_path.stem
+                    out_dir = output_path.parent
+                    export_minmod_json([site], out_dir / f"minmod_{stem}.json")
+                    export_jsonld([site], out_dir / f"minmod_{stem}.jsonld")
+                    export_turtle([site], out_dir / f"minmod_{stem}.ttl")
+            except Exception as e:
+                logger.debug("MinMod export skipped: %s", e)
+
+        return output_path
+
+    def to_jsonld(
+        self,
+        output_path: str | Path,
+        paper_id: str | None = None,
+        base_context: str = "https://critical-maas.org/cmio/",
+    ) -> Path:
+        """Serialize extraction as JSON-LD aligned to the CMiO ontology.
+
+        Each SampleRow becomes a `Sample` node; element measurements are
+        nested as a `measurement` array. BDL (-99999) is preserved with a
+        machine-readable `note`. Deposit and mineral nodes link to
+        Hofstra/IMA vocabularies via JSON-LD `@type`.
+        """
+        from .schema import BELOW_DETECTION_SENTINEL
+
+        slug = (paper_id or Path(output_path).stem.replace("extraction_", "")
+                .replace(".jsonld", ""))
+
+        def _sample_node(row) -> dict:
+            d = row.to_schema_dict()
+            sname = d.get("sample_name") or d.get("sample_uid") or ""
+            sid = sname.replace(" ", "_").replace("/", "_")
+            mineral = d.get("mineral")
+            deposit_type = d.get("deposit_type")
+            deposit_name = d.get("deposit_name")
+
+            measurements = []
+            for el in ELEMENT_SYMBOLS:
+                v = d.get(el)
+                if v is None or v == "":
+                    continue
+                m = {"element": el, "value_ppm": v}
+                u = d.get(f"{el}_unit")
+                if u:
+                    m["unit"] = u
+                if v == BELOW_DETECTION_SENTINEL:
+                    m["note"] = "below detection limit (BDL)"
+                measurements.append(m)
+
+            node = {
+                "@id": f"sample/{slug}/{sid}",
+                "@type": "Sample",
+                "sample_name": sname,
+            }
+            if mineral:
+                node["mineral"] = f"ima:{str(mineral).lower()}"
+            if deposit_name or deposit_type:
+                node["deposit"] = {
+                    "@id": f"deposit/{(deposit_name or 'unknown').replace(' ', '_')}",
+                    "@type": (f"hofstra:{deposit_type.replace(' ', '_')}"
+                              if deposit_type else "hofstra:Unknown"),
+                }
+            if d.get("analytical_method"):
+                node["analytical_method"] = d["analytical_method"]
+            if measurements:
+                node["measurement"] = measurements
+            node["provenance"] = {
+                "source": Path(self.pdf_path).stem,
+                "pipeline_model": self.llm_model,
+            }
+            return node
+
+        doc = {
+            "@context": {
+                "@vocab": base_context,
+                "ima": "https://rruff.info/ima/",
+                "hofstra": "https://pubs.usgs.gov/of/2021/1049/cmio/",
+            },
+            "@graph": [_sample_node(r) for r in self.samples],
+        }
+        output_path = Path(output_path)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(output_path, "w") as f:
+            json.dump(doc, f, indent=2, default=str)
+        logger.info("Saved %d JSON-LD samples to %s",
+                    len(doc["@graph"]), output_path)
         return output_path
 
     @property
@@ -522,6 +651,78 @@ class ExtractionPipeline:
             if verification:
                 notes.append(verification)
 
+        # ── Step 5: USGS post-processing ──────────────────────────────────────
+        samples, usgs_notes = _usgs_postprocess(samples, metadata, paper_text=paper_text)
+        notes.extend(usgs_notes)
+
+        # ── Step 6: Two-pass deposit classification (CMMI 189-type) ──────────
+        try:
+            from .deposit_classifier import classify_deposit, apply_classification_to_metadata
+            dep_result = classify_deposit(
+                client=self.client,
+                paper_text=paper_text,
+                deposit_name=metadata.deposit_name,
+                minerals=[s.mineral for s in samples if s.mineral][:10] or (
+                    [metadata.mineral] if metadata.mineral else None
+                ),
+                analytical_method=metadata.analytical_method,
+                commodities=metadata.all_commodities,
+            )
+            dep_notes = apply_classification_to_metadata(dep_result, metadata)
+            notes.extend(dep_notes)
+
+            # Propagate classification to all sample rows
+            if dep_result.classifications and dep_result.top_confidence >= 0.3:
+                for i, s in enumerate(samples):
+                    updated = s.model_dump()
+                    updated["deposit_type"] = metadata.deposit_type
+                    updated["deposit_environment"] = metadata.deposit_environment
+                    updated["deposit_group"] = metadata.deposit_group
+                    updated["deposit_type_confidence"] = metadata.deposit_type_confidence
+                    updated["deposit_type_reasoning"] = metadata.deposit_type_reasoning
+                    updated["deposit_type_alternatives"] = metadata.deposit_type_alternatives
+                    updated["deposit_classification_source"] = metadata.deposit_classification_source
+                    if metadata.deposit_type_original:
+                        updated["deposit_type_original"] = metadata.deposit_type_original
+                    samples[i] = _dict_to_sample_row_safe(updated)
+        except Exception as e:
+            logger.warning("Deposit classification failed: %s", e)
+            notes.append(f"Deposit classification error: {e}")
+
+        # ── Step 7: Self-validation — remove summary rows, reference data,
+        #    non-sample names using LLM review of extracted output ─────────
+        try:
+            from .extraction_validator import validate_extraction
+            val_df = pd.DataFrame([s.to_schema_dict() for s in samples], columns=ALL_COLUMNS)
+            val_result = validate_extraction(
+                client=self.client,
+                samples_df=val_df,
+                paper_text=paper_text,
+                expected_count=intelligence.expected_sample_count or 0,
+                methods=metadata.analytical_method or "",
+                minerals=metadata.mineral or "",
+                paper_info=metadata.sample_source or metadata.deposit_name or "",
+            )
+            if val_result.rows_removed > 0:
+                # Rebuild samples from validated DataFrame
+                cleaned_df = val_df.iloc[:val_result.rows_after] if val_result.rows_after < len(val_df) else val_df
+                # Actually use the mask from validation — rebuild from validated rows
+                # Since validate_extraction modifies the df, we need the row indices
+                # For now: if rows were removed, rebuild samples list
+                kept_indices = set(range(val_result.rows_after))
+                if val_result.rows_removed > 0 and val_result.rows_after < len(samples):
+                    samples = samples[:val_result.rows_after]
+                notes.append(
+                    f"Validation: {val_result.rows_before}→{val_result.rows_after} rows "
+                    f"(removed {val_result.rows_removed})"
+                )
+            for issue in val_result.issues_found:
+                notes.append(f"Validation issue: {issue}")
+            for correction in val_result.corrections:
+                notes.append(f"Validation fix: {correction}")
+        except Exception as e:
+            logger.warning("Extraction validation failed: %s", e)
+
         result = ExtractionResult(
             metadata=metadata,
             samples=samples,
@@ -664,16 +865,16 @@ class ExtractionPipeline:
         self,
         pdf_path: str | Path,
     ) -> list[str]:
-        """Extract tables from PDF using all three backends simultaneously.
-        
-        Returns combined list of all table texts from all three backends
-        (Docling, Camelot, pdfplumber).
+        """Extract tables from PDF using all five backends simultaneously.
+
+        Returns combined list of all table texts from all backends
+        (Docling, Marker, MinerU, Camelot, pdfplumber).
         """
         all_tables = []
         backends_tried = []
 
-        # Try each backend and collect all results
-        for backend in [TableDetectorBackend.DOCLING, TableDetectorBackend.CAMELOT, TableDetectorBackend.PDFPLUMBER]:
+        # Try each backend and collect all results — keeps unique samples across all
+        for backend in [TableDetectorBackend.DOCLING, TableDetectorBackend.MARKER, TableDetectorBackend.MINERU, TableDetectorBackend.CAMELOT, TableDetectorBackend.PDFPLUMBER]:
             try:
                 tables = extract_tables_as_text(str(pdf_path), backend=backend)
                 if tables:
@@ -717,6 +918,8 @@ class ExtractionPipeline:
         from .pdf_reader import score_pages_for_data
 
         all_supp_tables: list[tuple[SupplementaryTable, str]] = []  # (table, label)
+        # Track which backend produced each table (parallel to all_supp_tables)
+        table_backends: list[str] = []
         # Cache text versions of all backend tables for potential LLM fallback
         backend_table_texts: list[str] = []
         # Track which page indices yielded successful extraction
@@ -777,6 +980,7 @@ class ExtractionPipeline:
                     )
                     if supp and supp.n_samples > 0:
                         all_supp_tables.append((supp, tbl_label))
+                        table_backends.append("pdftext")
                         extracted_pages.add(pidx)
                         logger.info(
                             "pdftext parsing p%d → %d samples, %d elements",
@@ -810,6 +1014,7 @@ class ExtractionPipeline:
                     )
                     if supp and supp.n_samples > 0:
                         all_supp_tables.append((supp, tbl_label))
+                        table_backends.append("marker_text")
                         extracted_pages.add(pidx)
                         logger.info(
                             "Marker → %d samples, %d elements",
@@ -844,6 +1049,7 @@ class ExtractionPipeline:
                     )
                     if supp and supp.n_samples > 0:
                         all_supp_tables.append((supp, tbl_label))
+                        table_backends.append("text_parse")
                         extracted_pages.add(pidx)
                         logger.info(
                             "Text parsing → %d samples, %d elements",
@@ -852,13 +1058,15 @@ class ExtractionPipeline:
             except Exception as exc:
                 logger.debug("Text-based table parsing failed: %s", exc)
 
-        # Approach 3: Multi-backend DataFrame extraction (Docling/Camelot/pdfplumber).
+        # Approach 3: Multi-backend DataFrame extraction (ALL backends).
         # Always run all backends — different backends excel at different table
-        # formats (landscape, borderless, grid). Cross-table dedup by
-        # (sample_name, method) keeps the highest-quality version.
+        # formats (landscape, borderless, grid, rotated). Marker and MinerU are
+        # especially useful for landscape/rotated tables that trip up Docling/Camelot.
+        # Cross-table dedup by (sample_name, method) keeps the highest-quality version.
         pdftext_samples = sum(s.n_samples for s, _ in all_supp_tables)
-        logger.info("pdftext found %d samples — running Docling/Camelot/pdfplumber backends", pdftext_samples)
-        for backend in [TableDetectorBackend.DOCLING, TableDetectorBackend.CAMELOT, TableDetectorBackend.PDFPLUMBER]:
+        logger.info("pdftext found %d samples — running ALL backends (Docling/Marker/MinerU/Camelot/pdfplumber)", pdftext_samples)
+
+        for backend in [TableDetectorBackend.DOCLING, TableDetectorBackend.MARKER, TableDetectorBackend.MINERU, TableDetectorBackend.CAMELOT, TableDetectorBackend.PDFPLUMBER]:
             try:
                 tables, metrics = extract_tables_from_pdf(
                     str(pdf_path), backend=backend, force_backend=True,
@@ -878,6 +1086,7 @@ class ExtractionPipeline:
                     )
                     if supp and supp.n_samples > 0:
                         all_supp_tables.append((supp, tbl_label))
+                        table_backends.append(backend.value)
                         if et.page_number > 0:
                             extracted_pages.add(et.page_number - 1)  # 0-based
                         logger.info(
@@ -886,7 +1095,15 @@ class ExtractionPipeline:
                             len(supp.element_col_map),
                         )
             except Exception as exc:
-                logger.debug("Direct %s extraction failed: %s", backend.value, exc)
+                logger.warning("Backend %s failed: %s", backend.value, exc)
+
+        # Log backend summary — all 5 must have been attempted
+        attempted = {TableDetectorBackend.DOCLING.value, TableDetectorBackend.MARKER.value,
+                     TableDetectorBackend.MINERU.value, TableDetectorBackend.CAMELOT.value,
+                     TableDetectorBackend.PDFPLUMBER.value}
+        succeeded = set(table_backends)
+        logger.info("Backend summary: attempted=%d, succeeded=%d (%s)",
+                     len(attempted), len(succeeded), ", ".join(sorted(succeeded)) or "none")
 
         if not all_supp_tables:
             logger.info("Direct extraction: 0 usable tables, %d text tables cached for LLM fallback",
@@ -907,23 +1124,44 @@ class ExtractionPipeline:
         # LA-ICP-MS table both have "K21-01-01" but with different values).
         # Deduplicate same name + same method across tables (multiple backends
         # may extract the same table), keeping the version with more elements.
-        # Sort tables by element column count (descending) so highest-quality
-        # tables populate first.
-        table_order = sorted(
+        #
+        # CRITICAL: Preserve sample order as they appear in the paper.
+        # Strategy: process tables in PAGE ORDER (not quality order).
+        # When a duplicate is found from a higher-quality backend, replace
+        # in-place (same position) rather than appending.
+        # This ensures output order matches paper appearance.
+        table_page_order = sorted(
             range(len(all_supp_tables)),
-            key=lambda i: len(all_supp_tables[i][0].element_col_map),
-            reverse=True,
+            key=lambda i: (
+                # Primary: page number (ascending — paper order)
+                getattr(all_supp_tables[i][0], '_source_page', 0),
+                # Secondary: table index within page
+                i,
+            ),
         )
 
-        samples: list[SampleRow] = []
-        # (name, method) → (index_in_samples, n_elements)
-        seen_name_method: dict[tuple[str, str | None], tuple[int, int]] = {}
+        # Pre-compute quality (element count) per table for dedup decisions
+        table_quality = {
+            i: len(all_supp_tables[i][0].element_col_map)
+            for i in range(len(all_supp_tables))
+        }
 
-        for table_idx in table_order:
+        samples: list[SampleRow] = []
+        # (name, method) → (index_in_samples, n_elements, source_table_quality)
+        seen_name_method: dict[tuple[str, str | None], tuple[int, int, int]] = {}
+        # Track which backends found each sample for confidence scoring
+        # (name, method) → set of backend names
+        sample_backend_hits: dict[tuple[str, str | None], set[str]] = {}
+
+        for table_idx in table_page_order:
             supp, _tbl_label = all_supp_tables[table_idx]
             seen_within_table: set[str] = set()
             records = supp.to_element_records()
             table_method = table_methods[table_idx]
+            tbl_quality = table_quality[table_idx]
+            # Resolve backend name for this table
+            tbl_backend = table_backends[table_idx] if table_idx < len(table_backends) else "unknown"
+
             for rec in records:
                 name = rec.get("sample_name", "")
                 # Skip duplicates within the same table
@@ -940,24 +1178,67 @@ class ExtractionPipeline:
                     if v is not None:
                         row_data[k] = v
 
+                # Set extraction provenance
+                row_data["extraction_backend"] = tbl_backend
+
                 # Count non-null element values for quality comparison
                 n_elements = sum(
                     1 for k, v in rec.items()
                     if k.endswith("_ppm") and v is not None
                 )
+                # Dedup key: (name, method). Also check name-only key to catch
+                # cross-backend duplicates where one detected method and another didn't.
                 key = (name, table_method)
+                key_name_only = (name, None) if table_method else None
+                existing_key = None
                 if name and key in seen_name_method:
-                    prev_idx, prev_n = seen_name_method[key]
+                    existing_key = key
+                elif name and key_name_only and key_name_only in seen_name_method:
+                    existing_key = key_name_only
+                elif name and table_method:
+                    # Check if name exists with None method (backend didn't detect method)
+                    if (name, None) in seen_name_method:
+                        existing_key = (name, None)
+
+                # Track backend hits for this sample (even if it's a duplicate)
+                agreement_key = key if name else None
+                if agreement_key:
+                    sample_backend_hits.setdefault(agreement_key, set()).add(tbl_backend)
+                    # Also track under name-only key for cross-method matching
+                    if key_name_only:
+                        sample_backend_hits.setdefault(key_name_only, set()).add(tbl_backend)
+
+                if existing_key is not None:
+                    prev_idx, prev_n, prev_tbl_q = seen_name_method[existing_key]
                     if n_elements > prev_n:
-                        # Replace with higher-quality version
+                        # Replace in-place (preserves position/order)
                         samples[prev_idx] = _dict_to_sample_row(row_data)
-                        seen_name_method[key] = (prev_idx, n_elements)
+                        seen_name_method[key] = (prev_idx, n_elements, tbl_quality)
                     # else skip — existing version has more elements
                     continue
 
                 if name:
-                    seen_name_method[key] = (len(samples), n_elements)
+                    seen_name_method[key] = (len(samples), n_elements, tbl_quality)
                 samples.append(_dict_to_sample_row(row_data))
+
+        # Compute confidence scores based on cross-backend agreement
+        total_backends_active = len(set(table_backends)) if table_backends else 1
+        for (name, method), (idx, n_elem, _) in seen_name_method.items():
+            if idx >= len(samples):
+                continue
+            hits = sample_backend_hits.get((name, method), set())
+            # Also check name-only hits
+            if method:
+                hits |= sample_backend_hits.get((name, None), set())
+            n_agree = len(hits)
+            confidence = round(min(1.0, n_agree / max(total_backends_active, 1)), 2)
+            agreement_str = f"{n_agree}/{total_backends_active} backends ({', '.join(sorted(hits))})"
+
+            sample = samples[idx]
+            updated = sample.model_dump()
+            updated["extraction_confidence"] = confidence
+            updated["backend_agreement"] = agreement_str
+            samples[idx] = _dict_to_sample_row_safe(updated)
 
         logger.info("Direct PDF table extraction: %d samples from %d tables (pages: %s)",
                      len(samples), len(all_supp_tables), sorted(extracted_pages))
@@ -1054,7 +1335,7 @@ class ExtractionPipeline:
                         df,
                         min_element_cols=hints.min_element_cols,
                         label=f"hints_{backend.value}_p{et.page_number}",
-                        convert_units=(hints.unit_override == "wt%"),
+                        convert_units=False,  # Never convert — GT stores original units
                     )
                     if supp and supp.n_samples > 0:
                         all_supp_tables.append(supp)
@@ -1570,6 +1851,132 @@ def _detect_method_from_table(
         return normalize_method("EPMA")
 
     return None
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# USGS post-processing (applied to all extractions)
+# ──────────────────────────────────────────────────────────────────────────────
+
+def _usgs_postprocess(
+    samples: list[SampleRow],
+    metadata: PaperMetadata,
+    paper_text: str = "",
+) -> tuple[list[SampleRow], list[str]]:
+    """Apply USGS/Garth mandated post-processing to all sample rows.
+
+    1. Split grouped minerals into one-row-per-mineral
+    2. Infer mineral from analysis_id abbreviations
+    3. Validate deposit classification against Hofstra 2021
+    4. Populate analysis_id from sample_local_id when available
+    5. Score deposit type classification with confidence and reasoning
+
+    Returns (processed_samples, notes).
+    """
+    notes: list[str] = []
+    processed: list[SampleRow] = []
+
+    for sample in samples:
+        # --- 1. Split grouped minerals (e.g., "chalcopyrite, sphalerite") ---
+        mineral = sample.mineral or metadata.mineral
+        if mineral and "," in mineral:
+            minerals = [m.strip() for m in mineral.split(",") if m.strip()]
+            if len(minerals) > 1:
+                for m in minerals:
+                    new_data = sample.model_dump()
+                    new_data["mineral"] = m
+                    processed.append(_dict_to_sample_row_safe(new_data))
+                continue  # Skip normal append — already added split rows
+
+        # --- 2. Infer mineral from analysis_id / sample_name abbreviations ---
+        if not sample.mineral and not metadata.mineral:
+            # Try analysis_id first, then sample_local_id, then sample_name
+            for id_field in (sample.analysis_id, sample.sample_local_id, sample.sample_name):
+                if id_field:
+                    inferred = infer_mineral_from_analysis_id(id_field)
+                    if inferred:
+                        new_data = sample.model_dump()
+                        new_data["mineral"] = inferred
+                        sample = _dict_to_sample_row_safe(new_data)
+                        break
+
+        # --- 3. Populate analysis_id from sample_local_id if not set ---
+        if not sample.analysis_id and sample.sample_local_id:
+            new_data = sample.model_dump()
+            new_data["analysis_id"] = sample.sample_local_id
+            sample = _dict_to_sample_row_safe(new_data)
+
+        processed.append(sample)
+
+    # Count mineral splits
+    if len(processed) > len(samples):
+        splits = len(processed) - len(samples)
+        notes.append(f"USGS: split {splits} grouped-mineral rows into individual rows")
+
+    # Count mineral inferences
+    original_no_mineral = sum(1 for s in samples if not s.mineral and not metadata.mineral)
+    final_no_mineral = sum(1 for s in processed if not s.mineral and not metadata.mineral)
+    inferred = original_no_mineral - final_no_mineral
+    if inferred > 0:
+        notes.append(f"USGS: inferred mineral for {inferred} rows from analysis_id abbreviations")
+
+    # --- 4. Validate deposit classification (Hofstra 2021) ---
+    if metadata.deposit_environment:
+        valid_environments = set()
+        for _, (env, _) in DEPOSIT_TAXONOMY.items():
+            valid_environments.add(env)
+        env_lower = metadata.deposit_environment.strip().lower()
+        matched = any(env_lower == v.lower() for v in valid_environments)
+        if not matched:
+            notes.append(
+                f"USGS warning: deposit_environment '{metadata.deposit_environment}' "
+                f"not in Hofstra 2021 taxonomy — review needed"
+            )
+
+    # --- 5. Score deposit type classification (CMMI 189-type) ---
+    if paper_text:
+        minerals_list = list({s.mineral for s in processed if s.mineral}) or None
+        commodities_list = None
+        if metadata.all_commodities:
+            commodities_list = [c.strip() for c in metadata.all_commodities.split(",")]
+
+        scored = score_deposit_types(
+            paper_text=paper_text,
+            deposit_name=metadata.deposit_name,
+            minerals=minerals_list,
+            commodities=commodities_list,
+        )
+        if scored:
+            top = scored[0]
+            # Set on metadata for propagation to all rows
+            if not metadata.deposit_type_confidence:
+                metadata.deposit_type_confidence = top["score"]
+                metadata.deposit_type_reasoning = top["reason"]
+                # Format alternatives
+                alts = [f"{s['name']} ({s['score']:.2f})" for s in scored[1:5]]
+                metadata.deposit_type_alternatives = " | ".join(alts) if alts else None
+
+            notes.append(
+                f"USGS deposit scoring: top='{top['name']}' ({top['score']:.2f}), "
+                f"{len(scored)} candidates scored"
+            )
+
+            # Apply to all processed samples
+            for i, sample in enumerate(processed):
+                updated = sample.model_dump()
+                if not updated.get("deposit_type_confidence"):
+                    updated["deposit_type_confidence"] = top["score"]
+                    updated["deposit_type_reasoning"] = top["reason"]
+                    updated["deposit_type_alternatives"] = metadata.deposit_type_alternatives
+                    processed[i] = _dict_to_sample_row_safe(updated)
+
+    return processed, notes
+
+
+def _dict_to_sample_row_safe(data: dict) -> SampleRow:
+    """Build a SampleRow from dict, ignoring unknown keys."""
+    known = set(SampleRow.model_fields.keys())
+    filtered = {k: v for k, v in data.items() if k in known}
+    return SampleRow(**filtered)
 
 
 def _metadata_to_row_dict(meta: PaperMetadata) -> dict:

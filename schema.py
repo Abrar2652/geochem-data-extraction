@@ -3,11 +3,18 @@ schema.py - Ground truth schema definition for geochemical data extraction.
 
 Defines the 210-column standardized schema, pydantic models, and element mappings
 that are constant across all papers being benchmarked.
+
+Below-detection-limit convention:
+  -99999 = element WAS analysed but concentration was below detection limit
+  blank  = element was NOT analysed / NOT reported (no measurement attempted)
 """
 
 from __future__ import annotations
 from typing import Optional
 from pydantic import BaseModel, Field
+
+# Sentinel value: below detection limit (measured but too low to quantify)
+BELOW_DETECTION_SENTINEL = -99999.0
 
 # ──────────────────────────────────────────────────────────────────────────────
 # All 73 elements tracked in the schema (alphabetical symbol order)
@@ -33,6 +40,11 @@ METADATA_COLUMNS = [
     "deposit_environment",
     "deposit_group",
     "deposit_type",
+    "deposit_classification_source",
+    "deposit_type_original",
+    "deposit_type_confidence",
+    "deposit_type_reasoning",
+    "deposit_type_alternatives",
     "primary_commodities",
     "secondary_commodities",
     "all_commodities",
@@ -40,6 +52,7 @@ METADATA_COLUMNS = [
     "sample_uid",
     "sample_name",
     "sample_local_id",
+    "analysis_id",
     "feature_type",
     "feature_name",
     "feature_uid",
@@ -75,12 +88,18 @@ METADATA_COLUMNS = [
 ]
 
 # ──────────────────────────────────────────────────────────────────────────────
-# Element columns: each element has _ppm + _detection_limit
+# Element columns: each element has _ppm + _detection_limit + _original_value + _original_unit
+# _ppm: value converted to ppm (canonical)
+# _detection_limit: detection limit if reported
+# _original_value: value as originally reported in the paper (before conversion)
+# _original_unit: unit as reported (e.g., "wt%", "ppm", "ppb")
 # ──────────────────────────────────────────────────────────────────────────────
 ELEMENT_COLUMNS: list[str] = []
 for _sym in ELEMENT_SYMBOLS:
     ELEMENT_COLUMNS.append(f"{_sym}_ppm")
     ELEMENT_COLUMNS.append(f"{_sym}_detection_limit")
+    ELEMENT_COLUMNS.append(f"{_sym}_original_value")
+    ELEMENT_COLUMNS.append(f"{_sym}_original_unit")
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Provenance / location columns
@@ -104,6 +123,10 @@ PROVENANCE_COLUMNS = [
     "location_accuracy",
     "comments",
     "last_update",
+    "extraction_backend",
+    "extraction_confidence",
+    "backend_agreement",
+    "data_source_tag",
 ]
 
 # Full ordered column list (matches ground truth Excel exactly)
@@ -116,54 +139,63 @@ ALL_COLUMNS = METADATA_COLUMNS + ELEMENT_COLUMNS + PROVENANCE_COLUMNS
 
 class PaperMetadata(BaseModel):
     """Paper-level metadata extracted from the full PDF text.
+
     Applies uniformly to every sample row in that paper.
+    Field descriptions aligned with CMMI Mineral Gx database schema v0.
     """
-    deposit_name:               Optional[str]   = Field(None, description="Name of the ore deposit studied")
-    deposit_local_id:           Optional[str]   = Field(None, description="Local/regional deposit identifier")
-    deposit_environment:        Optional[str]   = Field(None, description="Geological environment, e.g. 'Basin hydrothermal'")
-    deposit_group:              Optional[str]   = Field(None, description="Broad deposit classification, e.g. 'Mississippi Valley-type (MVT)'")
-    deposit_type:               Optional[str]   = Field(None, description="Specific deposit type, e.g. 'MVT zinc-lead'")
-    primary_commodities:        Optional[str]   = Field(None, description="Primary economic metals, comma-separated")
-    secondary_commodities:      Optional[str]   = Field(None, description="Secondary economic metals, comma-separated")
-    all_commodities:            Optional[str]   = Field(None, description="All commodities, comma-separated, e.g. 'Zn, Pb'")
-    deposit_source:             Optional[str]   = Field(None, description="Author(s) + year citation for the deposit data")
+    deposit_name:               Optional[str]   = Field(None, description="Name of mineral deposit to which the sample is associated")
+    deposit_local_id:           Optional[str]   = Field(None, description="Identifier for the deposit in local/national database")
+    deposit_environment:        Optional[str]   = Field(None, description="Geological environment in which the deposit formed, per Hofstra et al. 2021 classification")
+    deposit_group:              Optional[str]   = Field(None, description="Restricted grouping of deposits with similar characteristics, per Hofstra et al. 2021")
+    deposit_type:               Optional[str]   = Field(None, description="Detailed deposit classification: subgroup + group + principal commodity(s), per Hofstra et al. 2021")
+    deposit_classification_source: Optional[str] = Field(None, description="Classification scheme used: 'Hofstra et al. 2021' or paper's original if different")
+    deposit_type_original:      Optional[str]   = Field(None, description="Deposit type as originally stated by the paper's authors (may differ from Hofstra 2021)")
+    deposit_type_confidence:    Optional[float] = Field(None, description="0.0-1.0 confidence score for deposit_type classification")
+    deposit_type_reasoning:     Optional[str]   = Field(None, description="Why this deposit type was chosen (keyword matches, description overlap)")
+    deposit_type_alternatives:  Optional[str]   = Field(None, description="Top alternative deposit type candidates with scores, pipe-separated")
+    primary_commodities:        Optional[str]   = Field(None, description="Aggregated comma-separated list of primary commodity codes")
+    secondary_commodities:      Optional[str]   = Field(None, description="Aggregated comma-separated list of secondary commodity codes")
+    all_commodities:            Optional[str]   = Field(None, description="All commodity codes: 'Primary commodities (secondary commodities)'")
+    deposit_source:             Optional[str]   = Field(None, description="Name/description of the organisation or database from which deposit info was sourced")
 
-    feature_type:               Optional[str]   = Field(None, description="Mine/outcrop type, e.g. 'underground mine', 'open pit'")
-    sample_deposit_relation:    Optional[str]   = Field(None, description="e.g. 'ore material', 'waste', 'wall rock'")
-    sample_type:                Optional[str]   = Field(None, description="e.g. 'drill core', 'grab', 'channel'")
-    sampling_method:            Optional[str]   = Field(None, description="How samples were collected, e.g. 'grab'")
-    material_class:             Optional[str]   = Field(None, description="e.g. 'rock', 'mineral separate', 'soil'")
-    material_class_comments:    Optional[str]   = Field(None, description="Additional material comments")
-    earth_material_group:       Optional[str]   = Field(None, description="e.g. 'mineralisation', 'igneous rock', 'sedimentary rock'")
-    earth_material_qualifier:   Optional[str]   = Field(None)
-    earth_material:             Optional[str]   = Field(None)
-    mineral:                    Optional[str]   = Field(None, description="Specific mineral analyzed, e.g. 'sphalerite', 'pyrite'")
-    paragenetic_stage:          Optional[str]   = Field(None)
-    mode_of_occurrence:         Optional[str]   = Field(None)
-    texture:                    Optional[str]   = Field(None)
-    associated_minerals:        Optional[str]   = Field(None, description="Other minerals present, comma-separated")
-    sample_preparation:         Optional[str]   = Field(None, description="How samples were prepared for analysis")
+    feature_type:               Optional[str]   = Field(None, description="Sampling feature type: borehole, field site (underground/surface), measured section, or unknown")
+    sample_deposit_relation:    Optional[str]   = Field(None, description="Sample's relation to the mineral deposit: high grade ore, low grade ore, gangue, alteration halo, host rock, unknown")
+    sample_type:                Optional[str]   = Field(None, description="Type or form of the sample: half core, outcrop specimen, drill chips, float specimen, unknown")
+    sampling_method:            Optional[str]   = Field(None, description="Method used to collect the sample: core drilling, RC drilling, outcrop sampling, channel sampling, unknown")
+    material_class:             Optional[str]   = Field(None, description="Broad categorisation of sample material type: rock, regolith, sediment")
+    material_class_comments:    Optional[str]   = Field(None, description="Additional comments about the sample material class/type")
+    earth_material_group:       Optional[str]   = Field(None, description="Dominant lithological grouping: acid intrusive, sedimentary siliciclastic, sedimentary carbonate, mineralisation, unknown")
+    earth_material_qualifier:   Optional[str]   = Field(None, description="Qualifying term(s) before lithology name: graphitic, fine grained, foliated")
+    earth_material:             Optional[str]   = Field(None, description="Aggregated lithological names: sandstone, siltstone, granite")
+    mineral:                    Optional[str]   = Field(None, description="Target mineral of the mineral chemistry analysis, matching IMA Mineral List")
+    paragenetic_stage:          Optional[str]   = Field(None, description="Paragenetic stage of the sample under analysis, as described in the paper")
+    mode_of_occurrence:         Optional[str]   = Field(None, description="Mode of occurrence: fracture fill, vein, replacement, xenolith")
+    texture:                    Optional[str]   = Field(None, description="Mineral textures: foliated, vuggy, colloform, massive")
+    associated_minerals:        Optional[str]   = Field(None, description="Significant minerals in association with the target mineral, comma-separated, tied to IMA List")
+    sample_preparation:         Optional[str]   = Field(None, description="Description of sample preparation: thin section, mount, crushing, milling")
 
-    analytical_method:          Optional[str]   = Field(None, description="Standardized method name, e.g. 'LA-ICPMS', 'EMPA', 'ICP-MS'")
-    instrument_type_model:      Optional[str]   = Field(None, description="Full instrument description exactly as stated in paper")
-    laboratory_location:        Optional[str]   = Field(None, description="Lab name and location exactly as stated")
-    operating_conditions:       Optional[str]   = Field(None, description="Full analytical conditions exactly as stated")
-    standards_used:             Optional[str]   = Field(None, description="Reference/calibration standards used")
+    analytical_method:          Optional[str]   = Field(None, description="Analytical method for mineral chemistry: LA-ICPMS, EMPA, ICP-MS, SEM-EDS, SIMS")
+    instrument_type_model:      Optional[str]   = Field(None, description="Instrument type and model exactly as stated in paper")
+    laboratory_location:        Optional[str]   = Field(None, description="Laboratory location formatted CITY / STATE / COUNTRY, exactly as stated")
+    operating_conditions:       Optional[str]   = Field(None, description="Operating conditions for the analysis exactly as stated")
+    standards_used:             Optional[str]   = Field(None, description="Any reported standards for the mineral chemistry analysis")
 
-    publication_date:           Optional[int]   = Field(None, description="Year of publication as integer")
-    sample_source:              Optional[str]   = Field(None, description="Full bibliographic citation")
-    country:                    Optional[str]   = Field(None, description="ISO 3-letter country code, e.g. 'CHN', 'AUS'")
-    state:                      Optional[str]   = Field(None, description="State/province if reported")
-    deposit_longitude_wgs84:    Optional[float] = Field(None, description="Deposit longitude in WGS84 decimal degrees")
-    deposit_latitude_wgs84:     Optional[float] = Field(None, description="Deposit latitude in WGS84 decimal degrees")
+    publication_date:           Optional[int]   = Field(None, description="Year of publication as integer (YYYY)")
+    sample_source:              Optional[str]   = Field(None, description="Citation of published/unpublished article or report for the sample analysis")
+    country:                    Optional[str]   = Field(None, description="Three letter country code (ISO 3166): AUS, CAN, USA, CHN")
+    state:                      Optional[str]   = Field(None, description="Letter code for state/province (ISO 3166-2): NSW, AB")
+    deposit_longitude_wgs84:    Optional[float] = Field(None, description="Deposit location longitude in WGS84 decimal degrees")
+    deposit_latitude_wgs84:     Optional[float] = Field(None, description="Deposit location latitude in WGS84 decimal degrees")
 
 
 class SampleRow(BaseModel):
+    model_config = {"extra": "allow"}  # Accept _original_value/_original_unit fields dynamically
     """One analytical measurement row — metadata + per-element values."""
 
-    # --- sample identity ---
+    # --- sample identity (three-tier per USGS protocol) ---
     sample_name:     Optional[str]   = None
     sample_local_id: Optional[str]   = None
+    analysis_id:     Optional[str]   = None
 
     # --- inherited from PaperMetadata (flattened) ---
     deposit_name:               Optional[str]   = None
@@ -171,6 +203,11 @@ class SampleRow(BaseModel):
     deposit_environment:        Optional[str]   = None
     deposit_group:              Optional[str]   = None
     deposit_type:               Optional[str]   = None
+    deposit_classification_source: Optional[str] = None
+    deposit_type_original:      Optional[str]   = None
+    deposit_type_confidence:    Optional[float] = None
+    deposit_type_reasoning:     Optional[str]   = None
+    deposit_type_alternatives:  Optional[str]   = None
     primary_commodities:        Optional[str]   = None
     secondary_commodities:      Optional[str]   = None
     all_commodities:            Optional[str]   = None
@@ -203,6 +240,12 @@ class SampleRow(BaseModel):
     deposit_latitude_wgs84:     Optional[float] = None
     sample_longitude_wgs84:     Optional[float] = None
     sample_latitude_wgs84:      Optional[float] = None
+
+    # --- extraction provenance ---
+    extraction_backend:         Optional[str]   = None   # Which backend extracted this row (e.g., "docling", "marker", "camelot")
+    extraction_confidence:      Optional[float] = None   # 0.0-1.0 confidence score
+    backend_agreement:          Optional[str]   = None   # Cross-backend agreement summary (e.g., "3/5 backends agree")
+    data_source_tag:            Optional[str]   = None   # "this_study" | "supplementary" | "reference_data" | "cited_study:Author2022"
 
     # --- elements (73 × 2 fields) ---
     ag_ppm: Optional[float] = None;  ag_detection_limit: Optional[float] = None

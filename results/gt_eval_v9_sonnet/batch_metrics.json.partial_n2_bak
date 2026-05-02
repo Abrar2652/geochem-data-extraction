@@ -1,0 +1,92 @@
+{
+  "model": "claude-sonnet-4-6",
+  "provider": "claude",
+  "aggregate": {
+    "n_papers": 2,
+    "mean_T1_metadata_%": 76.00269366733497,
+    "mean_T2_numerical_%": 52.5235666032994,
+    "mean_T3_structural_%": 73.76379614969827,
+    "mean_T4_null_%": 93.3789301087105,
+    "mean_overall_%": 68.88164368028157,
+    "total_samples_predicted": 336,
+    "total_samples_ground_truth": 231,
+    "total_samples_matched": 153
+  },
+  "per_paper": {
+    "Zhang_et_al_2022": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 78.64,
+        "T2_numerical_%": 36.27,
+        "T3_structural_%": 62.1,
+        "T4_null_%": 99.47,
+        "overall_%": 62.33
+      },
+      "structural": {
+        "predicted_n": 131,
+        "ground_truth_n": 104,
+        "matched_n": 68,
+        "precision_%": 51.91,
+        "recall_%": 65.38,
+        "f1_%": 57.87,
+        "missing_samples": [
+          "BY-B19-L_1",
+          "BY-B19-L_2",
+          "BY-B19-L_3",
+          "BY-B19-L_4",
+          "BY-B19-L_5",
+          "BY-B19-L_6",
+          "BY-B29-L_1",
+          "BY-B29-L_2",
+          "BY-B29-L_3",
+          "BY-B29-L_4"
+        ],
+        "extra_samples": [
+          "BY-B19-1 BY-B19-2",
+          "BY-B29-",
+          "BY-B29-1 BY-B29-2",
+          "BY-B29-3 BY-B29-4",
+          "BY-B29-<br>L_3",
+          "BY-B29-<br>L_4",
+          "BY-B29-<br>L_5",
+          "BY-B29-<br>L_6",
+          "BY-B37-2 BY-B37-3",
+          "BY-B37-5 BY-B37-6"
+        ]
+      }
+    },
+    "Xia_et_al_2024": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 73.37,
+        "T2_numerical_%": 68.78,
+        "T3_structural_%": 85.43,
+        "T4_null_%": 87.29,
+        "overall_%": 75.43
+      },
+      "structural": {
+        "predicted_n": 205,
+        "ground_truth_n": 127,
+        "matched_n": 85,
+        "precision_%": 41.46,
+        "recall_%": 66.93,
+        "f1_%": 51.2,
+        "missing_samples": [],
+        "extra_samples": [
+          "K21-01-04 K21-01-01",
+          "K21-01-05 K21-01-02",
+          "K21-01-05<br>K21-01-02",
+          "K21-01-05<br>K21-01-08",
+          "K21-01-06 K21-01-03",
+          "K21-01-07 K21-01-04",
+          "K21-01-07<br>K21-01-04",
+          "K21-01-08 K21-01-05",
+          "K21-01-09 K21-01-07",
+          "K21-01-09<br>K21-01-07"
+        ]
+      }
+    }
+  }
+}

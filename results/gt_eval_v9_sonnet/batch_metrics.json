@@ -1,0 +1,322 @@
+{
+  "model": "claude-sonnet-4-6",
+  "provider": "claude",
+  "aggregate": {
+    "n_papers": 28,
+    "mean_T1_metadata_%": 71.64321428571428,
+    "mean_T2_numerical_%": 76.54928571428572,
+    "mean_T3_structural_%": 68.46821428571428,
+    "mean_T4_null_%": 90.6175,
+    "mean_overall_%": 75.97571428571429
+  },
+  "per_paper": {
+    "Bertrandsson_Erlandsson_et_al_2022_reprocessed": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 64.6,
+        "T2_numerical_%": 100,
+        "T3_structural_%": 76.75,
+        "T4_null_%": 86.1,
+        "overall_%": 83.81
+      }
+    },
+    "Bertrandsson_Erlandsson_et_al_2025": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 70.14,
+        "T2_numerical_%": 100,
+        "T3_structural_%": 37.97,
+        "T4_null_%": 86.88,
+        "overall_%": 79.77
+      }
+    },
+    "Chen_et_al_2024": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 73.25,
+        "T2_numerical_%": 62.96,
+        "T3_structural_%": 98.01,
+        "T4_null_%": 100,
+        "overall_%": 76.86
+      }
+    },
+    "Chu_et_al_2022": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 69.22,
+        "T2_numerical_%": 100,
+        "T3_structural_%": 100,
+        "T4_null_%": 71.72,
+        "overall_%": 86.52
+      }
+    },
+    "Ciccolella_et_al_2025": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 53.91,
+        "T2_numerical_%": 42.08,
+        "T3_structural_%": 88.07,
+        "T4_null_%": 98.76,
+        "overall_%": 61.03
+      }
+    },
+    "Denisova_et_al_2024": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 69.93,
+        "T2_numerical_%": 2.18,
+        "T3_structural_%": 86.9,
+        "T4_null_%": 95.72,
+        "overall_%": 49.24
+      }
+    },
+    "Foltyn_et_al_2022_reprocessed": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 75.84,
+        "T2_numerical_%": 7.73,
+        "T3_structural_%": 2.48,
+        "T4_null_%": 89.09,
+        "overall_%": 39.58
+      }
+    },
+    "He_et_al_2024": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 59.69,
+        "T2_numerical_%": 89.33,
+        "T3_structural_%": 99.51,
+        "T4_null_%": 100,
+        "overall_%": 83.57
+      }
+    },
+    "Jiang_et_al_2023": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 81.46,
+        "T2_numerical_%": 100,
+        "T3_structural_%": 100,
+        "T4_null_%": 37.05,
+        "overall_%": 85
+      }
+    },
+    "Lan_et_al_2024": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 57.6,
+        "T2_numerical_%": 99.9,
+        "T3_structural_%": 100,
+        "T4_null_%": 89.03,
+        "overall_%": 85.6
+      }
+    },
+    "Li_et_al_2025": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 69.11,
+        "T2_numerical_%": 36.17,
+        "T3_structural_%": 4.38,
+        "T4_null_%": 89.89,
+        "overall_%": 49.34
+      }
+    },
+    "Liu_et_al_2024": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 71.3,
+        "T2_numerical_%": 89.98,
+        "T3_structural_%": 90.04,
+        "T4_null_%": 99.02,
+        "overall_%": 85.74
+      }
+    },
+    "Soster_et_al_2023": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 76.04,
+        "T2_numerical_%": 99.52,
+        "T3_structural_%": 100,
+        "T4_null_%": 85.91,
+        "overall_%": 90.51
+      }
+    },
+    "Sun_et_al_2023": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 71.73,
+        "T2_numerical_%": 89.88,
+        "T3_structural_%": 45.26,
+        "T4_null_%": 97.83,
+        "overall_%": 78.94
+      }
+    },
+    "Sun_et_al_2024": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 79.86,
+        "T2_numerical_%": 100,
+        "T3_structural_%": 100,
+        "T4_null_%": 99.7,
+        "overall_%": 93.91
+      }
+    },
+    "Sun_et_al_2025": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 59.83,
+        "T2_numerical_%": 72.73,
+        "T3_structural_%": 97.83,
+        "T4_null_%": 100,
+        "overall_%": 76.72
+      }
+    },
+    "Tan_et_al_2025": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 69.52,
+        "T2_numerical_%": 100,
+        "T3_structural_%": 3.58,
+        "T4_null_%": 100,
+        "overall_%": 76.39
+      }
+    },
+    "Tomlinson_et_al_2021": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 63.14,
+        "T2_numerical_%": 53.74,
+        "T3_structural_%": 8.99,
+        "T4_null_%": 98.21,
+        "overall_%": 56.52
+      }
+    },
+    "Wang_et_al_2025": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 63.98,
+        "T2_numerical_%": 100,
+        "T3_structural_%": 100,
+        "T4_null_%": 97.02,
+        "overall_%": 88.75
+      }
+    },
+    "Wei_et_al_2024": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 77.28,
+        "T2_numerical_%": 31.55,
+        "T3_structural_%": 4.25,
+        "T4_null_%": 63.88,
+        "overall_%": 46.02
+      }
+    },
+    "Wu_et_al_2024": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 87.66,
+        "T2_numerical_%": 99.38,
+        "T3_structural_%": 75.25,
+        "T4_null_%": 95.94,
+        "overall_%": 91.73
+      }
+    },
+    "Xia_et_al_2024": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 73.37,
+        "T2_numerical_%": 68.78,
+        "T3_structural_%": 85.43,
+        "T4_null_%": 87.29,
+        "overall_%": 75.43
+      }
+    },
+    "Yang_et_al_2022": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 68.07,
+        "T2_numerical_%": 96.24,
+        "T3_structural_%": 87.55,
+        "T4_null_%": 91.03,
+        "overall_%": 85.7
+      }
+    },
+    "Yuan_et_al_2018": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 87.37,
+        "T2_numerical_%": 99.48,
+        "T3_structural_%": 86.73,
+        "T4_null_%": 99.04,
+        "overall_%": 93.87
+      }
+    },
+    "Zhang_et_al_2022": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 78.64,
+        "T2_numerical_%": 36.27,
+        "T3_structural_%": 62.1,
+        "T4_null_%": 99.47,
+        "overall_%": 62.33
+      }
+    },
+    "Zhang_et_al_2024": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 86.99,
+        "T2_numerical_%": 98.42,
+        "T3_structural_%": 33.06,
+        "T4_null_%": 91.94,
+        "overall_%": 84.21
+      }
+    },
+    "Zhao_et_al_2024": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 69.88,
+        "T2_numerical_%": 100,
+        "T3_structural_%": 93.64,
+        "T4_null_%": 94.34,
+        "overall_%": 89.16
+      }
+    },
+    "Zhu_et_al_2024": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 76.6,
+        "T2_numerical_%": 67.06,
+        "T3_structural_%": 49.33,
+        "T4_null_%": 92.43,
+        "overall_%": 71.07
+      }
+    }
+  }
+}

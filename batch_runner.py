@@ -117,7 +117,7 @@ def run_batch(
     use_self_correction: bool = True,
     use_vision: bool = True,
     vision_client: Optional[LLMClient] = None,
-    require_supplementary: bool = True,
+    require_supplementary: bool = False,
     only_pdf_only: bool = False,
     verbose: bool = False,
     table_detector_backend: str = "auto",
@@ -131,7 +131,8 @@ def run_batch(
         paper_ids: If specified, only process these paper IDs. None = all.
         use_tool_calling: Enable Claude tool calling for metadata extraction.
         use_llm_table_filter: Use LLM-assisted table row filtering.
-        require_supplementary: If True, skip papers with no supplementary files.
+        require_supplementary: If True, skip papers with no supplementary files
+            (default False — process all GT papers including PDF-only ones).
         only_pdf_only: If True, process ONLY papers with no supplementary files.
         verbose: Enable verbose logging.
         table_detector_backend: PDF table detector backend (auto, docling, camelot, pdfplumber).

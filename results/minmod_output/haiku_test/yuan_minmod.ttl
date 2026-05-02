@@ -1,0 +1,124 @@
+@prefix minmod: <https://minmod.isi.edu/resource/> .
+@prefix mno: <https://minmod.isi.edu/ontology/> .
+@prefix schema: <https://schema.org/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+
+minmod:Yuan_et_al_2018
+    a mno:MineralSite ;
+    schema:identifier "Yuan_et_al_2018" ;
+    rdfs:label "Daliangzi"@en ;
+    schema:url <geochem-benchmark:Yuan_et_al_2018> ;
+    schema:addressCountry "CHN" ;
+    schema:datePublished "2018"^^xsd:integer ;
+    mno:deposit_type_candidate _:deptype_Yuan_et_al_2018_0 ;
+_:deptype_Yuan_et_al_2018_0
+    rdfs:label "MVT zinc-lead"@en ;
+    mno:confidence "0.92"^^xsd:decimal ;
+    mno:source "geochem-benchmark extraction pipeline v1, Jahin et al." ;
+    mno:normalized_uri <https://minmod.isi.edu/resource/Q380> ;
+    .
+    mno:deposit_type_candidate _:deptype_Yuan_et_al_2018_1 ;
+_:deptype_Yuan_et_al_2018_1
+    rdfs:label "Replacement zinc-lead"@en ;
+    mno:confidence "0.06"^^xsd:decimal ;
+    mno:source "geochem-benchmark extraction pipeline v1, Jahin et al." ;
+    mno:normalized_uri <https://minmod.isi.edu/resource/Q441> ;
+    .
+    mno:deposit_type_candidate _:deptype_Yuan_et_al_2018_2 ;
+_:deptype_Yuan_et_al_2018_2
+    rdfs:label "Non-sulfide zinc-lead ± Mn"@en ;
+    mno:confidence "0.01"^^xsd:decimal ;
+    mno:source "geochem-benchmark extraction pipeline v1, Jahin et al." ;
+    mno:normalized_uri <https://minmod.isi.edu/resource/Q385> ;
+    .
+    mno:deposit_type_candidate _:deptype_Yuan_et_al_2018_3 ;
+_:deptype_Yuan_et_al_2018_3
+    rdfs:label "Replacement polymetallic"@en ;
+    mno:confidence "0.01"^^xsd:decimal ;
+    mno:source "geochem-benchmark extraction pipeline v1, Jahin et al." ;
+    mno:normalized_uri <https://minmod.isi.edu/resource/Q437> ;
+    .
+    mno:deposit_type_candidate _:deptype_Yuan_et_al_2018_4 ;
+_:deptype_Yuan_et_al_2018_4
+    rdfs:label "Siliciclastic-mafic zinc-lead"@en ;
+    mno:confidence "0.01"^^xsd:decimal ;
+    mno:source "geochem-benchmark extraction pipeline v1, Jahin et al." ;
+    mno:normalized_uri <https://minmod.isi.edu/resource/Q375> ;
+    .
+    mno:mineral_inventory _:inv_Yuan_et_al_2018_0 ;
+_:inv_Yuan_et_al_2018_0
+    rdfs:label "Zn"@en ;
+    schema:url <https://doi.org/10.1016/j.ore.2018.05.020> ;
+    .
+    mno:mineral_inventory _:inv_Yuan_et_al_2018_1 ;
+_:inv_Yuan_et_al_2018_1
+    rdfs:label "Pb"@en ;
+    schema:url <https://doi.org/10.1016/j.ore.2018.05.020> ;
+    .
+    mno:mineral_inventory _:inv_Yuan_et_al_2018_2 ;
+_:inv_Yuan_et_al_2018_2
+    rdfs:label "Cu"@en ;
+    schema:url <https://doi.org/10.1016/j.ore.2018.05.020> ;
+    .
+    mno:mineral_inventory _:inv_Yuan_et_al_2018_3 ;
+_:inv_Yuan_et_al_2018_3
+    rdfs:label "Ag"@en ;
+    schema:url <https://doi.org/10.1016/j.ore.2018.05.020> ;
+    .
+    mno:mineral_inventory _:inv_Yuan_et_al_2018_4 ;
+_:inv_Yuan_et_al_2018_4
+    rdfs:label "Ga"@en ;
+    schema:url <https://doi.org/10.1016/j.ore.2018.05.020> ;
+    .
+    mno:mineral_inventory _:inv_Yuan_et_al_2018_5 ;
+_:inv_Yuan_et_al_2018_5
+    rdfs:label "Ge"@en ;
+    schema:url <https://doi.org/10.1016/j.ore.2018.05.020> ;
+    .
+    mno:mineral_inventory _:inv_Yuan_et_al_2018_6 ;
+_:inv_Yuan_et_al_2018_6
+    rdfs:label "Cd"@en ;
+    schema:url <https://doi.org/10.1016/j.ore.2018.05.020> ;
+    .
+    mno:mineral_inventory _:inv_Yuan_et_al_2018_7 ;
+_:inv_Yuan_et_al_2018_7
+    rdfs:label "Sb"@en ;
+    schema:url <https://doi.org/10.1016/j.ore.2018.05.020> ;
+    .
+    mno:mineral_inventory _:inv_Yuan_et_al_2018_8 ;
+_:inv_Yuan_et_al_2018_8
+    rdfs:label "Fe"@en ;
+    schema:url <https://doi.org/10.1016/j.ore.2018.05.020> ;
+    .
+    mno:mineral_inventory _:inv_Yuan_et_al_2018_9 ;
+_:inv_Yuan_et_al_2018_9
+    rdfs:label "Mn"@en ;
+    schema:url <https://doi.org/10.1016/j.ore.2018.05.020> ;
+    .
+    mno:mineral_inventory _:inv_Yuan_et_al_2018_10 ;
+_:inv_Yuan_et_al_2018_10
+    rdfs:label "Co"@en ;
+    schema:url <https://doi.org/10.1016/j.ore.2018.05.020> ;
+    .
+    mno:mineral_inventory _:inv_Yuan_et_al_2018_11 ;
+_:inv_Yuan_et_al_2018_11
+    rdfs:label "Ni"@en ;
+    schema:url <https://doi.org/10.1016/j.ore.2018.05.020> ;
+    .
+    mno:mineral_inventory _:inv_Yuan_et_al_2018_12 ;
+_:inv_Yuan_et_al_2018_12
+    rdfs:label "As"@en ;
+    schema:url <https://doi.org/10.1016/j.ore.2018.05.020> ;
+    .
+    mno:mineral_inventory _:inv_Yuan_et_al_2018_13 ;
+_:inv_Yuan_et_al_2018_13
+    rdfs:label "In"@en ;
+    schema:url <https://doi.org/10.1016/j.ore.2018.05.020> ;
+    .
+    mno:mineral_inventory _:inv_Yuan_et_al_2018_14 ;
+_:inv_Yuan_et_al_2018_14
+    rdfs:label "sphalerite"@en ;
+    schema:url <https://doi.org/10.1016/j.ore.2018.05.020> ;
+    . .

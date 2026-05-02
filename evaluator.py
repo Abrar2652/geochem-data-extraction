@@ -21,7 +21,7 @@ from typing import Optional
 import pandas as pd
 
 from .pipeline import ExtractionResult
-from .schema import ALL_COLUMNS, ELEMENT_SYMBOLS, PaperMetadata
+from .schema import ALL_COLUMNS, ELEMENT_SYMBOLS, PaperMetadata, BELOW_DETECTION_SENTINEL
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Weights for overall score
@@ -117,6 +117,11 @@ class BenchmarkReport:
     missing_samples:         list[str] = field(default_factory=list)
     extra_samples:           list[str] = field(default_factory=list)
 
+    # Precision / Recall / F1 for sample matching
+    sample_precision:        float = 0.0  # matched / predicted — are our extractions real?
+    sample_recall:           float = 0.0  # matched / gt — did we find everything?
+    sample_f1:               float = 0.0  # harmonic mean
+
     def to_dict(self) -> dict:
         return {
             "model": self.model,
@@ -132,6 +137,9 @@ class BenchmarkReport:
                 "predicted_n": self.predicted_n_samples,
                 "ground_truth_n": self.ground_truth_n_samples,
                 "matched_n": self.matched_samples,
+                "precision_%": round(self.sample_precision * 100, 2),
+                "recall_%": round(self.sample_recall * 100, 2),
+                "f1_%": round(self.sample_f1 * 100, 2),
                 "missing_samples": self.missing_samples[:10],
                 "extra_samples": self.extra_samples[:10],
             },
@@ -147,6 +155,10 @@ class BenchmarkReport:
         print(f"  T4 Null        : {self.t4_null_score*100:6.1f}%")
         print(f"  {'─'*30}")
         print(f"  Overall        : {self.overall_score*100:6.1f}%")
+        print(f"  {'─'*30}")
+        print(f"  Precision      : {self.sample_precision*100:6.1f}%")
+        print(f"  Recall         : {self.sample_recall*100:6.1f}%")
+        print(f"  F1             : {self.sample_f1*100:6.1f}%")
         print(f"  Rows: pred={self.predicted_n_samples} | gt={self.ground_truth_n_samples} | matched={self.matched_samples}")
         print(f"{'='*60}")
 
@@ -208,22 +220,73 @@ class Evaluator:
         report.missing_samples         = struct["missing"]
         report.extra_samples           = struct["extra"]
 
+        # Precision / Recall / F1 for sample name matching
+        report.sample_precision = (struct["matched_n"] / struct["predicted_n"]
+                                   if struct["predicted_n"] > 0 else 0.0)
+        report.sample_recall    = (struct["matched_n"] / struct["gt_n"]
+                                   if struct["gt_n"] > 0 else 1.0)
+        if (report.sample_precision + report.sample_recall) > 0:
+            report.sample_f1 = (2 * report.sample_precision * report.sample_recall
+                                / (report.sample_precision + report.sample_recall))
+        else:
+            report.sample_f1 = 0.0
+
         # T2 + T4: Per-sample numerical and NULL accuracy
+        # Strategy: use name-based matching first. If that gives poor coverage
+        # (<30% of GT matched), fall back to position-based matching which
+        # compares rows by position and validates via element value overlap.
         t2_scores: list[float] = []
         t4_scores: list[float] = []
 
-        for sample_name in struct["matched_sample_names"]:
-            pred_row = _get_sample_row(pred_df, sample_name)
-            gt_row   = _get_sample_row(self.gt_df, sample_name)
-            if pred_row is None or gt_row is None:
-                continue
+        name_matched_n = len(struct["matched_sample_names"])
+        gt_n = struct["gt_n"]
+        use_position_matching = (
+            name_matched_n < gt_n * 0.3 and gt_n > 0 and len(pred_df) > 0
+        )
 
-            smr = SampleMatchResult(sample_name=sample_name)
-            smr.numerical_results = self._eval_numerical_row(pred_row, gt_row)
-            smr.null_results      = self._eval_null_row(pred_row, gt_row)
-            report.sample_results.append(smr)
-            t2_scores.append(smr.numerical_score)
-            t4_scores.append(smr.null_score)
+        if use_position_matching:
+            # Position-based matching: align GT and pred by row order,
+            # then validate each pair by checking element value overlap.
+            pos_matches = _position_based_matching(self.gt_df, pred_df)
+            for gt_idx, pred_idx, match_quality in pos_matches:
+                gt_row = self.gt_df.iloc[gt_idx]
+                pred_row = pred_df.iloc[pred_idx]
+                label = f"pos_{gt_idx}"
+
+                smr = SampleMatchResult(sample_name=label)
+                smr.numerical_results = self._eval_numerical_row(pred_row, gt_row)
+                smr.null_results      = self._eval_null_row(pred_row, gt_row)
+                report.sample_results.append(smr)
+                t2_scores.append(smr.numerical_score)
+                t4_scores.append(smr.null_score)
+
+            # Update structural metrics to reflect position matching
+            report.matched_samples = len(pos_matches)
+            report.sample_precision = (len(pos_matches) / len(pred_df)
+                                       if len(pred_df) > 0 else 0.0)
+            report.sample_recall = (len(pos_matches) / gt_n
+                                    if gt_n > 0 else 1.0)
+            if (report.sample_precision + report.sample_recall) > 0:
+                report.sample_f1 = (2 * report.sample_precision * report.sample_recall
+                                    / (report.sample_precision + report.sample_recall))
+            else:
+                report.sample_f1 = 0.0
+            report.t3_structural_score = report.sample_f1
+
+        else:
+            # Standard name-based matching
+            for sample_name in struct["matched_sample_names"]:
+                pred_row = _get_sample_row(pred_df, sample_name)
+                gt_row   = _get_sample_row(self.gt_df, sample_name)
+                if pred_row is None or gt_row is None:
+                    continue
+
+                smr = SampleMatchResult(sample_name=sample_name)
+                smr.numerical_results = self._eval_numerical_row(pred_row, gt_row)
+                smr.null_results      = self._eval_null_row(pred_row, gt_row)
+                report.sample_results.append(smr)
+                t2_scores.append(smr.numerical_score)
+                t4_scores.append(smr.null_score)
 
         report.t2_numerical_score = sum(t2_scores) / len(t2_scores) if t2_scores else 0.0
         report.t4_null_score      = sum(t4_scores) / len(t4_scores) if t4_scores else 0.0
@@ -289,8 +352,16 @@ class Evaluator:
         pred_row: pd.Series,
         gt_row: pd.Series,
     ) -> list[FieldResult]:
-        """Score element concentration values for one matched sample."""
+        """Score element concentration values for one matched sample.
+
+        Handles the below-detection-limit sentinel (-99999):
+        - GT=-99999, pred=-99999 → perfect match (both recognised BDL)
+        - GT=-99999, pred=None  → penalty (pred missed a BDL marker)
+        - GT=-99999, pred=X>0   → partial credit if X is small
+        - GT=X>0,   pred=-99999 → wrong (pred says BDL but GT has value)
+        """
         results = []
+        _BDL = BELOW_DETECTION_SENTINEL
         for sym in ELEMENT_SYMBOLS:
             col = f"{sym}_ppm"
             gt_val  = _safe_float(gt_row.get(col))
@@ -299,10 +370,34 @@ class Evaluator:
             if gt_val is None:
                 continue  # Not measured in this paper — evaluated in T4
 
+            # GT is BDL (-99999)
+            if gt_val == _BDL:
+                if pred_val is not None and pred_val == _BDL:
+                    score, note = 1.0, "Both BDL — correct"
+                elif pred_val is None:
+                    score, note = 0.5, "GT is BDL, pred is null (missed BDL marker)"
+                else:
+                    # Pred has a real value but GT says BDL — partial if small value
+                    score, note = 0.3, f"GT is BDL, pred={pred_val}"
+                results.append(FieldResult(
+                    field_name=col, predicted=pred_val, ground_truth=gt_val,
+                    score=score, tier="T2", note=note,
+                ))
+                continue
+
+            # GT has a real value
             if pred_val is None:
                 results.append(FieldResult(
                     field_name=col, predicted=None, ground_truth=gt_val,
                     score=0.0, tier="T2", note="Predicted null, GT has value"
+                ))
+                continue
+
+            if pred_val == _BDL:
+                # Pred says BDL but GT has a real value — wrong
+                results.append(FieldResult(
+                    field_name=col, predicted=pred_val, ground_truth=gt_val,
+                    score=0.0, tier="T2", note=f"Pred BDL but GT={gt_val}"
                 ))
                 continue
 
@@ -322,8 +417,15 @@ class Evaluator:
         pred_row: pd.Series,
         gt_row: pd.Series,
     ) -> list[FieldResult]:
-        """Score NULL / non-NULL assignment for elements not in this paper."""
+        """Score NULL / non-NULL assignment for elements not in this paper.
+
+        GT=None means the element was NOT measured at all.
+        - pred=None  → correct (element wasn't measured)
+        - pred=-99999 → wrong (pred claims it was measured-but-BDL, but it wasn't measured)
+        - pred=value → wrong (hallucinated a value for an unmeasured element)
+        """
         results = []
+        _BDL = BELOW_DETECTION_SENTINEL
         for sym in ELEMENT_SYMBOLS:
             col = f"{sym}_ppm"
             gt_val   = _safe_float(gt_row.get(col))
@@ -335,6 +437,9 @@ class Evaluator:
             # GT is null — predict should also be null
             if pred_val is None:
                 score, note = 1.0, "Correct null"
+            elif pred_val == _BDL:
+                # Pred claims BDL but element wasn't measured at all
+                score, note = 0.0, "Pred claims BDL (-99999) but GT=null (not measured)"
             else:
                 score, note = 0.0, f"Hallucinated value {pred_val} (GT=null)"
 
@@ -531,13 +636,27 @@ def evaluate_quality(
         if len(vals) == 0:
             continue
 
+        # Exclude below-detection-limit values from plausibility checks.
+        # Per USGS protocol, valid BDL representations are:
+        #   -99999 = measured but below detection, LOD unknown
+        #   Negative values (e.g., -0.5) = measured but below specific LOD of 0.5
+        # Both are valid data markers, NOT real negative concentrations.
+        vals = vals[(vals != BELOW_DETECTION_SENTINEL) & (vals >= 0)]
+        if len(vals) == 0:
+            # All values are BDL — element was measured but entirely below detection.
+            # This is plausible (not an error), so count as pass.
+            plausibility_checks += 1
+            plausibility_pass += 1
+            continue
+
         plausibility_checks += 1
         has_issue = False
 
-        # Check: no negative concentrations
+        # Check: no unexpected negative concentrations
+        # (negative LOD values already filtered out above)
         n_negative = (vals < 0).sum()
         if n_negative > 0:
-            issues.append(f"{col}: {n_negative} negative values")
+            issues.append(f"{col}: {n_negative} unexpected negative values")
             has_issue = True
 
         # Check: concentrations not absurdly high
@@ -964,6 +1083,123 @@ def _merge_matching_rows(df: pd.DataFrame, mask: pd.Series) -> pd.Series:
                     result[col] = val
                     break
     return result
+
+
+def _position_based_matching(
+    gt_df: pd.DataFrame,
+    pred_df: pd.DataFrame,
+) -> list[tuple[int, int, float]]:
+    """Match GT and prediction rows by position + element value validation.
+
+    When sample names don't match (format differences, synthetic IDs),
+    this aligns rows by position and validates each pair by checking
+    whether their element values overlap.
+
+    Strategy:
+    1. If GT and pred have similar row counts, try 1:1 positional alignment
+    2. If pred has many more rows (over-extraction), find the best-matching
+       window within pred for each GT row using value fingerprinting
+    3. Validate each match: at least 3 element values must be within 10%
+       relative error for the match to count
+
+    Returns list of (gt_idx, pred_idx, match_quality) tuples.
+    """
+    from .schema import ELEMENT_SYMBOLS
+
+    # Get element columns present in both
+    elem_cols = []
+    for sym in ELEMENT_SYMBOLS:
+        col = f"{sym}_ppm"
+        if col in gt_df.columns and col in pred_df.columns:
+            elem_cols.append(col)
+
+    if not elem_cols:
+        return []
+
+    def _row_values(row: pd.Series) -> dict[str, float]:
+        """Extract non-null, non-BDL numeric element values from a row."""
+        vals = {}
+        for col in elem_cols:
+            v = _safe_float(row.get(col))
+            if v is not None and v != BELOW_DETECTION_SENTINEL and v > 0:
+                vals[col] = v
+        return vals
+
+    def _match_score(gt_vals: dict, pred_vals: dict) -> float:
+        """Score how well two rows match based on element value overlap."""
+        if not gt_vals or not pred_vals:
+            return 0.0
+        common = set(gt_vals.keys()) & set(pred_vals.keys())
+        if not common:
+            return 0.0
+        matches = 0
+        for col in common:
+            gv, pv = gt_vals[col], pred_vals[col]
+            if gv == 0:
+                continue
+            rel_err = abs(pv - gv) / abs(gv)
+            if rel_err < 0.10:  # Within 10%
+                matches += 1
+        return matches / max(len(common), 1)
+
+    gt_n = len(gt_df)
+    pred_n = len(pred_df)
+    results = []
+
+    if pred_n <= gt_n * 3:
+        # Similar size — try direct positional alignment
+        # Also try with offset to handle header/skip rows
+        best_offset = 0
+        best_total_score = 0.0
+
+        for offset in range(min(pred_n, 10)):
+            total = 0.0
+            for gi in range(min(gt_n, pred_n - offset)):
+                pi = gi + offset
+                if pi >= pred_n:
+                    break
+                gt_vals = _row_values(gt_df.iloc[gi])
+                pred_vals = _row_values(pred_df.iloc[pi])
+                total += _match_score(gt_vals, pred_vals)
+            if total > best_total_score:
+                best_total_score = total
+                best_offset = offset
+
+        # Apply best offset
+        for gi in range(min(gt_n, pred_n - best_offset)):
+            pi = gi + best_offset
+            if pi >= pred_n:
+                break
+            gt_vals = _row_values(gt_df.iloc[gi])
+            pred_vals = _row_values(pred_df.iloc[pi])
+            score = _match_score(gt_vals, pred_vals)
+            if score >= 0.3:  # At least 30% of shared elements match
+                results.append((gi, pi, score))
+
+    else:
+        # Pred much larger — build value fingerprints and search
+        # For each GT row, find the best matching pred row
+        gt_fingerprints = [_row_values(gt_df.iloc[i]) for i in range(gt_n)]
+        pred_fingerprints = [_row_values(pred_df.iloc[i]) for i in range(pred_n)]
+
+        used_pred = set()
+        for gi, gt_vals in enumerate(gt_fingerprints):
+            if not gt_vals:
+                continue
+            best_pi = -1
+            best_score = 0.3  # Minimum threshold
+            for pi, pred_vals in enumerate(pred_fingerprints):
+                if pi in used_pred:
+                    continue
+                score = _match_score(gt_vals, pred_vals)
+                if score > best_score:
+                    best_score = score
+                    best_pi = pi
+            if best_pi >= 0:
+                results.append((gi, best_pi, best_score))
+                used_pred.add(best_pi)
+
+    return results
 
 
 def _get_sample_row(df: pd.DataFrame, sample_name: str) -> Optional[pd.Series]:

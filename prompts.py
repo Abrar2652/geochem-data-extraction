@@ -121,7 +121,9 @@ Return a JSON object with EXACTLY these fields (use null if not found in the pap
   "deposit_local_id": "Local deposit identifier code, if any",
   "deposit_environment": "MUST be one of: 'Basin hydrothermal', 'Seafloor hydrothermal', 'Magmatic hydrothermal', 'Magmatic', 'Epithermal', 'Metamorphic', 'Sediment-hosted', 'Supergene', 'Surficial', 'unknown'. Infer from deposit type.",
   "deposit_group": "Broad deposit class. MUST use standard form: 'Mississippi Valley-type (MVT)', 'Volcanic-hosted massive sulfide (VMS)', 'Sedimentary Exhalative (SEDEX)', 'Skarn', 'Porphyry', 'Epithermal', 'Orogenic gold', 'Iron oxide copper-gold (IOCG)', 'Carlin-type', 'Stratiform sediment-hosted Cu', 'Magmatic Ni-Cu-PGE', 'Greisen', 'Pegmatite', 'unknown'",
-  "deposit_type": "Specific deposit type. E.g. 'MVT zinc-lead', 'Cu-Au porphyry', 'orogenic gold', 'stratiform sediment-hosted Cu-Co'. Use 'unknown' if not determinable.",
+  "deposit_type": "Specific deposit type per Hofstra et al. 2021. E.g. 'MVT zinc-lead', 'Cu-Au porphyry', 'orogenic gold', 'stratiform sediment-hosted Cu-Co'. Use 'unknown' if not determinable.",
+  "deposit_classification_source": "Classification scheme used. Always set to 'Hofstra et al. 2021'. If the paper uses a different scheme, note it here: 'Hofstra et al. 2021 (paper uses: <their scheme>)'.",
+  "deposit_type_original": "Deposit type EXACTLY as stated by the paper's authors, verbatim. May differ from Hofstra 2021 (e.g., paper says 'SEDEX-type Zn-Pb' but Hofstra says 'Sedimentary Exhalative'). null if same as deposit_type.",
   "primary_commodities": "Primary economic metals, comma-separated",
   "secondary_commodities": "Secondary/byproduct metals, comma-separated",
   "all_commodities": "ALL commodities combined, comma-separated. E.g. 'Zn, Pb' or 'Cu, Au, Mo'",
@@ -150,14 +152,20 @@ Return a JSON object with EXACTLY these fields (use null if not found in the pap
 }}
 ```
 
-## CRITICAL GUIDELINES
-1. Use the DEPOSIT CLASSIFICATION REFERENCE to determine `deposit_environment` from the deposit type.
+## CRITICAL GUIDELINES (USGS/CMMI MANDATORY STANDARDS)
+1. **deposit_environment, deposit_group, deposit_type MUST follow the Hofstra et al. 2021 CMMI
+   classification scheme** (see DEPOSIT CLASSIFICATION REFERENCE above). Do NOT use any alternative
+   classification system, even if the original authors use different terminology. Map the author's
+   terminology to the closest Hofstra 2021 category.
 2. Use the ANALYTICAL METHOD STANDARDIZATION reference for `analytical_method`.
 3. `country` must be an ISO 3-letter code (CHN, AUS, USA, CAN, ZAF, SWE, etc.)
 4. Do NOT fabricate coordinates, Mindat references, or any information not in the paper.
 5. For `sample_source`, construct the full bibliographic citation from the paper header/footer.
 6. Copy instrument descriptions, lab locations, and analytical conditions VERBATIM from the paper.
-7. If the paper studies multiple deposits or uses multiple analytical methods, list them comma-separated.
+7. If the paper studies multiple deposits, list comma-separated. But for `mineral`, each row
+   can only have ONE mineral — if multiple minerals were analyzed, the per-row assignment
+   will be handled downstream. List the primary mineral here.
+8. Do NOT hallucinate or assume field values without strong confidence.
 
 Return ONLY the JSON object. No explanation, no markdown code blocks.
 """)
@@ -201,16 +209,31 @@ Return a JSON array. Each element is one valid sample:
     "cd_ppm": 1479.04,
     "co_ppm": 2.22,
     "fe_ppm": 32998.28,
-    ... (all measured elements, use null for not measured / below detection)
+    ... (all measured elements)
   }},
   ...
 ]
 
 Rules:
-- Use null (not 0, not "") for elements not measured in this paper.
-- If a value is below detection limit (BDL), use null unless the paper provides an imputed value.
+- CRITICAL DISTINCTION between below-detection and not-measured (USGS protocol):
+  * If analysis was performed but the value is below detection limit (BDL, b.d.l., n.d., <DL, "-", "--"):
+    - If NO specific detection limit is given → use -99999
+    - If a specific detection limit IS given (e.g., "<0.5 ppm") → use the NEGATIVE of that limit (e.g., -0.5)
+    - Detection limits may be listed in the table or buried in the paper text
+  * If "N/A", "not analyzed", "not measured", or "not reported" → use null (blank = not attempted)
+  * -99999 means "measured but too low to quantify, LOD unknown". null means "not measured at all".
+  * Leaving a below-detection field as null LOSES valuable information.
+- Each data row must be assigned to exactly ONE mineral. Never group minerals (e.g., NOT "chalcopyrite, sphalerite").
+  If a table mixes minerals, use the mineral column to assign one mineral per row.
+- Track three sample ID tiers where available:
+  * "sample_name": core identifier (e.g., "201003232")
+  * "sample_local_id": local identifier from the paper
+  * "analysis_id": full analysis string from supplementary (e.g., "5-2002063521cpy1-1.d")
+- UNIT CONVERSION: All values MUST be in ppm. Convert wt% × 10000, ppb ÷ 1000.
+- Output samples in the EXACT order they appear in the table — no sorting/reordering.
 - Round values to 4 significant figures maximum.
 - Do NOT add elements not present in the supplementary table.
+- Do NOT hallucinate or assume values — only extract what is explicitly reported.
 
 Return ONLY the JSON array. No explanation.
 """)
@@ -308,13 +331,22 @@ Return a JSON object with:
 Each sample object must include:
 - "sample_name": the sample identifier from the table
 - Element concentrations as "{{element_symbol}}_ppm" (e.g., "fe_ppm", "cu_ppm", "zn_ppm")
-  * Use ppm for ALL values. If the table reports wt%, convert: wt% * 10000 = ppm
-  * If the table reports ppb, convert: ppb / 1000 = ppm
-  * Use null for elements not measured or below detection limit (unless the paper provides an imputed value)
+  * Keep values in their ORIGINAL units exactly as printed — do NOT convert between units
+  * The "_ppm" suffix is just the column name convention — it does NOT mean you should convert to ppm
+  * If the table says Fe = 2.19 wt%, record "fe_ppm": 2.19
+  * If the table says Cu = 123.5 ppm, record "cu_ppm": 123.5
+  * If the table says Au = 50 ppb, record "au_ppm": 50
+  * USGS BDL protocol:
+    - If below detection limit and NO specific LOD given (BDL, b.d.l., n.d., dash) → use -99999
+    - If below detection limit and a specific LOD IS given (e.g., "<0.5") → use NEGATIVE of that limit (e.g., -0.5)
+    - If "N/A", "not analyzed", "not measured" → use null (blank = not attempted at all)
+    - -99999 = "measured, below detection, LOD unknown". null = "not measured".
+  * Use null ONLY for elements that were NOT measured / NOT reported at all
 - Optional per-sample metadata fields (include only if they vary per sample):
   * "deposit_name": deposit name if it differs per sample
-  * "mineral": mineral name if it differs per sample
+  * "mineral": EXACTLY ONE mineral name per row — never group (e.g., NOT "pyrite, chalcopyrite")
   * "analytical_method": method if it differs per sample
+  * "analysis_id": full analysis identifier string if available
   * "texture": texture description if available
 
 ## FILTERING RULES
@@ -323,6 +355,20 @@ Each sample object must include:
 - EXCLUDE rows cited from other studies/references
 - EXCLUDE detection limit rows
 - EXCLUDE blank or header rows
+
+## UNIT CONVERSION (MANDATORY)
+- All element values in the output MUST be in ppm.
+- If the table reports values in wt%, convert to ppm: multiply by 10,000
+  (e.g., Fe = 2.19 wt% → "fe_ppm": 21900)
+- If the table reports values in ppb, convert to ppm: divide by 1,000
+  (e.g., Au = 50 ppb → "au_ppm": 0.05)
+- If the table reports values in ppm, µg/g, or mg/kg — no conversion needed
+- The "_ppm" column suffix means the value MUST be in ppm units
+
+## SAMPLE ORDER (CRITICAL)
+- Output samples in EXACTLY the same order they appear in the paper tables
+- Do NOT sort, group, or reorder samples by name, mineral, or any other field
+- The human evaluator will compare row-by-row with the source table
 
 ## ELEMENT SYMBOL REFERENCE
 Common elements and their symbols (use lowercase):
@@ -374,11 +420,17 @@ Each sample object must include:
   * If the table says Cu = 123.5 ppm, record "cu_ppm": 123.5
   * If the table says Au = 50 ppb, record "au_ppm": 50
   * The "_ppm" suffix is just the column name — it does NOT mean you should convert to ppm
-  * Use null for elements not measured or below detection limit (unless the paper provides an imputed value)
+  * USGS BDL protocol:
+    - If below detection limit and NO specific LOD given (BDL, b.d.l., n.d., dash) → use -99999
+    - If below detection limit and a specific LOD IS given (e.g., "<0.5") → use NEGATIVE of that limit (e.g., -0.5)
+    - If "N/A", "not analyzed", "not measured" → use null (blank = not attempted at all)
+    - -99999 = "measured, below detection, LOD unknown". null = "not measured".
+  * Use null ONLY for elements that were NOT measured / NOT reported at all
 - Optional per-sample metadata fields (include only if they vary per sample):
   * "deposit_name": deposit name if it differs per sample
-  * "mineral": mineral name if it differs per sample
+  * "mineral": EXACTLY ONE mineral name per row — never group (e.g., NOT "pyrite, chalcopyrite")
   * "analytical_method": method if it differs per sample
+  * "analysis_id": full analysis identifier string if available
   * "texture": texture description if available
 
 ## FILTERING RULES
@@ -387,6 +439,18 @@ Each sample object must include:
 - EXCLUDE rows cited from other studies/references
 - EXCLUDE detection limit rows
 - EXCLUDE blank or header rows
+
+## UNIT CONVERSION (MANDATORY)
+- All element values in the output MUST be in ppm.
+- If the table reports values in wt%, convert to ppm: multiply by 10,000
+  (e.g., Fe = 2.19 wt% → "fe_ppm": 21900)
+- If the table reports values in ppb, convert to ppm: divide by 1,000
+  (e.g., Au = 50 ppb → "au_ppm": 0.05)
+- If already in ppm, µg/g, or mg/kg — no conversion needed
+
+## SAMPLE ORDER (CRITICAL)
+- Output samples in EXACTLY the same order they appear in the paper tables
+- Do NOT sort, group, or reorder samples
 
 ## ELEMENT SYMBOL REFERENCE
 Common elements and their symbols (use lowercase):
@@ -455,10 +519,15 @@ Read the tables EXACTLY as printed — do not estimate, interpolate, or fabricat
 - Some continuation tables continue the SAME samples with DIFFERENT elements (horizontal
   continuation). In this case, merge the element values into the same sample row.
 
-**Data values:**
-- Below detection limit: bdl, b.d.l., <, n.d., n.a., dash (—, –, -) → treat as null.
+**Data values (USGS BDL protocol):**
+- Below detection limit with NO specific LOD: bdl, b.d.l., n.d., dash (—, –, -) → use -99999
+- Below detection limit WITH a specific LOD: "<0.5" → use -0.5 (NEGATIVE of the reported LOD)
+- "N/A", "not analyzed", "not measured" → use null (blank = not attempted at all)
+- -99999 means "measured but too low, LOD unknown". Negative values (e.g., -0.5) mean "below LOD of 0.5".
+  null/blank means "not measured at all".
 - Commas in numbers are THOUSANDS separators (50,525 = 50525), NOT decimal points.
 - Keep values in their ORIGINAL units as printed. Do NOT convert wt% to ppm or vice versa.
+- Do NOT hallucinate or assume values. Only extract what is explicitly in the table.
 
 **What to EXCLUDE:**
 - Summary/statistics rows: Mean, Median, Average, Std Dev, Min, Max, Range, n= → SKIP these.

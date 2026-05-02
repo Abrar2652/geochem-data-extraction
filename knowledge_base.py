@@ -20,72 +20,116 @@ from typing import Optional
 # Maps deposit_type keywords → (deposit_environment, deposit_group)
 # ──────────────────────────────────────────────────────────────────────────────
 
+# ──────────────────────────────────────────────────────────────────────────────
+# Deposit Classification — loaded from DARPA CRITICALMAAS sri-ta2 / Hofstra 2021
+# 189 deposit types, 14 environments, 53 groups
+# ──────────────────────────────────────────────────────────────────────────────
+
+_CMMI_DEPOSIT_TYPES: list[dict] = []  # Loaded lazily from sri-ta2 CSV
+_CMMI_LOADED = False
+
+
+def _load_cmmi_deposit_types() -> list[dict]:
+    """Load the full 189-type CMMI hierarchy from sri-ta2 data."""
+    global _CMMI_DEPOSIT_TYPES, _CMMI_LOADED
+    if _CMMI_LOADED:
+        return _CMMI_DEPOSIT_TYPES
+    try:
+        import pandas as pd
+        from pathlib import Path
+        base = Path(__file__).parent
+
+        # Try sri-ta2 CSV first (authoritative)
+        csv_path = base / "sri-ta2" / "minmod" / "deposit_type.csv"
+        desc_path = base / "sri-ta2" / "taxonomy" / "cmmi_options_full_description_with_number.csv"
+
+        if csv_path.exists():
+            dt = pd.read_csv(csv_path)
+            descriptions = {}
+            if desc_path.exists():
+                desc_df = pd.read_csv(desc_path)
+                for _, r in desc_df.iterrows():
+                    descriptions[r["Deposit type"]] = str(r["Description"])
+
+            for _, row in dt.iterrows():
+                _CMMI_DEPOSIT_TYPES.append({
+                    "name": row["Deposit type"],
+                    "environment": row["Deposit environment"],
+                    "group": row["Deposit group"],
+                    "minmod_id": row["Minmod ID"],
+                    "description": descriptions.get(row["Deposit type"], ""),
+                })
+
+        # Fallback: load from JSON
+        elif (base / "deposit_classification_cmmi.json").exists():
+            import json
+            with open(base / "deposit_classification_cmmi.json") as f:
+                data = json.load(f)
+            for env, groups in data["hierarchy"].items():
+                for grp, types in groups.items():
+                    for t in types:
+                        _CMMI_DEPOSIT_TYPES.append({
+                            "name": t["name"],
+                            "environment": env,
+                            "group": grp,
+                            "minmod_id": t.get("minmod_id", ""),
+                            "description": t.get("description", ""),
+                        })
+    except Exception:
+        pass
+    _CMMI_LOADED = True
+    return _CMMI_DEPOSIT_TYPES
+
+
+# Legacy keyword → (environment, group) mapping for backward compatibility
+# AND for fast keyword-based deposit type inference from paper text
 DEPOSIT_TAXONOMY: dict[str, tuple[str, str]] = {
-    # Mississippi Valley-type
-    "mvt":                  ("Basin hydrothermal",      "Mississippi Valley-type (MVT)"),
-    "mississippi valley":   ("Basin hydrothermal",      "Mississippi Valley-type (MVT)"),
-    # SEDEX
-    "sedex":                ("Seafloor hydrothermal",   "Sedimentary Exhalative (SEDEX)"),
-    "sedimentary exhalative": ("Seafloor hydrothermal", "Sedimentary Exhalative (SEDEX)"),
-    # VMS / VHMS
-    "vms":                  ("Seafloor hydrothermal",   "Volcanic-hosted massive sulfide (VMS)"),
-    "vhms":                 ("Seafloor hydrothermal",   "Volcanic-hosted massive sulfide (VMS)"),
-    "volcanogenic massive": ("Seafloor hydrothermal",   "Volcanic-hosted massive sulfide (VMS)"),
-    "kuroko":               ("Seafloor hydrothermal",   "Volcanic-hosted massive sulfide (VMS)"),
-    # Porphyry
+    # These are keyword shortcuts — the full 189-type CMMI is authoritative
+    "mvt":                  ("Basin hydrothermal",      "Mississippi Valley- type (MVT)"),
+    "mississippi valley":   ("Basin hydrothermal",      "Mississippi Valley- type (MVT)"),
+    "sedex":                ("Basin hydrothermal",      "Sediment-hosted"),
+    "sedimentary exhalative": ("Basin hydrothermal",    "Sediment-hosted"),
+    "vms":                  ("Volcanic basin hydrothermal", "Volcanogenic massive sulfide (VMS)"),
+    "vhms":                 ("Volcanic basin hydrothermal", "Volcanogenic massive sulfide (VMS)"),
+    "volcanogenic massive": ("Volcanic basin hydrothermal", "Volcanogenic massive sulfide (VMS)"),
+    "kuroko":               ("Volcanic basin hydrothermal", "Volcanogenic massive sulfide (VMS)"),
     "porphyry":             ("Magmatic hydrothermal",   "Porphyry"),
     "porphyry cu":          ("Magmatic hydrothermal",   "Porphyry"),
     "porphyry cu-mo":       ("Magmatic hydrothermal",   "Porphyry"),
     "porphyry cu-au":       ("Magmatic hydrothermal",   "Porphyry"),
     "porphyry mo":          ("Magmatic hydrothermal",   "Porphyry"),
-    # Skarn
     "skarn":                ("Magmatic hydrothermal",   "Skarn"),
     "exoskarn":             ("Magmatic hydrothermal",   "Skarn"),
     "endoskarn":            ("Magmatic hydrothermal",   "Skarn"),
-    # Epithermal
-    "epithermal":           ("Epithermal",              "Epithermal"),
-    "high-sulfidation":     ("Epithermal",              "Epithermal"),
-    "low-sulfidation":      ("Epithermal",              "Epithermal"),
-    "intermediate-sulfidation": ("Epithermal",          "Epithermal"),
-    # Orogenic
-    "orogenic":             ("Metamorphic",             "Orogenic"),
-    "orogenic gold":        ("Metamorphic",             "Orogenic gold"),
-    "lode gold":            ("Metamorphic",             "Orogenic gold"),
-    # IOCG
-    "iocg":                 ("Magmatic hydrothermal",   "Iron oxide copper-gold (IOCG)"),
-    "iron oxide copper":    ("Magmatic hydrothermal",   "Iron oxide copper-gold (IOCG)"),
-    # Carlin-type
-    "carlin":               ("Sediment-hosted",         "Carlin-type"),
-    # Stratiform Cu
-    "stratiform":           ("Basin hydrothermal",      "Stratiform sediment-hosted Cu"),
-    "sediment-hosted cu":   ("Basin hydrothermal",      "Stratiform sediment-hosted Cu"),
-    "sediment-hosted copper": ("Basin hydrothermal",    "Stratiform sediment-hosted Cu"),
-    "kupferschiefer":       ("Basin hydrothermal",      "Stratiform sediment-hosted Cu"),
-    # Magmatic Ni-Cu
-    "magmatic ni":          ("Magmatic",                "Magmatic Ni-Cu-PGE"),
-    "magmatic sulfide":     ("Magmatic",                "Magmatic Ni-Cu-PGE"),
-    "ni-cu-pge":            ("Magmatic",                "Magmatic Ni-Cu-PGE"),
-    # Greisen
+    "epithermal":           ("Magmatic hydrothermal",   "Epithermal"),
+    "high-sulfidation":     ("Magmatic hydrothermal",   "Epithermal"),
+    "low-sulfidation":      ("Magmatic hydrothermal",   "Epithermal"),
+    "intermediate-sulfidation": ("Magmatic hydrothermal", "Epithermal"),
+    "orogenic":             ("Metamorphic hydrothermal", "Orogenic"),
+    "orogenic gold":        ("Metamorphic hydrothermal", "Orogenic"),
+    "lode gold":            ("Metamorphic hydrothermal", "Orogenic"),
+    "iocg":                 ("Regional metasomatic",    "IOCG"),
+    "iron oxide copper":    ("Regional metasomatic",    "IOCG"),
+    "carlin":               ("Magmatic hydrothermal",   "Carlin-type"),
+    "stratiform":           ("Basin hydrothermal",      "Sediment-hosted"),
+    "sediment-hosted cu":   ("Basin hydrothermal",      "Sediment-hosted"),
+    "sediment-hosted copper": ("Basin hydrothermal",    "Sediment-hosted"),
+    "kupferschiefer":       ("Basin hydrothermal",      "Sediment-hosted"),
+    "magmatic ni":          ("Magmatic",                "Ultramafic and (or) mafic intrusion"),
+    "magmatic sulfide":     ("Magmatic",                "Ultramafic and (or) mafic intrusion"),
+    "ni-cu-pge":            ("Magmatic",                "Ultramafic and (or) mafic intrusion"),
     "greisen":              ("Magmatic hydrothermal",   "Greisen"),
-    # Pegmatite
     "pegmatite":            ("Magmatic",                "Pegmatite"),
-    # Carbonatite
     "carbonatite":          ("Magmatic",                "Carbonatite"),
-    # Laterite
     "laterite":             ("Supergene",               "Laterite"),
-    # Placer
-    "placer":               ("Surficial",               "Placer"),
-    # BIF
-    "bif":                  ("Chemical sedimentary",    "Banded iron formation (BIF)"),
-    "banded iron":          ("Chemical sedimentary",    "Banded iron formation (BIF)"),
-    # Replacement
-    "carbonate replacement": ("Magmatic hydrothermal",  "Carbonate replacement deposit (CRD)"),
-    "crd":                  ("Magmatic hydrothermal",   "Carbonate replacement deposit (CRD)"),
-    "manto":                ("Magmatic hydrothermal",   "Carbonate replacement deposit (CRD)"),
-    # Five-element veins
-    "five-element":         ("Metamorphic",             "Five-element vein"),
-    "five element":         ("Metamorphic",             "Five-element vein"),
-    # Intrusion-related
+    "placer":               ("Erosional",               "Placer"),
+    "bif":                  ("Basin chemical",          "Iron formation"),
+    "banded iron":          ("Basin chemical",          "Iron formation"),
+    "carbonate replacement": ("Magmatic hydrothermal",  "Replacement"),
+    "crd":                  ("Magmatic hydrothermal",   "Replacement"),
+    "manto":                ("Magmatic hydrothermal",   "Replacement"),
+    "five-element":         ("Basin hydrothermal",      "Five-element"),
+    "five element":         ("Basin hydrothermal",      "Five-element"),
     "intrusion-related":    ("Magmatic hydrothermal",   "Intrusion-related"),
     "reduced intrusion":    ("Magmatic hydrothermal",   "Intrusion-related"),
 }
@@ -366,8 +410,39 @@ def normalize_method(method: str) -> str:
 # ──────────────────────────────────────────────────────────────────────────────
 
 def get_deposit_taxonomy_prompt() -> str:
-    """Format deposit classification rules as LLM reference text."""
-    # Group by environment for cleaner presentation
+    """Format the full CMMI 189-type deposit classification for LLM prompts.
+
+    Uses the authoritative sri-ta2/Hofstra 2021 hierarchy.
+    Falls back to the keyword taxonomy if sri-ta2 data unavailable.
+    """
+    cmmi = _load_cmmi_deposit_types()
+
+    if cmmi:
+        # Group by environment → group → types
+        hierarchy: dict[str, dict[str, list[str]]] = {}
+        for entry in cmmi:
+            env = entry["environment"]
+            grp = entry["group"]
+            name = entry["name"]
+            hierarchy.setdefault(env, {}).setdefault(grp, []).append(name)
+
+        lines = [
+            "DEPOSIT CLASSIFICATION REFERENCE (Hofstra et al. 2021 CMMI — 189 types):",
+            "Source: DARPA CRITICALMAAS sri-ta2. Use EXACTLY these names.",
+            "",
+        ]
+        for env in sorted(hierarchy.keys()):
+            groups = hierarchy[env]
+            n_types = sum(len(v) for v in groups.values())
+            lines.append(f"  Environment: '{env}' ({n_types} types)")
+            for grp in sorted(groups.keys()):
+                types = groups[grp]
+                lines.append(f"    Group: '{grp}'")
+                for t in sorted(types):
+                    lines.append(f"      - {t}")
+        return "\n".join(lines)
+
+    # Fallback to keyword taxonomy
     env_groups: dict[str, list[str]] = {}
     seen = set()
     for kw, (env, group) in DEPOSIT_TAXONOMY.items():
@@ -382,6 +457,94 @@ def get_deposit_taxonomy_prompt() -> str:
         for g in sorted(set(groups)):
             lines.append(f"    → {g}")
     return "\n".join(lines)
+
+
+def score_deposit_types(
+    paper_text: str,
+    deposit_name: Optional[str] = None,
+    minerals: Optional[list[str]] = None,
+    commodities: Optional[list[str]] = None,
+) -> list[dict]:
+    """Score all 189 CMMI deposit types against paper context.
+
+    Returns top-N scored deposit types with confidence and reasoning.
+    Uses keyword matching against deposit type descriptions from sri-ta2.
+
+    Each result: {name, environment, group, score, reason}
+    """
+    cmmi = _load_cmmi_deposit_types()
+    if not cmmi:
+        return []
+
+    text_lower = paper_text.lower() if paper_text else ""
+    deposit_lower = deposit_name.lower() if deposit_name else ""
+    mineral_set = {m.lower() for m in (minerals or [])}
+    commodity_set = {c.lower() for c in (commodities or [])}
+
+    scored = []
+    for entry in cmmi:
+        score = 0.0
+        reasons = []
+        name_lower = entry["name"].lower()
+        desc_lower = entry["description"].lower() if entry["description"] else ""
+        grp_lower = entry["group"].lower()
+        env_lower = entry["environment"].lower()
+
+        # 1. Direct name match in paper text (strongest signal)
+        if name_lower in text_lower:
+            score += 0.4
+            reasons.append(f"deposit type '{entry['name']}' mentioned in text")
+
+        # 2. Group name match
+        if grp_lower in text_lower:
+            score += 0.2
+            reasons.append(f"group '{entry['group']}' in text")
+
+        # 3. Environment match
+        if env_lower in text_lower:
+            score += 0.1
+            reasons.append(f"environment '{entry['environment']}' in text")
+
+        # 4. Keyword overlap between description and paper text
+        if desc_lower:
+            desc_words = set(desc_lower.split())
+            # Filter to meaningful words (>4 chars, not common)
+            _COMMON = {"that", "this", "with", "from", "have", "been", "also", "type",
+                       "they", "their", "which", "where", "these", "those", "into",
+                       "deposit", "deposits", "mineral", "known", "typically"}
+            desc_keywords = {w for w in desc_words if len(w) > 4 and w not in _COMMON}
+            if desc_keywords:
+                overlap = sum(1 for kw in desc_keywords if kw in text_lower)
+                kw_score = min(0.2, overlap / len(desc_keywords) * 0.3)
+                if kw_score > 0.05:
+                    score += kw_score
+                    reasons.append(f"{overlap}/{len(desc_keywords)} description keywords match")
+
+        # 5. Commodity match
+        for comm in commodity_set:
+            if comm in name_lower or comm in desc_lower:
+                score += 0.1
+                reasons.append(f"commodity '{comm}' matches")
+                break
+
+        # 6. Deposit name similarity
+        if deposit_lower:
+            if any(w in deposit_lower for w in name_lower.split() if len(w) > 3):
+                score += 0.1
+                reasons.append("deposit name overlap")
+
+        if score > 0.05:
+            scored.append({
+                "name": entry["name"],
+                "environment": entry["environment"],
+                "group": entry["group"],
+                "minmod_id": entry["minmod_id"],
+                "score": round(min(1.0, score), 3),
+                "reason": "; ".join(reasons),
+            })
+
+    scored.sort(key=lambda x: -x["score"])
+    return scored[:10]  # Top 10
 
 
 def get_method_standardization_prompt() -> str:
@@ -413,6 +576,146 @@ def get_mineral_classification_prompt() -> str:
     return "\n".join(lines)
 
 
+# ──────────────────────────────────────────────────────────────────────────────
+# USGS Picklist — authoritative valid values for schema fields
+# Loaded from Pickelist.xlsx at import time; used as LLM reference
+# ──────────────────────────────────────────────────────────────────────────────
+
+_USGS_PICKLIST: dict[str, list[str]] = {}
+_PICKLIST_LOADED = False
+
+
+def _load_usgs_picklist() -> dict[str, list[str]]:
+    """Load the USGS picklist from Pickelist.xlsx (one-time, cached)."""
+    global _USGS_PICKLIST, _PICKLIST_LOADED
+    if _PICKLIST_LOADED:
+        return _USGS_PICKLIST
+    try:
+        import pandas as pd
+        from pathlib import Path
+        picklist_path = Path(__file__).parent / "Pickelist.xlsx"
+        if not picklist_path.exists():
+            _PICKLIST_LOADED = True
+            return _USGS_PICKLIST
+        df = pd.read_excel(picklist_path, sheet_name="Sheet1")
+        for col in df.columns:
+            vals = sorted(df[col].dropna().unique().astype(str).tolist())
+            if vals:
+                _USGS_PICKLIST[col] = vals
+        _PICKLIST_LOADED = True
+    except Exception:
+        _PICKLIST_LOADED = True
+    return _USGS_PICKLIST
+
+
+def get_usgs_picklist_prompt() -> str:
+    """Format the USGS picklist as a reference section for LLM prompts.
+
+    Includes the most relevant fields (deposit, mineral, method, material).
+    Large fields (country, state, earth_material) are summarised to save tokens.
+    """
+    picklist = _load_usgs_picklist()
+    if not picklist:
+        return ""
+
+    # Fields to include in full (compact enough for prompt)
+    full_fields = [
+        "deposit_environment", "deposit_group", "feature_type",
+        "sample_deposit_relation", "sample_type", "sampling_method",
+        "material_class", "Earth_material_group", "Metamorphic_grade",
+        "Mode of Occurrence", "color", "alteration", "analyzed_material",
+        "analytical_method", "location_source",
+    ]
+    # Fields to include as sample (too large for full listing)
+    sample_fields = {
+        "deposit_type": 30,
+        "Mineral": 50,
+        "earth_material": 20,
+    }
+
+    lines = [
+        "USGS PICKLIST REFERENCE (authoritative valid values from CMMI database):",
+        "When extracting metadata, prefer values from this list. Other values are",
+        "acceptable if the paper uses specific terminology not covered here.",
+        "",
+    ]
+
+    for field in full_fields:
+        if field in picklist:
+            vals = picklist[field]
+            lines.append(f"  {field} ({len(vals)} valid):")
+            lines.append(f"    {', '.join(vals)}")
+            lines.append("")
+
+    for field, limit in sample_fields.items():
+        if field in picklist:
+            vals = picklist[field]
+            shown = vals[:limit]
+            lines.append(f"  {field} ({len(vals)} valid, showing {len(shown)}):")
+            lines.append(f"    {', '.join(shown)}")
+            if len(vals) > limit:
+                lines.append(f"    ... and {len(vals) - limit} more")
+            lines.append("")
+
+    return "\n".join(lines)
+
+
+def validate_against_picklist(field_name: str, value: str) -> tuple[bool, Optional[str]]:
+    """Check if a value is in the USGS picklist for a given field.
+
+    Returns (is_valid, suggestion) where suggestion is the closest match
+    if the value is not exactly in the list.
+    """
+    picklist = _load_usgs_picklist()
+    # Map schema field names to picklist column names
+    field_map = {
+        "deposit_environment": "deposit_environment",
+        "deposit_group": "deposit_group",
+        "deposit_type": "deposit_type",
+        "feature_type": "feature_type",
+        "sample_deposit_relation": "sample_deposit_relation",
+        "sample_type": "sample_type",
+        "sampling_method": "sampling_method",
+        "material_class": "material_class",
+        "earth_material_group": "Earth_material_group",
+        "metamorphic_grade": "Metamorphic_grade",
+        "mineral": "Mineral",
+        "mode_of_occurrence": "Mode of Occurrence",
+        "color": "color",
+        "alteration": "alteration",
+        "analytical_method": "analytical_method",
+        "country": "country",
+    }
+
+    picklist_col = field_map.get(field_name)
+    if not picklist_col or picklist_col not in picklist:
+        return True, None  # No picklist for this field
+
+    valid_values = picklist[picklist_col]
+    value_lower = value.strip().lower()
+
+    # Exact match (case-insensitive)
+    for v in valid_values:
+        if v.lower() == value_lower:
+            return True, v  # Return canonical casing
+
+    # Fuzzy match — find closest
+    best_match = None
+    best_score = 0.0
+    for v in valid_values:
+        # Simple containment check
+        v_lower = v.lower()
+        if value_lower in v_lower or v_lower in value_lower:
+            score = len(min(value_lower, v_lower, key=len)) / len(max(value_lower, v_lower, key=len))
+            if score > best_score:
+                best_score = score
+                best_match = v
+
+    if best_match and best_score > 0.5:
+        return False, best_match
+    return False, None
+
+
 def get_knowledge_base_prompt() -> str:
     """Return the full knowledge base section for injection into LLM prompts."""
     sections = [
@@ -423,6 +726,8 @@ def get_knowledge_base_prompt() -> str:
         get_method_standardization_prompt(),
         "",
         get_mineral_classification_prompt(),
+        "",
+        get_usgs_picklist_prompt(),
         "",
         "ISO COUNTRY CODES (common):",
         "  China=CHN, Australia=AUS, USA=USA, Canada=CAN, Brazil=BRA,",

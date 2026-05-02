@@ -6,10 +6,13 @@ and per-section text to help LLMs focus on relevant parts of the paper.
 """
 
 from __future__ import annotations
+import logging
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Optional
+
+logger = logging.getLogger(__name__)
 
 try:
     import pdfplumber
@@ -78,6 +81,7 @@ class PDFContent:
     tables_text: list[str]                 = field(default_factory=list)
     total_pages: int                       = 0
     metadata: dict                         = field(default_factory=dict)
+    marker_markdown: str                   = ""   # Full document via Marker (surya-based)
 
     @property
     def analytical_section(self) -> str:
@@ -174,6 +178,22 @@ def extract_pdf(pdf_path: str | Path, max_chars_per_page: int = 5000) -> PDFCont
         content.pages = page_texts
         content.full_text = "\n\n".join(page_texts)
         content.sections = _detect_sections(content.full_text)
+
+    # Generate Marker full-document markdown (non-blocking: graceful fallback)
+    # Marker produces higher-quality markdown with intact table structures,
+    # landscape page handling, and proper reading order — superior to pdfplumber
+    # for complex geochemistry PDFs.
+    try:
+        from .tabledetector import marker_pdf_to_markdown
+        marker_md = marker_pdf_to_markdown(pdf_path)
+        if marker_md and len(marker_md) > 100:
+            content.marker_markdown = marker_md
+            logger.info("Marker markdown: %d chars (vs pdfplumber: %d chars)",
+                       len(marker_md), len(content.full_text))
+    except ImportError:
+        logger.debug("Marker not available — using pdfplumber text only")
+    except Exception as exc:
+        logger.debug("Marker markdown extraction failed: %s", exc)
 
     return content
 
@@ -325,6 +345,142 @@ def score_pages_for_data(content: PDFContent) -> list[tuple[int, float]]:
     return scored
 
 
+def detect_rotated_pages(pdf_path: str | Path) -> list[tuple[int, int]]:
+    """Detect pages with rotated content (landscape tables) using PyMuPDF.
+
+    Returns a list of (page_index, rotation_angle) for pages where the
+    majority of text is rotated (i.e., landscape tables in portrait pages).
+
+    This is critical for papers like Bonnet et al. where tables are in
+    landscape orientation but the page is tagged as portrait.
+    """
+    import math
+
+    try:
+        import fitz  # PyMuPDF
+    except ImportError:
+        return []
+
+    rotated_pages: list[tuple[int, int]] = []
+    try:
+        doc = fitz.open(str(pdf_path))
+        for page_idx in range(len(doc)):
+            page = doc[page_idx]
+            blocks = page.get_text("rawdict")["blocks"]
+
+            cos_sum, sin_sum, count = 0.0, 0.0, 0
+            for block in blocks:
+                if "lines" not in block:
+                    continue
+                for line in block["lines"]:
+                    for span in line["spans"]:
+                        d = span.get("dir", (1, 0))
+                        cos_sum += d[0]
+                        sin_sum += d[1]
+                        count += 1
+
+            if count < 10:
+                continue
+
+            avg_cos = cos_sum / count
+            avg_sin = sin_sum / count
+
+            # Normal horizontal text: cos~1, sin~0
+            # 90 CCW (landscape): cos~0, sin~1
+            # 90 CW: cos~0, sin~-1
+            if abs(avg_cos) < 0.3:
+                angle = round(math.degrees(math.atan2(avg_sin, avg_cos)))
+                # Normalize to standard angles
+                if abs(angle - 90) < 15:
+                    rotated_pages.append((page_idx, 90))
+                elif abs(angle + 90) < 15:
+                    rotated_pages.append((page_idx, -90))
+
+        doc.close()
+    except Exception:
+        pass
+
+    return rotated_pages
+
+
+def extract_rotated_page_text(pdf_path: str | Path, page_idx: int) -> str:
+    """Extract text from a rotated page by counter-rotating coordinates.
+
+    Uses PyMuPDF to read text spans with their direction vectors, then
+    groups them into lines based on the dominant (rotated) reading order.
+    """
+    try:
+        import fitz
+    except ImportError:
+        return ""
+
+    try:
+        doc = fitz.open(str(pdf_path))
+        page = doc[page_idx]
+
+        # Re-render with page rotation applied to normalize content
+        original_rotation = page.rotation
+        # Try setting rotation to 0 and re-extracting
+        page.set_rotation(0)
+        text = page.get_text("text")
+
+        if not text or len(text.strip()) < 50:
+            # Fallback: render as image and get text from the rotated view
+            page.set_rotation(original_rotation)
+            # Get text with rotation normalization by transforming the matrix
+            mat = fitz.Matrix(1, 1).prerotate(-90)
+            # Extract text from a pixmap would require OCR, so instead
+            # we extract raw dict and re-sort by rotated coordinates
+            blocks = page.get_text("rawdict")["blocks"]
+            lines_data = []  # (y_rotated, x_rotated, text)
+            for block in blocks:
+                if "lines" not in block:
+                    continue
+                for line in block["lines"]:
+                    for span in line["spans"]:
+                        d = span.get("dir", (1, 0))
+                        bbox = span["bbox"]  # (x0, y0, x1, y1)
+                        txt = span["text"]
+                        if not txt.strip():
+                            continue
+                        # For 90-degree rotated text, swap and invert coordinates
+                        # to get the "reading order" position
+                        if abs(d[1]) > 0.5:  # Rotated text
+                            # New x = old y, new y = -old x (for 90 CCW)
+                            new_x = bbox[1]  # original y becomes x
+                            new_y = -bbox[0]  # original x becomes y (inverted)
+                            lines_data.append((round(new_y, 1), round(new_x, 1), txt))
+                        else:
+                            lines_data.append((round(bbox[1], 1), round(bbox[0], 1), txt))
+
+            # Sort by y (line position) then x (column position)
+            lines_data.sort(key=lambda t: (t[0], t[1]))
+
+            # Group by y-position into lines (tolerance of 5 units)
+            result_lines = []
+            current_y = None
+            current_line_parts = []
+            for y, x, txt in lines_data:
+                if current_y is None or abs(y - current_y) > 5:
+                    if current_line_parts:
+                        current_line_parts.sort(key=lambda p: p[0])
+                        result_lines.append("  ".join(t for _, t in current_line_parts))
+                    current_y = y
+                    current_line_parts = [(x, txt)]
+                else:
+                    current_line_parts.append((x, txt))
+            if current_line_parts:
+                current_line_parts.sort(key=lambda p: p[0])
+                result_lines.append("  ".join(t for _, t in current_line_parts))
+
+            text = "\n".join(result_lines)
+
+        doc.close()
+        return text
+    except Exception:
+        return ""
+
+
 def get_data_pages_text(content: PDFContent, max_chars: int = 15000) -> str:
     """Extract raw text from pages that likely contain geochemical data tables.
 
@@ -413,8 +569,82 @@ def get_paper_text_for_llm(content: PDFContent, max_chars: int = 20000) -> str:
             total += len(header) + len(methods_chunk)
 
     if not parts:
+        # Prefer Marker markdown when available (better layout, table structure)
+        if content.marker_markdown:
+            return content.marker_markdown[:max_chars]
         return content.full_text[:max_chars]
-    return "\n".join(parts)[:max_chars]
+
+    result = "\n".join(parts)
+
+    # Append Marker markdown table sections as supplementary context.
+    # Marker often captures tables that pdfplumber misses (landscape, rotated,
+    # complex headers). Include Marker's table content in remaining budget.
+    if content.marker_markdown and total < max_chars:
+        marker_tables = _extract_marker_table_sections(content.marker_markdown)
+        if marker_tables:
+            remaining = max_chars - total
+            marker_header = (
+                f"\n{'='*60}\n"
+                f"[MARKER DOCUMENT TABLES — higher-fidelity table extraction]\n"
+                f"{'='*60}\n"
+            )
+            marker_content = marker_header + marker_tables
+            if len(marker_content) <= remaining:
+                result += marker_content
+            elif remaining > 500:
+                result += marker_content[:remaining]
+
+    return result[:max_chars]
+
+
+def _extract_marker_table_sections(marker_md: str, max_chars: int = 8000) -> str:
+    """Extract table sections from Marker's full-document markdown.
+
+    Marker outputs tables as pipe-delimited markdown. This function extracts
+    all table blocks (including their captions/headers) to provide the LLM
+    with higher-fidelity table content than pdfplumber.
+
+    Returns concatenated table sections, or empty string if no tables found.
+    """
+    if not marker_md:
+        return ""
+
+    import re
+
+    tables = []
+    lines = marker_md.split("\n")
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        # Detect table start: line with pipe characters (markdown table row)
+        if "|" in line and line.strip().startswith("|"):
+            # Capture context: 3 lines before table (likely caption/header)
+            start = max(0, i - 3)
+            context_lines = lines[start:i]
+
+            # Capture all table rows (consecutive lines with |)
+            table_lines = []
+            while i < len(lines) and "|" in lines[i]:
+                table_lines.append(lines[i])
+                i += 1
+
+            # Capture 1 line after table (footnotes)
+            end_context = lines[i:i+1] if i < len(lines) else []
+
+            if len(table_lines) >= 2:  # At least header + 1 data row
+                table_block = (
+                    "\n".join(context_lines).strip()
+                    + "\n" + "\n".join(table_lines)
+                    + "\n" + "\n".join(end_context).strip()
+                )
+                tables.append(table_block.strip())
+        i += 1
+
+    if not tables:
+        return ""
+
+    result = "\n\n---\n\n".join(tables)
+    return result[:max_chars]
 
 
 def _extract_methods_paragraphs(full_text: str, max_chars: int = 6000) -> str:

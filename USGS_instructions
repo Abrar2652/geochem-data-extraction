@@ -1,0 +1,99 @@
+Gemini said
+This document outlines the standard operating procedure for extracting and structuring geochemical data into the CMiO-MIN database structure. While the examples provided reference a specific paper by Cave et al. regarding the Mt Isa deposit, the extraction protocols detailed below are universally applicable and represent the mandatory standard for processing all academic papers.
+
+
+1. Locating the Data Ecosystem
+The first step in any data extraction is identifying the location of the relevant geochemical datasets.
+
+Data can generally be found within the main text of the paper, in one or more appendices, or across both locations.
+
+In the provided example, the target data is isolated in one of three supplementary tables.
+
+An analysis of the dataset repository image reveals three distinct files: Supplementary Table 1 for LA-ICP-MS vs Probe Data, Supplementary Table 2 for LA-ICP-MS Data, and Supplementary Table 3 for Geothermometer Data.
+
+
+For this specific extraction standard, the numerical data is pulled from Supplementary Table 2, while Supplementary Table 1 is deemed not relevant.
+
+
+Data is often organized hierarchically within Excel workbooks using labeled sheets.
+
+An image of the workbook tabs demonstrates this organization, showing data separated into sheets labeled "Chalcopyrite", "Galena", and "Sphalerite".
+
+
+2. Numerical Data Extraction Protocols
+Extracted data frequently appears in a different order than it does in the original appendix, which creates challenges for Quality Assurance and Quality Control (QA/QC) and necessitates automated workflows. When processing numerical fields, strict data entry rules apply to ensure database integrity.
+
+
+A numerical value is required whenever an attempt was made to measure an element.
+
+If an element is detected, the reported numerical value must be entered.
+
+If an element was measured but the result is Below the Detection Limit (BDL) or Below Limit of Detection (Below LOD), and no specific detection limit is provided, the value must be recorded as "-9999".
+
+
+If a specific detection limit is reported (e.g., 0.5 ppm), the value must be recorded as the negative of that limit (e.g., "-0.5").
+
+These detection limits may be listed directly within the data table or buried within the text of the paper.
+
+If a field is marked "N/A" or "not analyzed", the corresponding cell in the database must be left entirely blank.
+
+An image of the dataset highlights this critical difference: "Below LOD" cells (highlighted in green) require the "-9999" input, whereas "N/A" cells (highlighted in pink) must remain blank.
+
+It is mandatory to distinguish between below-detections and blanks because it defines what was attempted to be measured versus what wasn't attempted at all.
+
+
+Leaving unanalyzed fields blank communicates that we have absolutely no idea what the concentration actually is.
+
+3. Standardizing Geological Classifications
+Database uniformity requires adhering to a single, strict classification scheme, regardless of what the original authors suggest.
+
+Data entry personnel must follow the CMMI Classification scheme established by Hofstra et al. 2021.
+
+This scheme is the official standard for the Critical Minerals Mapping Initiative Global Geochemical Database, as utilized by CriticalMAAS.
+
+An image of an alternative classification table shows headers for "deposit_environment", "deposit_group", and "deposit_type" filled with terms like "Seafloor hydrothermal" and "Sedimentary Exhalative (SEDEX)".
+
+The origin of this specific alternative classification is unknown and must be bypassed in favor of the standardized Hofstra et al. framework.
+
+4. Sample Identification and Metadata Linking
+Tracing a sample from the physical map to the final database row is a primary requirement.
+
+Three distinct identification fields must be tracked: "Sample_name", "sample_local_ID", and "analysis_id".
+
+Sample IDs are typically listed in the paper, though they may contain typos.
+
+Papers usually include a figure or cross-section map that provides approximate physical locations for these samples.
+
+An image of the paper's geological cross-sections shows numbered locations corresponding to a "Sample List" (e.g., sample 1 is 201003232, sample 5 is 200209312).
+
+Discrepancies often exist between sample names in the text, figures, and supplementary files.
+
+
+For example, a supplementary file might use an extended string like "5-2002063521cpy1-1.d".
+
+In this scenario, both the "sample_name" and "sample_local_id" are isolated as the core numerical identifier "2002063521".
+
+The "analysis_id" may match the longer supplementary file name but without the trailing "-1".
+
+5. Mineral and Analytical Method Assignment
+Every single data point must be definitively linked to a specific mineral and the precise analytical method used to measure it.
+
+Each line of data can only be assigned to one individual mineral; grouping minerals (e.g., "chalcopyrite, sphalerite, galena") is strictly prohibited.
+
+If a single table contains mixed mineral data, a dedicated column is usually present to specify the mineral for each row.
+
+Alternatively, the mineral assignment can be deduced from clues within the file structure.
+
+Labeled sheets within a supplementary table (e.g., tabs named Chalcopyrite, Galena, Sphalerite) serve as direct identifiers.
+
+Additionally, the "analysis_id" strings often contain abbreviations that denote the mineral.
+
+Images of sample analysis IDs demonstrate these embedded clues: "sph" indicates sphalerite, "cpy" indicates chalcopyrite, and "gal" indicates galena.
+
+
+The "analytical_method" may be broadly reported in the paper's text as a combination of techniques, such as "LA-ICPMS, EMPA, SEM-EDS".
+
+To assign the precise method to a specific dataset, clues should be taken from the repository website or file names.
+
+
+An image of the Mendeley dataset page points directly to the file "Supplementary Table 2 LA-ICP-MS Data.xlsx", explicitly confirming that LA-ICP-MS is the analytical method for that specific numerical set.

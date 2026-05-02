@@ -385,6 +385,78 @@ class GeminiClient(LLMClient):
 
 
 # ──────────────────────────────────────────────────────────────────────────────
+# Local HuggingFace (open-weight 7-32B models, no vision)
+# ──────────────────────────────────────────────────────────────────────────────
+
+class LocalHFClient(LLMClient):
+    """Local HuggingFace model client (text-only, no vision).
+
+    Mirrors `iswc2026/scripts/pipeline_adapter.py::LocalHFClient` so the
+    same short-name aliases work in geochem_benchmark.run() without changes
+    on the caller side. When ``images`` are passed (vision LLM fallback),
+    we log a warning and return an empty string so the pipeline records the
+    vision step as failed and falls through to text-only paths.
+    """
+
+    LOCAL_MODEL_MAP = {
+        "qwen25-7b":      "Qwen/Qwen2.5-7B-Instruct",
+        "qwen25-32b":     "Qwen/Qwen2.5-32B-Instruct",
+        "mistral-7b-v02": "mistralai/Mistral-7B-Instruct-v0.2",
+        "mistral-7b-v03": "mistralai/Mistral-7B-Instruct-v0.3",
+        "mistral-7b":     "mistralai/Mistral-7B-Instruct-v0.3",
+        "llama31-8b":     "meta-llama/Meta-Llama-3.1-8B-Instruct",
+        "llama3-8b":      "meta-llama/Meta-Llama-3.1-8B-Instruct",
+    }
+
+    _instances: dict = {}  # repo -> (tokenizer, model)
+
+    AVAILABLE_MODELS = list(LOCAL_MODEL_MAP.keys())
+
+    def __init__(self, model: str, **kwargs):
+        super().__init__(model, **kwargs)
+        repo = self.LOCAL_MODEL_MAP.get(model, model)
+        if repo in LocalHFClient._instances:
+            self._tokenizer, self._model = LocalHFClient._instances[repo]
+        else:
+            from transformers import AutoModelForCausalLM, AutoTokenizer
+            import torch
+            logger.info(f"LocalHFClient: loading {repo} (one-time)")
+            tok = AutoTokenizer.from_pretrained(repo, trust_remote_code=True)
+            mdl = AutoModelForCausalLM.from_pretrained(
+                repo, torch_dtype=torch.float16, device_map="auto",
+                trust_remote_code=True,
+            )
+            LocalHFClient._instances[repo] = (tok, mdl)
+            self._tokenizer, self._model = tok, mdl
+
+    def complete(self, system: str, user: str, max_tokens: int = 4096,
+                 images: list[dict] | None = None) -> str:
+        if images:
+            logger.warning(
+                "LocalHFClient(%s) ignoring %d images (no vision capability)",
+                self.model, len(images),
+            )
+            return ""  # signal vision unsupported; pipeline can fall through
+        import torch
+        msgs = [{"role": "system", "content": system},
+                {"role": "user", "content": user}]
+        text = self._tokenizer.apply_chat_template(
+            msgs, tokenize=False, add_generation_prompt=True,
+        )
+        inputs = self._tokenizer(
+            text, return_tensors="pt", truncation=True, max_length=8192,
+        ).to(self._model.device)
+        with torch.no_grad():
+            out = self._model.generate(
+                **inputs, max_new_tokens=min(max_tokens, 4096),
+                do_sample=False, temperature=None, top_p=None,
+            )
+        return self._tokenizer.decode(
+            out[0][inputs["input_ids"].shape[1]:], skip_special_tokens=True,
+        )
+
+
+# ──────────────────────────────────────────────────────────────────────────────
 # Factory
 # ──────────────────────────────────────────────────────────────────────────────
 
@@ -393,6 +465,8 @@ _PROVIDER_MAP: dict[str, type[LLMClient]] = {
     "openai":  OpenAIClient,
     "gemini":  GeminiClient,
     "gpt":     OpenAIClient,
+    "local":   LocalHFClient,
+    "hf":      LocalHFClient,
 }
 
 def create_client(

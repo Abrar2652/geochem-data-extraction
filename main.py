@@ -353,7 +353,9 @@ def cmd_batch(args: argparse.Namespace) -> None:
     paper_ids = args.papers if hasattr(args, "papers") and args.papers else None
 
     pdf_only = getattr(args, "pdf_only", False)
-    include_pdf_only = getattr(args, "include_pdf_only", False)
+    # Default: process all GT papers (with or without supplementary). If
+    # --supplementary-only is passed, restrict to papers that have supp files.
+    supp_only = getattr(args, "supplementary_only", False)
 
     batch_result = run_batch(
         client=client,
@@ -365,7 +367,7 @@ def cmd_batch(args: argparse.Namespace) -> None:
         use_self_correction=not args.no_self_correction,
         use_vision=not args.no_vision,
         vision_client=_make_vision_client(args),
-        require_supplementary=not include_pdf_only and not pdf_only,
+        require_supplementary=supp_only,
         only_pdf_only=pdf_only,
         verbose=args.verbose,
         table_detector_backend=args.table_detector,
@@ -500,6 +502,80 @@ def cmd_discover(args: argparse.Namespace) -> None:
     print(f"  Use 'run-paper <PAPER_ID>' to extract any paper above.")
     print(f"  Use '--verbose' to see file paths for each paper.")
     print(f"{'='*80}\n")
+
+
+def cmd_export_minmod(args: argparse.Namespace) -> None:
+    """Export extraction results to MinMod-compatible formats."""
+    from geochem_benchmark.minmod_exporter import export_batch_minmod
+    stats = export_batch_minmod(
+        extraction_dir=args.input_dir,
+        output_dir=args.output_dir,
+        formats=args.formats,
+    )
+    print(f"\nMinMod export complete:")
+    print(f"  Papers processed: {stats['papers']}")
+    print(f"  Sites exported:   {stats['sites']}")
+    print(f"  Failed:           {stats['failed']}")
+    print(f"  Formats:          {', '.join(args.formats)}")
+    print(f"  Output:           {args.output_dir}")
+
+
+def cmd_graph_extract(args: argparse.Namespace) -> None:
+    """Extract paper data as a knowledge graph."""
+    client = create_client(
+        provider=args.provider,
+        model=args.model or None,
+        api_key=args.api_key or None,
+    )
+    supp_paths = args.supplementary or []
+    mode = getattr(args, "extraction_mode", "table-native")
+    output_dir = Path(args.output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    stem = Path(args.pdf).stem
+
+    if mode in ("table-native", "both"):
+        from geochem_benchmark.graph_extractor import run_graph_extraction
+        print(f"\n--- Table-native extraction ---")
+        run_graph_extraction(
+            pdf_path=args.pdf,
+            supplementary_paths=supp_paths,
+            client=client,
+            output_dir=str(output_dir / "table_native"),
+            output_format=args.format,
+        )
+
+    if mode in ("graph-native", "both"):
+        from geochem_benchmark.graph_native_pipeline import run_graph_native
+        print(f"\n--- Graph-native extraction ---")
+        result = run_graph_native(
+            client=client,
+            pdf_path=args.pdf,
+            supplementary_paths=supp_paths,
+        )
+        # Save flat output
+        result.to_excel(output_dir / "graph_native" / f"{stem}_flat.xlsx")
+        # Save graph
+        result.graph.to_json(output_dir / "graph_native" / f"{stem}_graph.json")
+
+        print(f"\nGraph-native results:")
+        print(f"  Samples: {len(result.flat_samples)}")
+        print(f"  Graph nodes: {len(result.graph.nodes)}")
+        print(f"  Graph edges: {len(result.graph.edges)}")
+        for note in result.notes:
+            print(f"  {note}")
+        for err in result.errors:
+            print(f"  ERROR: {err}")
+
+    if mode == "both":
+        # Compare
+        tn_path = output_dir / "table_native" / f"{stem}_flat.xlsx"
+        gn_path = output_dir / "graph_native" / f"{stem}_flat.xlsx"
+        if tn_path.exists() and gn_path.exists():
+            tn_df = pd.read_excel(tn_path)
+            gn_df = pd.read_excel(gn_path)
+            print(f"\n--- Comparison ---")
+            print(f"  Table-native: {len(tn_df)} rows")
+            print(f"  Graph-native: {len(gn_df)} rows")
 
 
 def cmd_run_paper(args: argparse.Namespace) -> None:
@@ -701,11 +777,16 @@ def build_parser() -> argparse.ArgumentParser:
                          metavar="PAPER_ID",
                          help="Specific paper IDs to process (default: all). "
                               "Use 'list-papers' to see available IDs.")
+    # Default: process ALL GT papers (with or without supplementary files).
+    # Mutually exclusive flags to restrict.
     p_batch_supp = p_batch.add_mutually_exclusive_group()
-    p_batch_supp.add_argument("--include-pdf-only", action="store_true",
-                              help="Include papers with no supplementary files alongside those with supp.")
+    p_batch_supp.add_argument("--supplementary-only", action="store_true",
+                              help="Process ONLY papers that have supplementary files (skip PDF-only).")
     p_batch_supp.add_argument("--pdf-only", action="store_true",
                               help="Process ONLY papers with no supplementary files (PDF-only extraction).")
+    # Backward-compat alias for older scripts (no-op since this is now the default)
+    p_batch_supp.add_argument("--include-pdf-only", action="store_true",
+                              help="(deprecated: now default) Include PDF-only papers alongside supp.")
     _add_common_args(p_batch)
 
     # ── batch-nogt ─────────────────────────────────────────────────────────
@@ -760,6 +841,42 @@ def build_parser() -> argparse.ArgumentParser:
 
     # ── models ───────────────────────────────────────────────────────────────
     sub.add_parser("models", help="List all available model IDs by provider.")
+
+    # ── export-minmod ────────────────────────────────────────────────────────
+    p_minmod = sub.add_parser(
+        "export-minmod",
+        help="Export extraction results to MinMod-compatible formats (JSON, JSON-LD, Turtle/RDF).",
+    )
+    p_minmod.add_argument("--input-dir", required=True,
+                          help="Directory containing extraction_*.xlsx files.")
+    p_minmod.add_argument("--output-dir", default="minmod_output/",
+                          help="Output directory. Default: minmod_output/")
+    p_minmod.add_argument("--formats", nargs="+", default=["json", "jsonld", "turtle"],
+                          choices=["json", "jsonld", "turtle"],
+                          help="Output formats. Default: all three.")
+    p_minmod.add_argument("--verbose", "-v", action="store_true")
+
+    # ── graph-extract ────────────────────────────────────────────────────────
+    p_graph = sub.add_parser(
+        "graph-extract",
+        help="Extract paper data as a knowledge graph (alternative to flat file).",
+    )
+    _add_input_args(p_graph)
+    p_graph.add_argument("--provider", default="claude",
+                         choices=["claude", "openai", "gemini"],
+                         help="LLM provider. Default: claude")
+    p_graph.add_argument("--model", default=None,
+                         help="Model ID (uses provider default if omitted).")
+    p_graph.add_argument("--output-dir", default="graph_results/",
+                         help="Directory for graph output files. Default: graph_results/")
+    p_graph.add_argument("--format", default="all",
+                         choices=["json", "neo4j", "graphml", "all"],
+                         help="Output format: json, neo4j (CSV), graphml, or all. Default: all")
+    p_graph.add_argument("--extraction-mode", default="table-native",
+                         choices=["table-native", "graph-native", "both"],
+                         help="Extraction mode: table-native (current pipeline), graph-native "
+                              "(3-pass LLM builds graph directly), or both (compare). Default: table-native")
+    _add_common_args(p_graph)
 
     return parser
 
@@ -826,6 +943,8 @@ def main() -> None:
         "list-papers":      cmd_list_papers,
         "list-nogt-papers": cmd_list_nogt_papers,
         "models":           cmd_models,
+        "graph-extract":    cmd_graph_extract,
+        "export-minmod":    cmd_export_minmod,
     }
     dispatch[args.command](args)
 

@@ -1,0 +1,1093 @@
+{
+  "source": "DARPA CRITICALMAAS sri-ta2 / Hofstra et al. 2021 CMMI",
+  "total_types": 189,
+  "total_environments": 14,
+  "total_groups": 56,
+  "hierarchy": {
+    "Erosional": {
+      "Placer": [
+        {
+          "name": "Residual placer tin",
+          "minmod_id": "Q301",
+          "description": "Residual placer tin deposits are also known as Lag tin. They belong to the general deposit group of Placer deposits. The deposit environment is typically Erosional. Genetically related features of typ"
+        },
+        {
+          "name": "Residual placer lead",
+          "minmod_id": "Q302",
+          "description": "Residual placer lead deposits are also known as Lag lead. They belong to the general deposit group of Placer deposits. The deposit environment is typically Erosional. Genetically related features of t"
+        },
+        {
+          "name": "Fluvial placer gold",
+          "minmod_id": "Q303",
+          "description": "Fluvial placer gold deposits are also known as Alluvial gold. They belong to the general deposit group of Placer deposits. The deposit environment is typically Erosional. Genetically related features "
+        },
+        {
+          "name": "Fluvial placer PGE",
+          "minmod_id": "Q304",
+          "description": "Fluvial placer PGE deposits are also known as Alluvial PGE. They belong to the general deposit group of Placer deposits. The deposit environment is typically Erosional. Genetically related features of"
+        },
+        {
+          "name": "Fluvial placer tin",
+          "minmod_id": "Q305",
+          "description": "Fluvial placer tin deposits are also known as Alluvial tin. They belong to the general deposit group of Placer deposits. The deposit environment is typically Erosional. Genetically related features of"
+        },
+        {
+          "name": "Fluvial placer niobium-tantalum",
+          "minmod_id": "Q306",
+          "description": "Fluvial placer niobium-tantalum deposits are also known as Alluvial niobium-tantalum. They belong to the general deposit group of Placer deposits. The deposit environment is typically Erosional. Genet"
+        },
+        {
+          "name": "Fluvial placer tungsten",
+          "minmod_id": "Q307",
+          "description": "Fluvial placer tungsten deposits are also known as Alluvial tungsten. They belong to the general deposit group of Placer deposits. The deposit environment is typically Erosional. Genetically related f"
+        },
+        {
+          "name": "Fluvial placer REE",
+          "minmod_id": "Q308",
+          "description": "Fluvial placer REE deposits are also known as Alluvial REE. They belong to the general deposit group of Placer deposits. The deposit environment is typically Erosional. Genetically related features of"
+        },
+        {
+          "name": "Fluvial placer diamond",
+          "minmod_id": "Q309",
+          "description": "Fluvial placer diamond deposits are also known as Alluvial diamond. They belong to the general deposit group of Placer deposits. The deposit environment is typically Erosional. Genetically related fea"
+        },
+        {
+          "name": "Fluvial placer gemstones",
+          "minmod_id": "Q310",
+          "description": "Fluvial placer gemstones deposits are also known as Alluvial gemstones. They belong to the general deposit group of Placer deposits. The deposit environment is typically Erosional. Genetically related"
+        },
+        {
+          "name": "Fluvial placer garnet",
+          "minmod_id": "Q311",
+          "description": "Fluvial placer garnet deposits are also known as Alluvial garnet. They belong to the general deposit group of Placer deposits. The deposit environment is typically Erosional. Genetically related featu"
+        },
+        {
+          "name": "Heavy mineral sands",
+          "minmod_id": "Q312",
+          "description": "Heavy mineral sands deposits are also known as Mineral sands. They belong to the general deposit group of Placer deposits. The deposit environment is typically Erosional. Genetically related features "
+        },
+        {
+          "name": "Shoreline placer gold",
+          "minmod_id": "Q313",
+          "description": "Shoreline placer gold deposits are also known as Beach placer gold. They belong to the general deposit group of Placer deposits. The deposit environment is typically Erosional. Genetically related fea"
+        },
+        {
+          "name": "Paleoplacer heavy mineral sands",
+          "minmod_id": "Q314",
+          "description": "Paleoplacer heavy mineral sands deposits are also known as Lithified mineral sands; indurated mineral sands. They belong to the general deposit group of Placer deposits. The deposit environment is typ"
+        },
+        {
+          "name": "Paleoplacer tin",
+          "minmod_id": "Q315",
+          "description": "Paleoplacer tin deposits belong to the general deposit group of Placer deposits. The deposit environment is typically Erosional. Genetically related features of typical Paleoplacer tin deposits includ"
+        },
+        {
+          "name": "Paleoplacer gold \u00b1 uranium",
+          "minmod_id": "Q316",
+          "description": "Paleoplacer gold \u00b1 uranium deposits are also known as Quartz pebble conglomerate Au-U. They belong to the general deposit group of Placer deposits. The deposit environment is typically Erosional. Gene"
+        }
+      ]
+    },
+    "Supergene": {
+      "Laterite": [
+        {
+          "name": "Bauxite",
+          "minmod_id": "Q317",
+          "description": "Bauxite deposits are also known as Lateritic bauxite. They belong to the general deposit group of Laterite deposits. The deposit environment is typically Supergene. Genetically related features of typ"
+        },
+        {
+          "name": "Karst bauxite",
+          "minmod_id": "Q318",
+          "description": "Karst bauxite deposits are also known as Carbonate bauxite. They belong to the general deposit group of Laterite deposits. The deposit environment is typically Supergene. Genetically related features "
+        },
+        {
+          "name": "Laterite nickel",
+          "minmod_id": "Q319",
+          "description": "Laterite nickel deposits are also known as Nickel-cobalt laterite: Lateritic nickel. They belong to the general deposit group of Laterite deposits. The deposit environment is typically Supergene. Gene"
+        },
+        {
+          "name": "Carbonatite laterite REE",
+          "minmod_id": "Q320",
+          "description": "Carbonatite laterite REE deposits belong to the general deposit group of Laterite deposits. The deposit environment is typically Supergene. Genetically related features of typical Carbonatite laterite"
+        },
+        {
+          "name": "Laterite magnesite",
+          "minmod_id": "Q321",
+          "description": "Laterite magnesite deposits belong to the general deposit group of Laterite deposits. The deposit environment is typically Supergene. Genetically related features of typical Laterite magnesite deposit"
+        }
+      ],
+      "Clay": [
+        {
+          "name": "Residual clay",
+          "minmod_id": "Q322",
+          "description": "Residual clay deposits are also known as Secondary clay. They belong to the general deposit group of Clay deposits. The deposit environment is typically Supergene. Genetically related features of typi"
+        },
+        {
+          "name": "Underclay over- clay",
+          "minmod_id": "Q323",
+          "description": ""
+        },
+        {
+          "name": "Ion adsorption REE",
+          "minmod_id": "Q324",
+          "description": "Ion adsorption REE deposits belong to the general deposit group of Clay deposits. The deposit environment is typically Supergene. Genetically related features of typical Ion adsorption REE deposits in"
+        }
+      ],
+      "Supergene": [
+        {
+          "name": "Supergene silver",
+          "minmod_id": "Q325",
+          "description": "Supergene silver deposits belong to the general deposit group of Supergene deposits. The deposit environment is typically Supergene. Genetically related features of typical Supergene silver deposits i"
+        },
+        {
+          "name": "Supergene lead",
+          "minmod_id": "Q326",
+          "description": "Supergene lead deposits belong to the general deposit group of Supergene deposits. The deposit environment is typically Supergene. Genetically related features of typical Supergene lead deposits inclu"
+        },
+        {
+          "name": "Supergene uranium",
+          "minmod_id": "Q327",
+          "description": "Supergene uranium deposits belong to the general deposit group of Supergene deposits. The deposit environment is typically Supergene. Genetically related features of typical Supergene uranium deposits"
+        },
+        {
+          "name": "Supergene vanadium",
+          "minmod_id": "Q328",
+          "description": "Supergene vanadium deposits belong to the general deposit group of Supergene deposits. The deposit environment is typically Supergene. Genetically related features of typical Supergene vanadium deposi"
+        },
+        {
+          "name": "Supergene gold",
+          "minmod_id": "Q329",
+          "description": "Supergene gold deposits are also known as Regolith gold. They belong to the general deposit group of Supergene deposits. The deposit environment is typically Supergene. Genetically related features of"
+        },
+        {
+          "name": "Supergene zinc",
+          "minmod_id": "Q330",
+          "description": "Supergene zinc deposits are also known as Non-sulfide Zn, oxi-dized Zn (Pb). They belong to the general deposit group of Supergene deposits. The deposit environment is typically Supergene. Genetically"
+        },
+        {
+          "name": "Supergene copper",
+          "minmod_id": "Q331",
+          "description": "Supergene copper deposits belong to the general deposit group of Supergene deposits. The deposit environment is typically Supergene. Genetically related features of typical Supergene copper deposits i"
+        },
+        {
+          "name": "Supergene manganese",
+          "minmod_id": "Q332",
+          "description": "Supergene manganese deposits belong to the general deposit group of Supergene deposits. The deposit environment is typically Supergene. Genetically related features of typical Supergene manganese depo"
+        },
+        {
+          "name": "Supergene iron",
+          "minmod_id": "Q333",
+          "description": "Supergene iron deposits belong to the general deposit group of Supergene deposits. The deposit environment is typically Supergene. Genetically related features of typical Supergene iron deposits inclu"
+        }
+      ]
+    },
+    "Infiltrational": {
+      "Exotic": [
+        {
+          "name": "Exotic copper",
+          "minmod_id": "Q334",
+          "description": "Exotic copper deposits are also known as Paleochannel copper. They belong to the general deposit group of Exotic deposits. The deposit environment is typically Infiltrational. Genetically related feat"
+        }
+      ],
+      "Paleochannel": [
+        {
+          "name": "Paleochannel iron",
+          "minmod_id": "Q335",
+          "description": "Paleochannel iron deposits are also known as Ferricretes, manganocretes. They belong to the general deposit group of Paleochannel deposits. The deposit environment is typically Infiltrational. Genetic"
+        }
+      ],
+      "Uranium": [
+        {
+          "name": "Sandstone uranium",
+          "minmod_id": "Q336",
+          "description": "Sandstone uranium deposits are also known as Roll front, and others. They belong to the general deposit group of Uranium deposits. The deposit environment is typically Infiltrational. Genetically rela"
+        },
+        {
+          "name": "Carbonate uranium",
+          "minmod_id": "Q337",
+          "description": "Carbonate uranium deposits belong to the general deposit group of Uranium deposits. The deposit environment is typically Infiltrational. Genetically related features of typical Carbonate uranium depos"
+        },
+        {
+          "name": "Coal/peat/bog uranium",
+          "minmod_id": "Q338",
+          "description": "Coal/peat/bog uranium deposits belong to the general deposit group of Uranium deposits. The deposit environment is typically Infiltrational. Genetically related features of typical Coal/peat/bog urani"
+        },
+        {
+          "name": "Calcrete uranium",
+          "minmod_id": "Q339",
+          "description": "Calcrete uranium deposits are also known as Surficial uranium, evaporite uranium. They belong to the general deposit group of Uranium deposits. The deposit environment is typically Infiltrational. Gen"
+        }
+      ],
+      "Magnesite": [
+        {
+          "name": "Nodular magnesite",
+          "minmod_id": "Q340",
+          "description": "Nodular magnesite deposits are also known as Cryptocrystalline magnesite. They belong to the general deposit group of Magnesite deposits. The deposit environment is typically Infiltrational. Genetical"
+        }
+      ]
+    },
+    "Basin evaporative": {
+      "Evaporite": [
+        {
+          "name": "Marine evaporite gypsum",
+          "minmod_id": "Q341",
+          "description": "Marine evaporite gypsum deposits belong to the general deposit group of Evaporite deposits. The deposit environment is typically Basin evaporative. Genetically related features of typical Marine evapo"
+        },
+        {
+          "name": "Marine evaporite salt",
+          "minmod_id": "Q342",
+          "description": "Marine evaporite salt deposits belong to the general deposit group of Evaporite deposits. The deposit environment is typically Basin evaporative. Genetically related features of typical Marine evapori"
+        },
+        {
+          "name": "Marine evaporite potash",
+          "minmod_id": "Q343",
+          "description": "Marine evaporite potash deposits belong to the general deposit group of Evaporite deposits. The deposit environment is typically Basin evaporative. Genetically related features of typical Marine evapo"
+        },
+        {
+          "name": "Marine evaporite magnesite",
+          "minmod_id": "Q344",
+          "description": "Marine evaporite magnesite deposits are also known as Sedimentary magnesite. They belong to the general deposit group of Evaporite deposits. The deposit environment is typically Basin evaporative. Gen"
+        },
+        {
+          "name": "Lacustrine evaporite trona",
+          "minmod_id": "Q345",
+          "description": "Lacustrine evaporite trona deposits belong to the general deposit group of Evaporite deposits. The deposit environment is typically Basin evaporative. Genetically related features of typical Lacustrin"
+        },
+        {
+          "name": "Lacustrine evaporite salt",
+          "minmod_id": "Q346",
+          "description": "Lacustrine evaporite salt deposits belong to the general deposit group of Evaporite deposits. The deposit environment is typically Basin evaporative. Genetically related features of typical Lacustrine"
+        },
+        {
+          "name": "Lacustrine evaporite potash",
+          "minmod_id": "Q347",
+          "description": "Lacustrine evaporite potash deposits belong to the general deposit group of Evaporite deposits. The deposit environment is typically Basin evaporative. Genetically related features of typical Lacustri"
+        },
+        {
+          "name": "Lacustrine evaporite carnallite- bischofite",
+          "minmod_id": "Q348",
+          "description": ""
+        },
+        {
+          "name": "Lacustrine evaporite borate",
+          "minmod_id": "Q349",
+          "description": "Lacustrine evaporite borate deposits belong to the general deposit group of Evaporite deposits. The deposit environment is typically Basin evaporative. Genetically related features of typical Lacustri"
+        },
+        {
+          "name": "Lacustrine evaporite magnesite",
+          "minmod_id": "Q350",
+          "description": "Lacustrine evaporite magnesite deposits are also known as Sedimentary magnesite. They belong to the general deposit group of Evaporite deposits. The deposit environment is typically Basin evaporative."
+        },
+        {
+          "name": "Lacustrine evaporite nitrate",
+          "minmod_id": "Q351",
+          "description": "Lacustrine evaporite nitrate deposits belong to the general deposit group of Evaporite deposits. The deposit environment is typically Basin evaporative. Genetically related features of typical Lacustr"
+        }
+      ],
+      "Brine": [
+        {
+          "name": "Marine brine potash (\u00b1Mg, Li, and so on)",
+          "minmod_id": "Q352",
+          "description": ""
+        },
+        {
+          "name": "Lacustrine brine potash",
+          "minmod_id": "Q353",
+          "description": "Lacustrine brine potash deposits belong to the general deposit group of Brine deposits. The deposit environment is typically Basin evaporative. Genetically related features of typical Lacustrine brine"
+        },
+        {
+          "name": "Lacustrine brine lithium",
+          "minmod_id": "Q354",
+          "description": "Lacustrine brine lithium deposits belong to the general deposit group of Brine deposits. The deposit environment is typically Basin evaporative. Genetically related features of typical Lacustrine brin"
+        }
+      ],
+      "Zeolite": [
+        {
+          "name": "Lacustrine zeolite (\u00b1 Li, B)",
+          "minmod_id": "Q355",
+          "description": "Lacustrine zeolite (\u00b1 Li, B) deposits belong to the general deposit group of Zeolite deposits. The deposit environment is typically Basin evaporative. Genetically related features of typical Lacustrin"
+        }
+      ],
+      "Clay": [
+        {
+          "name": "Lacustrine clay lithium",
+          "minmod_id": "Q356",
+          "description": "Lacustrine clay lithium deposits belong to the general deposit group of Clay deposits. The deposit environment is typically Basin evaporative. Genetically related features of typical Lacustrine clay l"
+        }
+      ]
+    },
+    "Basin chemical": {
+      "Black shale": [
+        {
+          "name": "Black shale va- nadium \u00b1 Mo \u00b1 Ni",
+          "minmod_id": "Q357",
+          "description": ""
+        },
+        {
+          "name": "Black shale nickel \u00b1 Mo- PGE",
+          "minmod_id": "Q358",
+          "description": ""
+        },
+        {
+          "name": "Black shale gold",
+          "minmod_id": "Q359",
+          "description": "Black shale gold deposits belong to the general deposit group of Black shale deposits. The deposit environment is typically Basin chemical. Genetically related features of typical Black shale gold dep"
+        },
+        {
+          "name": "Black shale uranium",
+          "minmod_id": "Q360",
+          "description": "Black shale uranium deposits belong to the general deposit group of Black shale deposits. The deposit environment is typically Basin chemical. Genetically related features of typical Black shale urani"
+        }
+      ],
+      "Phosphorite": [
+        {
+          "name": "Phosphorite",
+          "minmod_id": "Q361",
+          "description": "Phosphorite deposits are also known as Phosphate. They belong to the general deposit group of Phosphorite deposits. The deposit environment is typically Basin chemical. Genetically related features of"
+        }
+      ],
+      "Iron formation": [
+        {
+          "name": "Superior-type banded iron formation",
+          "minmod_id": "Q362",
+          "description": "Superior-type banded iron formation deposits are also known as Lake Superior. They belong to the general deposit group of Iron formation deposits. The deposit environment is typically Basin chemical. "
+        },
+        {
+          "name": "Oolitic iron formation",
+          "minmod_id": "Q363",
+          "description": "Oolitic iron formation deposits are also known as Ironstone, Clinton-type, Minette-type. They belong to the general deposit group of Iron formation deposits. The deposit environment is typically Basin"
+        },
+        {
+          "name": "Lacustrine iron formation",
+          "minmod_id": "Q364",
+          "description": "Lacustrine iron formation deposits belong to the general deposit group of Iron formation deposits. The deposit environment is typically Basin chemical. Genetically related features of typical Lacustri"
+        }
+      ],
+      "Manganese": [
+        {
+          "name": "Superior-type banded manganese",
+          "minmod_id": "Q365",
+          "description": "Superior-type banded manganese deposits are also known as Mamatwan-type; gondite. They belong to the general deposit group of Manganese deposits. The deposit environment is typically Basin chemical. G"
+        },
+        {
+          "name": "Sedimentary manganese",
+          "minmod_id": "Q366",
+          "description": "Sedimentary manganese deposits are also known as Shelf sequence manganese, Nikopol-type manganese. They belong to the general deposit group of Manganese deposits. The deposit environment is typically "
+        },
+        {
+          "name": "Crust manganese",
+          "minmod_id": "Q367",
+          "description": "Crust manganese deposits are also known as Ferromanganese crusts. They belong to the general deposit group of Manganese deposits. The deposit environment is typically Basin chemical. Genetically relat"
+        },
+        {
+          "name": "Nodule manganese",
+          "minmod_id": "Q368",
+          "description": "Nodule manganese deposits are also known as Ferromanganese nodules. They belong to the general deposit group of Manganese deposits. The deposit environment is typically Basin chemical. Genetically rel"
+        },
+        {
+          "name": "Lacustrine manganese",
+          "minmod_id": "Q369",
+          "description": "Lacustrine manganese deposits belong to the general deposit group of Manganese deposits. The deposit environment is typically Basin chemical. Genetically related features of typical Lacustrine mangane"
+        }
+      ]
+    },
+    "Basin hydrothermal": {
+      "Unconformity- related": [
+        {
+          "name": "Unconformity- related uranium",
+          "minmod_id": "Q370",
+          "description": ""
+        },
+        {
+          "name": "Unconformity- related REE",
+          "minmod_id": "Q371",
+          "description": ""
+        }
+      ],
+      "Collapse breccia pipe": [
+        {
+          "name": "Collapse breccia pipe uranium",
+          "minmod_id": "Q372",
+          "description": "Collapse breccia pipe uranium deposits belong to the general deposit group of Collapse breccia pipe deposits. The deposit environment is typically Basin hydrothermal. Genetically related features of t"
+        }
+      ],
+      "Volcanic-hosted": [
+        {
+          "name": "Volcanic-hosted copper",
+          "minmod_id": "Q373",
+          "description": "Volcanic-hosted copper deposits are also known as Volcanic-red bed copper; basaltic copper. They belong to the general deposit group of Volcanic-hosted deposits. The deposit environment is typically B"
+        }
+      ],
+      "Sediment-hosted": [
+        {
+          "name": "Sediment-hosted copper \u00b1 Co",
+          "minmod_id": "Q374",
+          "description": "Sediment-hosted copper \u00b1 Co deposits are also known as Sediment-hosted Cu-Ag-Co, shale-hosted Cu, Kupferschiefer-type, redbed Cu. They belong to the general deposit group of Sediment-hosted deposits. "
+        },
+        {
+          "name": "Siliciclastic-mafic zinc-lead",
+          "minmod_id": "Q375",
+          "description": "Siliciclastic-mafic zinc-lead deposits are also known as Metamorphosed SEDEX, CD, Sullivan-type, Broken Hill-type (BHT). They belong to the general deposit group of Sediment-hosted deposits. The depos"
+        },
+        {
+          "name": "Siliciclastic-mafic barite",
+          "minmod_id": "Q376",
+          "description": "Siliciclastic-mafic barite deposits belong to the general deposit group of Sediment-hosted deposits. The deposit environment is typically Basin hydrothermal. Genetically related features of typical Si"
+        },
+        {
+          "name": "Siliciclastic- carbonate zinc-lead",
+          "minmod_id": "Q377",
+          "description": ""
+        },
+        {
+          "name": "Irish-type sediment- hosted zinc- lead",
+          "minmod_id": "Q378",
+          "description": ""
+        },
+        {
+          "name": "Kipushi-type sediment- hosted copper- zinc-lead",
+          "minmod_id": "Q379",
+          "description": ""
+        }
+      ],
+      "Mississippi Valley- type (MVT)": [
+        {
+          "name": "MVT zinc-lead",
+          "minmod_id": "Q380",
+          "description": "MVT zinc-lead deposits belong to the general deposit group of Mississippi Valley-type (MVT) deposits. The deposit environment is typically Basin hydrothermal. Genetically related features of typical M"
+        },
+        {
+          "name": "MVT barite",
+          "minmod_id": "Q381",
+          "description": "MVT barite deposits belong to the general deposit group of Mississippi Valley-type (MVT) deposits. The deposit environment is typically Basin hydrothermal. Genetically related features of typical MVT "
+        },
+        {
+          "name": "MVT fluorspar",
+          "minmod_id": "Q382",
+          "description": "MVT fluorspar deposits belong to the general deposit group of Mississippi Valley-type (MVT) deposits. The deposit environment is typically Basin hydrothermal. Genetically related features of typical M"
+        },
+        {
+          "name": "MVT strontium",
+          "minmod_id": "Q383",
+          "description": "MVT strontium deposits belong to the general deposit group of Mississippi Valley-type (MVT) deposits. The deposit environment is typically Basin hydrothermal. Genetically related features of typical M"
+        },
+        {
+          "name": "Sandstone-hosted zinc-lead",
+          "minmod_id": "Q384",
+          "description": "Sandstone-hosted zinc-lead deposits belong to the general deposit group of Mississippi Valley-type (MVT) deposits. The deposit environment is typically Basin hydrothermal. Genetically related features"
+        }
+      ],
+      "Non-sulfide": [
+        {
+          "name": "Non-sulfide zinc-lead \u00b1 Mn",
+          "minmod_id": "Q385",
+          "description": "Non-sulfide zinc-lead \u00b1 Mn deposits are also known as Oxide zinc. They belong to the general deposit group of Non-sulfide deposits. The deposit environment is typically Basin hydrothermal. Genetically"
+        }
+      ],
+      "Five-element": [
+        {
+          "name": "Vein five-element",
+          "minmod_id": "Q386",
+          "description": "Vein five-element deposits are also known as Ag-Bi-Co-Ni arsenide. They belong to the general deposit group of Five-element deposits. The deposit environment is typically Basin hydrothermal. Genetical"
+        }
+      ]
+    },
+    "Metamorphic hy- drothermal": {
+      "Orogenic": [
+        {
+          "name": "Hypozonal orogenic gold",
+          "minmod_id": "Q387",
+          "description": "Hypozonal orogenic gold deposits are also known as Mesothermal gold; low-sulfide gold-quartz-vein, shear zone gold. They belong to the general deposit group of Orogenic deposits. The deposit environme"
+        },
+        {
+          "name": "Mesozonal orogenic gold",
+          "minmod_id": "Q388",
+          "description": "Mesozonal orogenic gold deposits are also known as Mesothermal gold; low-sulfide gold-quartz-vein, shear zone gold. They belong to the general deposit group of Orogenic deposits. The deposit environme"
+        }
+      ]
+    },
+    "Metamorphic hydrothermal": {
+      "Orogenic": [
+        {
+          "name": "Epizonal orogenic gold",
+          "minmod_id": "Q389",
+          "description": "Epizonal orogenic gold deposits are also known as Refractory orogenic gold, Carlin-style gold. They belong to the general deposit group of Orogenic deposits. The deposit environment is typically Metam"
+        },
+        {
+          "name": "Epizonal orogenic antimony \u00b1 gold",
+          "minmod_id": "Q390",
+          "description": "Epizonal orogenic antimony \u00b1 gold deposits belong to the general deposit group of Orogenic deposits. The deposit environment is typically Metamorphic hydrothermal. Genetically related features of typi"
+        },
+        {
+          "name": "Epizonal orogenic mercury",
+          "minmod_id": "Q391",
+          "description": "Epizonal orogenic mercury deposits belong to the general deposit group of Orogenic deposits. The deposit environment is typically Metamorphic hydrothermal. Genetically related features of typical Epiz"
+        },
+        {
+          "name": "Orogenic silver-lead- zinc-copper- antimony",
+          "minmod_id": "Q392",
+          "description": ""
+        },
+        {
+          "name": "Orogenic copper \u00b1 gold",
+          "minmod_id": "Q393",
+          "description": "Orogenic copper \u00b1 gold deposits belong to the general deposit group of Orogenic deposits. The deposit environment is typically Metamorphic hydrothermal. Genetically related features of typical Orogeni"
+        },
+        {
+          "name": "Orogenic graphite",
+          "minmod_id": "Q394",
+          "description": "Orogenic graphite deposits are also known as vein, lump graphite. They belong to the general deposit group of Orogenic deposits. The deposit environment is typically Metamorphic hydrothermal. Genetica"
+        }
+      ]
+    },
+    "Metamorphic": {
+      "Metamorphic": [
+        {
+          "name": "Metamorphic graphite",
+          "minmod_id": "Q395",
+          "description": "Metamorphic graphite deposits are also known as Flake graphite, amorphous graphite. They belong to the general deposit group of Metamorphic deposits. The deposit environment is typically Metamorphic. "
+        },
+        {
+          "name": "Metamorphic kyanite",
+          "minmod_id": "Q396",
+          "description": "Metamorphic kyanite deposits belong to the general deposit group of Metamorphic deposits. The deposit environment is typically Metamorphic. Genetically related features of typical Metamorphic kyanite "
+        }
+      ]
+    },
+    "Regional metasomatic": {
+      "Alkali-calcic": [
+        {
+          "name": "Low Iron alkali-calcic",
+          "minmod_id": "Q397",
+          "description": "Low Iron alkali-calcic deposits belong to the general deposit group of Alkali-calcic deposits. The deposit environment is typically Regional metasomatic. Genetically related features of typical Low Ir"
+        },
+        {
+          "name": "Albitite-hosted uranium",
+          "minmod_id": "Q398",
+          "description": "Albitite-hosted uranium deposits are also known as Albitite-type metasomatic U. They belong to the general deposit group of Alkali-calcic deposits. The deposit environment is typically Regional metaso"
+        }
+      ],
+      "Metasomatic iron": [
+        {
+          "name": "Ferroan carbonate polymetallic",
+          "minmod_id": "Q399",
+          "description": "Ferroan carbonate polymetallic deposits belong to the general deposit group of Metasomatic iron deposits. The deposit environment is typically Regional metasomatic. Genetically related features of typ"
+        },
+        {
+          "name": "Iron sulfide polymetallic",
+          "minmod_id": "Q400",
+          "description": "Iron sulfide polymetallic deposits are also known as ISCG. They belong to the general deposit group of Metasomatic iron deposits. The deposit environment is typically Regional metasomatic. Genetically"
+        },
+        {
+          "name": "Iron silicate polymetallic",
+          "minmod_id": "Q401",
+          "description": "Iron silicate polymetallic deposits belong to the general deposit group of Metasomatic iron deposits. The deposit environment is typically Regional metasomatic. Genetically related features of typical"
+        },
+        {
+          "name": "Iron oxide poly- metallic",
+          "minmod_id": "Q402",
+          "description": ""
+        },
+        {
+          "name": "Iron oxide uranium",
+          "minmod_id": "Q403",
+          "description": "Iron oxide uranium deposits belong to the general deposit group of Metasomatic iron deposits. The deposit environment is typically Regional metasomatic. Genetically related features of typical Iron ox"
+        },
+        {
+          "name": "Iron oxide gold",
+          "minmod_id": "Q404",
+          "description": "Iron oxide gold deposits belong to the general deposit group of Metasomatic iron deposits. The deposit environment is typically Regional metasomatic. Genetically related features of typical Iron oxide"
+        }
+      ],
+      "IOCG": [
+        {
+          "name": "Hematite- dominant IOCG",
+          "minmod_id": "Q405",
+          "description": ""
+        },
+        {
+          "name": "Magnetite- dominant IOCG",
+          "minmod_id": "Q406",
+          "description": ""
+        }
+      ],
+      "IOA": [
+        {
+          "name": "Hematite- dominant IOA",
+          "minmod_id": "Q407",
+          "description": ""
+        },
+        {
+          "name": "Magnetite- dominant IOA",
+          "minmod_id": "Q408",
+          "description": ""
+        }
+      ]
+    },
+    "Volcanic basin hydrothermal": {
+      "Volcanogenic massive sulfide (VMS)": [
+        {
+          "name": "Mafic-ultramafic VMS",
+          "minmod_id": "Q409",
+          "description": "Mafic-ultramafic VMS deposits are also known as Volcanic-hosted massive sulfide (VHMS), volcanic-associated massive sulfide (VAMS), seafloor massive sulfide (SMS), Cyprus-type. They belong to the gene"
+        },
+        {
+          "name": "Mafic-siliciclastic VMS",
+          "minmod_id": "Q410",
+          "description": "Mafic-siliciclastic VMS deposits are also known as Volcanic-hosted mas-sive sulfide (VHMS), volcanic-associated massive sulfide (VAMS), seafloor massive sulfide (SMS), Besshi-type. They belong to the "
+        },
+        {
+          "name": "Bimodal-mafic VMS",
+          "minmod_id": "Q411",
+          "description": ""
+        },
+        {
+          "name": "Bimodal felsic VMS",
+          "minmod_id": "Q412",
+          "description": "Bimodal felsic VMS deposits are also known as Volcanic-hosted mas-sive sulfide (VHMS), volcanic-associated massive sulfide (VAMS), seafloor massive sulfide (SMS), Kuroko-type. They belong to the gener"
+        },
+        {
+          "name": "Felsic-siliciclastic VMS",
+          "minmod_id": "Q413",
+          "description": "Felsic-siliciclastic VMS deposits are also known as Volcanic-hosted mas-sive sulfide (VHMS), volcanic-associated massive sulfide (VAMS), seafloor massive sulfide (SMS), Bathhurst-type, Iberian-type. T"
+        }
+      ],
+      "Volcanogenic": [
+        {
+          "name": "Algoma-type banded iron formation",
+          "minmod_id": "Q414",
+          "description": "Algoma-type banded iron formation deposits are also known as Volcanogenic iron formation. They belong to the general deposit group of Volcanogenic deposits. The deposit environment is typically Volcan"
+        },
+        {
+          "name": "Volcanogenic manganese",
+          "minmod_id": "Q415",
+          "description": "Volcanogenic manganese deposits are also known as Franciscan, Cuban, Olympic Peninsula, and Cyprus manga-nese. They belong to the general deposit group of Volcanogenic deposits. The deposit environmen"
+        }
+      ]
+    },
+    "Magmatic hydrothermal": {
+      "Epithermal": [
+        {
+          "name": "Low-sulfidation (LS) epither- mal gold-silver",
+          "minmod_id": "Q416",
+          "description": ""
+        },
+        {
+          "name": "Intermediate- sulfidation (IS) epithermal silver-gold \u00b1 Zn, Pb, Cu, Sn, Mn",
+          "minmod_id": "Q417",
+          "description": ""
+        },
+        {
+          "name": "High-sulfidation (HS) epithermal silver-gold \u00b1 Cu",
+          "minmod_id": "Q418",
+          "description": "High-sulfidation (HS) epithermal silver-gold \u00b1 Cu deposits are also known as Quartz-alunite gold, enargite-gold. They belong to the general deposit group of Epithermal deposits. The deposit environmen"
+        },
+        {
+          "name": "Alkalic epithermal gold \u00b1 Ag",
+          "minmod_id": "Q419",
+          "description": "Alkalic epithermal gold \u00b1 Ag deposits are also known as Au-Ag-Te veins. They belong to the general deposit group of Epithermal deposits. The deposit environment is typically Magmatic hydrothermal. Gen"
+        },
+        {
+          "name": "Epithermal mercury",
+          "minmod_id": "Q420",
+          "description": "Epithermal mercury deposits are also known as Hot spring Hg. They belong to the general deposit group of Epithermal deposits. The deposit environment is typically Magmatic hydrothermal. Genetically re"
+        },
+        {
+          "name": "Epithermal beryllium",
+          "minmod_id": "Q421",
+          "description": "Epithermal beryllium deposits are also known as Volcanogenic Be. They belong to the general deposit group of Epithermal deposits. The deposit environment is typically Magmatic hydrothermal. Geneticall"
+        },
+        {
+          "name": "Epithermal uranium",
+          "minmod_id": "Q422",
+          "description": "Epithermal uranium deposits are also known as Volcanogenic U, volcanic-related U. They belong to the general deposit group of Epithermal deposits. The deposit environment is typically Magmatic hydroth"
+        }
+      ],
+      "Vein": [
+        {
+          "name": "Vein \u00b1 replacement nickel",
+          "minmod_id": "Q423",
+          "description": "Vein \u00b1 replacement nickel deposits are also known as Avebury-style Ni, ophiolite-hosted Ni, hydrothermal Ni. They belong to the general deposit group of Vein deposits. The deposit environment is typic"
+        },
+        {
+          "name": "Vein cobalt \u00b1 Ni",
+          "minmod_id": "Q424",
+          "description": "Vein cobalt \u00b1 Ni deposits are also known as Hydrothermal Ni-Co-As. They belong to the general deposit group of Vein deposits. The deposit environment is typically Magmatic hydrothermal. Genetically re"
+        },
+        {
+          "name": "Vein copper",
+          "minmod_id": "Q425",
+          "description": "Vein copper deposits belong to the general deposit group of Vein deposits. The deposit environment is typically Magmatic hydrothermal. Genetically related features of typical Vein copper deposits incl"
+        },
+        {
+          "name": "Vein tin",
+          "minmod_id": "Q426",
+          "description": "Vein tin deposits are also known as Cornwall-type. They belong to the general deposit group of Vein deposits. The deposit environment is typically Magmatic hydrothermal. Genetically related features o"
+        },
+        {
+          "name": "Vein tungsten",
+          "minmod_id": "Q427",
+          "description": "Vein tungsten deposits belong to the general deposit group of Vein deposits. The deposit environment is typically Magmatic hydrothermal. Genetically related features of typical Vein tungsten deposits "
+        },
+        {
+          "name": "Vein tin polymetallic",
+          "minmod_id": "Q428",
+          "description": "Vein tin polymetallic deposits are also known as Bolivian-type. They belong to the general deposit group of Vein deposits. The deposit environment is typically Magmatic hydrothermal. Genetically relat"
+        },
+        {
+          "name": "Vein fluorite",
+          "minmod_id": "Q429",
+          "description": "Vein fluorite deposits are also known as Fluorspar. They belong to the general deposit group of Vein deposits. The deposit environment is typically Magmatic hydrothermal. Genetically related features "
+        },
+        {
+          "name": "Vein polymetallic",
+          "minmod_id": "Q430",
+          "description": "Vein polymetallic deposits belong to the general deposit group of Vein deposits. The deposit environment is typically Magmatic hydrothermal. Genetically related features of typical Vein polymetallic d"
+        }
+      ],
+      "Breccia pipe": [
+        {
+          "name": "Breccia pipe copper",
+          "minmod_id": "Q431",
+          "description": "Breccia pipe copper deposits are also known as Igneous-hydrothermal breccia. They belong to the general deposit group of Breccia pipe deposits. The deposit environment is typically Magmatic hydrotherm"
+        },
+        {
+          "name": "Breccia pipe gold",
+          "minmod_id": "Q432",
+          "description": "Breccia pipe gold deposits are also known as Intrusion-related gold. They belong to the general deposit group of Breccia pipe deposits. The deposit environment is typically Magmatic hydrothermal. Gene"
+        },
+        {
+          "name": "Breccia pipe molybdenum",
+          "minmod_id": "Q433",
+          "description": "Breccia pipe molybdenum deposits belong to the general deposit group of Breccia pipe deposits. The deposit environment is typically Magmatic hydrothermal. Genetically related features of typical Brecc"
+        },
+        {
+          "name": "Breccia pipe REE",
+          "minmod_id": "Q434",
+          "description": "Breccia pipe REE deposits belong to the general deposit group of Breccia pipe deposits. The deposit environment is typically Magmatic hydrothermal. Genetically related features of typical Breccia pipe"
+        }
+      ],
+      "Carlin-type": [
+        {
+          "name": "Carlin-type gold",
+          "minmod_id": "Q435",
+          "description": "Carlin-type gold deposits are also known as Sediment-hosted disseminated gold, sediment-hosted micron gold. They belong to the general deposit group of Carlin-type deposits. The deposit environment is"
+        }
+      ],
+      "Distal-disseminated": [
+        {
+          "name": "Distal- disseminated silver-gold",
+          "minmod_id": "Q436",
+          "description": ""
+        }
+      ],
+      "Replacement": [
+        {
+          "name": "Replacement polymetallic",
+          "minmod_id": "Q437",
+          "description": "Replacement polymetallic deposits belong to the general deposit group of Replacement deposits. The deposit environment is typically Magmatic hydrothermal. Genetically related features of typical Repla"
+        },
+        {
+          "name": "Replacement gold-silver",
+          "minmod_id": "Q438",
+          "description": "Replacement gold-silver deposits are also known as Sulfide manto Au. They belong to the general deposit group of Replacement deposits. The deposit environment is typically Magmatic hydrothermal. Genet"
+        },
+        {
+          "name": "Replacement tin",
+          "minmod_id": "Q439",
+          "description": "Replacement tin deposits belong to the general deposit group of Replacement deposits. The deposit environment is typically Magmatic hydrothermal. Genetically related features of typical Replacement ti"
+        },
+        {
+          "name": "Replacement copper",
+          "minmod_id": "Q440",
+          "description": "Replacement copper deposits belong to the general deposit group of Replacement deposits. The deposit environment is typically Magmatic hydrothermal. Genetically related features of typical Replacement"
+        },
+        {
+          "name": "Replacement zinc-lead",
+          "minmod_id": "Q441",
+          "description": "Replacement zinc-lead deposits belong to the general deposit group of Replacement deposits. The deposit environment is typically Magmatic hydrothermal. Genetically related features of typical Replacem"
+        },
+        {
+          "name": "Replacement manganese",
+          "minmod_id": "Q442",
+          "description": "Replacement manganese deposits belong to the general deposit group of Replacement deposits. The deposit environment is typically Magmatic hydrothermal. Genetically related features of typical Replacem"
+        },
+        {
+          "name": "Replacement magnesium",
+          "minmod_id": "Q443",
+          "description": "Replacement magnesium deposits are also known as Crystalline magnesite. They belong to the general deposit group of Replacement deposits. The deposit environment is typically Magmatic hydrothermal. Ge"
+        },
+        {
+          "name": "Replacement fluorite",
+          "minmod_id": "Q444",
+          "description": "Replacement fluorite deposits belong to the general deposit group of Replacement deposits. The deposit environment is typically Magmatic hydrothermal. Genetically related features of typical Replaceme"
+        }
+      ],
+      "Skarn": [
+        {
+          "name": "Skarn iron",
+          "minmod_id": "Q445",
+          "description": "Skarn iron deposits belong to the general deposit group of Skarn deposits. The deposit environment is typically Magmatic hydrothermal. Genetically related features of typical Skarn iron deposits inclu"
+        },
+        {
+          "name": "Skarn copper",
+          "minmod_id": "Q446",
+          "description": "Skarn copper deposits belong to the general deposit group of Skarn deposits. The deposit environment is typically Magmatic hydrothermal. Genetically related features of typical Skarn copper deposits i"
+        },
+        {
+          "name": "Skarn tungsten \u00b1 Mo",
+          "minmod_id": "Q447",
+          "description": "Skarn tungsten \u00b1 Mo deposits belong to the general deposit group of Skarn deposits. The deposit environment is typically Magmatic hydrothermal. Genetically related features of typical Skarn tungsten \u00b1"
+        },
+        {
+          "name": "Skarn tin \u00b1 copper \u00b1 Mo",
+          "minmod_id": "Q448",
+          "description": "Skarn tin \u00b1 copper \u00b1 Mo deposits belong to the general deposit group of Skarn deposits. The deposit environment is typically Magmatic hydrothermal. Genetically related features of typical Skarn tin \u00b1 "
+        },
+        {
+          "name": "Skarn gold \u00b1 copper \u00b1 tungsten",
+          "minmod_id": "Q449",
+          "description": "Skarn gold \u00b1 copper \u00b1 tungsten deposits are also known as Intrusion-related gold. They belong to the general deposit group of Skarn deposits. The deposit environment is typically Magmatic hydrothermal"
+        },
+        {
+          "name": "Skarn zinc-lead-silver",
+          "minmod_id": "Q450",
+          "description": "Skarn zinc-lead-silver deposits belong to the general deposit group of Skarn deposits. The deposit environment is typically Magmatic hydrothermal. Genetically related features of typical Skarn zinc-le"
+        },
+        {
+          "name": "Skarn molybdenum",
+          "minmod_id": "Q451",
+          "description": "Skarn molybdenum deposits belong to the general deposit group of Skarn deposits. The deposit environment is typically Magmatic hydrothermal. Genetically related features of typical Skarn molybdenum de"
+        },
+        {
+          "name": "Skarn beryllium- fluorite",
+          "minmod_id": "Q452",
+          "description": ""
+        },
+        {
+          "name": "Skarn uranium- REE",
+          "minmod_id": "Q453",
+          "description": ""
+        }
+      ],
+      "Porphyry": [
+        {
+          "name": "Porphyry copper \u00b1 gold",
+          "minmod_id": "Q454",
+          "description": "Porphyry copper \u00b1 gold deposits are also known as Alkaline porphyry copper. They belong to the general deposit group of Porphyry deposits. The deposit environment is typically Magmatic hydrothermal. G"
+        },
+        {
+          "name": "Porphyry copper- molybdenum",
+          "minmod_id": "Q455",
+          "description": ""
+        },
+        {
+          "name": "Porphyry gold \u00b1 copper",
+          "minmod_id": "Q456",
+          "description": "Porphyry gold \u00b1 copper deposits are also known as Intrusion-related gold. They belong to the general deposit group of Porphyry deposits. The deposit environment is typically Magmatic hydrothermal. Gen"
+        },
+        {
+          "name": "Climax-type porphyry molybdenum",
+          "minmod_id": "Q457",
+          "description": "Climax-type porphyry molybdenum deposits are also known as Alkali-feldspar rhyolite-granite porphyry molybdenum; high-fluorine porphyry molybdenum. They belong to the general deposit group of Porphyry"
+        },
+        {
+          "name": "Low-fluorine porphyry molybdenum",
+          "minmod_id": "Q458",
+          "description": "Low-fluorine porphyry molybdenum deposits are also known as Arc-related porphyry molybdenum; low-fluorine stockwork molybdenite. They belong to the general deposit group of Porphyry deposits. The depo"
+        },
+        {
+          "name": "Porphyry tungsten",
+          "minmod_id": "Q459",
+          "description": "Porphyry tungsten deposits belong to the general deposit group of Porphyry deposits. The deposit environment is typically Magmatic hydrothermal. Genetically related features of typical Porphyry tungst"
+        },
+        {
+          "name": "Porphyry tin",
+          "minmod_id": "Q460",
+          "description": "Porphyry tin deposits belong to the general deposit group of Porphyry deposits. The deposit environment is typically Magmatic hydrothermal. Genetically related features of typical Porphyry tin deposit"
+        }
+      ],
+      "Greisen": [
+        {
+          "name": "Greisen tungsten- molybdenum\u00b1Bi",
+          "minmod_id": "Q462",
+          "description": ""
+        },
+        {
+          "name": "Greisen beryllium\u00b1Li",
+          "minmod_id": "Q463",
+          "description": ""
+        }
+      ],
+      "Intrusion-related": [
+        {
+          "name": "Reduced intrusion- related gold",
+          "minmod_id": "Q464",
+          "description": ""
+        },
+        {
+          "name": "Oxidized intrusion- related gold",
+          "minmod_id": "Q465",
+          "description": ""
+        }
+      ]
+    },
+    "Magmatic- Magmatic hydrothermal": {
+      "Greisen": [
+        {
+          "name": "Greisen tin \u00b1W-Mo",
+          "minmod_id": "Q461",
+          "description": ""
+        }
+      ]
+    },
+    "Magmatic": {
+      "Pegmatite": [
+        {
+          "name": "Simple pegmatite",
+          "minmod_id": "Q466",
+          "description": "Simple pegmatite deposits belong to the general deposit group of Pegmatite deposits. The deposit environment is typically Magmatic. Genetically related features of typical Simple pegmatite deposits in"
+        },
+        {
+          "name": "LCT pegmatite",
+          "minmod_id": "Q467",
+          "description": "LCT pegmatite deposits belong to the general deposit group of Pegmatite deposits. The deposit environment is typically Magmatic. Genetically related features of typical LCT pegmatite deposits include:"
+        },
+        {
+          "name": "NYF pegmatite",
+          "minmod_id": "Q468",
+          "description": "NYF pegmatite deposits belong to the general deposit group of Pegmatite deposits. The deposit environment is typically Magmatic. Genetically related features of typical NYF pegmatite deposits include:"
+        },
+        {
+          "name": "Abyssal pegmatite REE",
+          "minmod_id": "Q469",
+          "description": "Abyssal pegmatite REE deposits belong to the general deposit group of Pegmatite deposits. The deposit environment is typically Magmatic. Genetically related features of typical Abyssal pegmatite REE d"
+        }
+      ],
+      "Carbonatite": [
+        {
+          "name": "Carbonatite REE",
+          "minmod_id": "Q470",
+          "description": "Carbonatite REE deposits belong to the general deposit group of Carbonatite deposits. The deposit environment is typically Magmatic. Genetically related features of typical Carbonatite REE deposits in"
+        },
+        {
+          "name": "Carbonatite niobium",
+          "minmod_id": "Q471",
+          "description": "Carbonatite niobium deposits belong to the general deposit group of Carbonatite deposits. The deposit environment is typically Magmatic. Genetically related features of typical Carbonatite niobium dep"
+        }
+      ],
+      "Peralkaline igneous": [
+        {
+          "name": "Peralkaline igneous HFSE- REE",
+          "minmod_id": "Q472",
+          "description": ""
+        }
+      ],
+      "Apatite-nepheline- titanite intrusion": [
+        {
+          "name": "Apatite- nepheline- titanite intrusion",
+          "minmod_id": "Q473",
+          "description": ""
+        }
+      ],
+      "Apatite intrusion": [
+        {
+          "name": "Apatite intrusion REE",
+          "minmod_id": "Q474",
+          "description": "Apatite intrusion REE deposits are also known as Apatite vein. They belong to the general deposit group of Apatite intrusion deposits. The deposit environment is typically Magmatic. Genetically relate"
+        }
+      ],
+      "Kimberlite": [
+        {
+          "name": "Kimberlite diamond",
+          "minmod_id": "Q475",
+          "description": "Kimberlite diamond deposits belong to the general deposit group of Kimberlite deposits. The deposit environment is typically Magmatic. Genetically related features of typical Kimberlite diamond deposi"
+        }
+      ],
+      "Komatiite": [
+        {
+          "name": "Komatiite nickel-copper-PGE",
+          "minmod_id": "Q476",
+          "description": "Komatiite nickel-copper-PGE deposits are also known as Kambalda-type, raglan-type. They belong to the general deposit group of Komatiite deposits. The deposit environment is typically Magmatic. Geneti"
+        }
+      ],
+      "Ultramafic and (or) mafic-layered intrusion": [
+        {
+          "name": "U-M layered intrusion chromium",
+          "minmod_id": "Q477",
+          "description": "U-M layered intrusion chromium deposits belong to the general deposit group of Ultramafic and (or) mafic-layered intrusion deposits. The deposit environment is typically Magmatic. Genetically related "
+        },
+        {
+          "name": "U-M layered intrusion nickel- copper-PGE",
+          "minmod_id": "Q478",
+          "description": ""
+        },
+        {
+          "name": "U-M layered intrusion PGE",
+          "minmod_id": "Q479",
+          "description": "U-M layered intrusion PGE deposits are also known as Reef-type and (or) brecciated. They belong to the general deposit group of Ultramafic and (or) mafic-layered intrusion deposits. The deposit enviro"
+        },
+        {
+          "name": "U-M layered intrusion iron-titanium- vanadium",
+          "minmod_id": "Q480",
+          "description": ""
+        }
+      ],
+      "Ultramafic and (or) mafic intrusion": [
+        {
+          "name": "U-M intrusion nickel-copper- PGE",
+          "minmod_id": "Q481",
+          "description": ""
+        },
+        {
+          "name": "Arc U-M intrusion titanium- vanadium",
+          "minmod_id": "Q485",
+          "description": ""
+        },
+        {
+          "name": "Arc U-M intru- sion nickel- copper-PGE",
+          "minmod_id": "Q486",
+          "description": ""
+        },
+        {
+          "name": "Impact U-M intrusion nickel- copper-PGE",
+          "minmod_id": "Q489",
+          "description": ""
+        }
+      ],
+      "Ultramafic and (or) mafic conduit": [
+        {
+          "name": "U-M conduit nickel-copper- PGE",
+          "minmod_id": "Q482",
+          "description": ""
+        }
+      ],
+      "Ophiolite": [
+        {
+          "name": "Ophiolite chromium",
+          "minmod_id": "Q483",
+          "description": "Ophiolite chro-mium deposits are also known as Podiform chromite. They belong to the general deposit group of Ophiolite deposits. The deposit environment is typically Magmatic. Genetically related fea"
+        },
+        {
+          "name": "Ophiolite nickel-copper-PGE",
+          "minmod_id": "Q484",
+          "description": "Ophiolite nickel-copper-PGE deposits are also known as Picrite-tholeiite Ni-Cu-PGE. They belong to the general deposit group of Ophiolite deposits. The deposit environment is typically Magmatic. Genet"
+        }
+      ],
+      "Anorthosite massif": [
+        {
+          "name": "Anorthosite massif titanium",
+          "minmod_id": "Q487",
+          "description": "Anorthosite mas-sif titanium deposits are also known as Anorthosite pluton. They belong to the general deposit group of Anorthosite massif deposits. The deposit environment is typically Magmatic. Gene"
+        }
+      ],
+      "Anorthosite conduit": [
+        {
+          "name": "Anorthosite conduit nickel- copper-PGE",
+          "minmod_id": "Q488",
+          "description": ""
+        }
+      ]
+    }
+  }
+}

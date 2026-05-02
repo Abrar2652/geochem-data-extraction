@@ -1,0 +1,846 @@
+{
+  "model": "claude-sonnet-4-6",
+  "provider": "claude",
+  "aggregate": {
+    "n_papers": 28,
+    "mean_T1_metadata_%": 67.86207816386118,
+    "mean_T2_numerical_%": 80.54540791327923,
+    "mean_T3_structural_%": 66.69709318926256,
+    "mean_T4_null_%": 86.3142798771613,
+    "mean_overall_%": 75.52849257443363,
+    "total_samples_predicted": 11397,
+    "total_samples_ground_truth": 5307,
+    "total_samples_matched": 4069
+  },
+  "per_paper": {
+    "Yuan_et_al_2018": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 87.37,
+        "T2_numerical_%": 99.48,
+        "T3_structural_%": 100.0,
+        "T4_null_%": 99.04,
+        "overall_%": 95.86
+      },
+      "structural": {
+        "predicted_n": 85,
+        "ground_truth_n": 85,
+        "matched_n": 85,
+        "missing_samples": [],
+        "extra_samples": []
+      }
+    },
+    "Tomlinson_et_al_2021": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 71.52,
+        "T2_numerical_%": 65.45,
+        "T3_structural_%": 8.99,
+        "T4_null_%": 98.21,
+        "overall_%": 63.71
+      },
+      "structural": {
+        "predicted_n": 173,
+        "ground_truth_n": 8,
+        "matched_n": 8,
+        "missing_samples": [],
+        "extra_samples": [
+          "Chalcopyrite-1",
+          "FF1-1-1",
+          "FF1-1-2",
+          "FF1-2-1",
+          "FF1-2-2",
+          "FF1-3-1",
+          "FF1-3-2",
+          "FF1-4-1",
+          "FF1-4-2",
+          "FF1-5-1"
+        ]
+      }
+    },
+    "Chu_et_al_2022": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 61.69,
+        "T2_numerical_%": 100.0,
+        "T3_structural_%": 100.0,
+        "T4_null_%": 71.72,
+        "overall_%": 84.26
+      },
+      "structural": {
+        "predicted_n": 160,
+        "ground_truth_n": 160,
+        "matched_n": 160,
+        "missing_samples": [],
+        "extra_samples": []
+      }
+    },
+    "Yang_et_al_2022": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 70.93,
+        "T2_numerical_%": 96.24,
+        "T3_structural_%": 87.55,
+        "T4_null_%": 99.78,
+        "overall_%": 87.88
+      },
+      "structural": {
+        "predicted_n": 582,
+        "ground_truth_n": 615,
+        "matched_n": 524,
+        "missing_samples": [
+          "Maoping-pyrite-24",
+          "Maoping-pyrite-25",
+          "Maoping-pyrite-26",
+          "Maoping-pyrite-27",
+          "Maoping-pyrite-28",
+          "Maoping-pyrite-29",
+          "Maoping-pyrite-30",
+          "Maoping-pyrite-31",
+          "Maoping-pyrite-32",
+          "Maoping-pyrite-33"
+        ],
+        "extra_samples": [
+          "Maoping-1",
+          "Maoping-10",
+          "Maoping-11",
+          "Maoping-12",
+          "Maoping-13",
+          "Maoping-14",
+          "Maoping-15",
+          "Maoping-16",
+          "Maoping-17",
+          "Maoping-18"
+        ]
+      }
+    },
+    "Zhang_et_al_2022": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 49.7,
+        "T2_numerical_%": 58.8,
+        "T3_structural_%": 71.43,
+        "T4_null_%": 99.47,
+        "overall_%": 64.06
+      },
+      "structural": {
+        "predicted_n": 111,
+        "ground_truth_n": 104,
+        "matched_n": 65,
+        "missing_samples": [
+          "BY-B19-L_1",
+          "BY-B19-L_2",
+          "BY-B19-L_3",
+          "BY-B19-L_4",
+          "BY-B19-L_5",
+          "BY-B19-L_6",
+          "BY-B29-2",
+          "BY-B29-4",
+          "BY-B29-L_1",
+          "BY-B29-L_2"
+        ],
+        "extra_samples": [
+          "25",
+          "25%",
+          "75",
+          "75%",
+          "BY-B19-",
+          "BY-B19-1 BY-B19-2",
+          "BY-B29-",
+          "BY-B37-2 BY-B37-3",
+          "BY-B37-5 BY-B37-6",
+          "BY-B37-7 BY-B37-8"
+        ]
+      }
+    },
+    "Jiang_et_al_2023": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 81.03,
+        "T2_numerical_%": 100.0,
+        "T3_structural_%": 100.0,
+        "T4_null_%": 97.61,
+        "overall_%": 93.95
+      },
+      "structural": {
+        "predicted_n": 52,
+        "ground_truth_n": 56,
+        "matched_n": 52,
+        "missing_samples": [],
+        "extra_samples": []
+      }
+    },
+    "Soster_et_al_2023": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 73.39,
+        "T2_numerical_%": 99.52,
+        "T3_structural_%": 100.0,
+        "T4_null_%": 85.91,
+        "overall_%": 89.71
+      },
+      "structural": {
+        "predicted_n": 63,
+        "ground_truth_n": 63,
+        "matched_n": 63,
+        "missing_samples": [],
+        "extra_samples": []
+      }
+    },
+    "Sun_et_al_2023": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 59.27,
+        "T2_numerical_%": 89.88,
+        "T3_structural_%": 44.57,
+        "T4_null_%": 97.83,
+        "overall_%": 75.09
+      },
+      "structural": {
+        "predicted_n": 256,
+        "ground_truth_n": 310,
+        "matched_n": 117,
+        "missing_samples": [
+          "Sun_etal_1",
+          "Sun_etal_10",
+          "Sun_etal_11",
+          "Sun_etal_12",
+          "Sun_etal_13",
+          "Sun_etal_14",
+          "Sun_etal_15",
+          "Sun_etal_16",
+          "Sun_etal_17",
+          "Sun_etal_18"
+        ],
+        "extra_samples": [
+          "Py2(n=24)",
+          "Py3(n=21)",
+          "Py4a(n=18)",
+          "Py4b(n=15)",
+          "Py4c(n=23)",
+          "Py5(n=26)",
+          "Sp1-1",
+          "Sp1-10",
+          "Sp1-11",
+          "Sp1-12"
+        ]
+      }
+    },
+    "Chen_et_al_2024": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 77.76,
+        "T2_numerical_%": 100.0,
+        "T3_structural_%": 98.01,
+        "T4_null_%": 100.0,
+        "overall_%": 93.03
+      },
+      "structural": {
+        "predicted_n": 179,
+        "ground_truth_n": 179,
+        "matched_n": 172,
+        "missing_samples": [],
+        "extra_samples": [
+          "DK-24-2-b-1-1",
+          "DK-44-3-a-3-2",
+          "DK-44-6-a-1-1",
+          "DK-44-6-a-1-3",
+          "DK-44-6-a-2-2",
+          "DK-44-6-a-4-1",
+          "DK-44-6-b-1-1"
+        ]
+      }
+    },
+    "Denisova_et_al_2024": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 60.51,
+        "T2_numerical_%": 97.1,
+        "T3_structural_%": 86.9,
+        "T4_null_%": 99.77,
+        "overall_%": 84.99
+      },
+      "structural": {
+        "predicted_n": 809,
+        "ground_truth_n": 855,
+        "matched_n": 720,
+        "missing_samples": [
+          "A348395-1-1-10",
+          "A348395-1-1-11",
+          "A348395-1-1-12",
+          "A348395-1-1-2",
+          "A348395-2-1-15",
+          "A348395-2-1-17",
+          "A348395-2-2-13",
+          "A348395-2-2-16",
+          "A348395-3-1-22",
+          "A348395-4-1-10"
+        ],
+        "extra_samples": [
+          "B264518-1-3",
+          "B264518-1-4",
+          "B264518-2-1.1",
+          "B264518-3-1*",
+          "B264518-4-1.1",
+          "B264518-4-2",
+          "B264518-5-1",
+          "B264518-5-2",
+          "B264518-5-3.1",
+          "B266543-1-1"
+        ]
+      }
+    },
+    "He_et_al_2024": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 61.58,
+        "T2_numerical_%": 98.88,
+        "T3_structural_%": 99.51,
+        "T4_null_%": 100.0,
+        "overall_%": 87.95
+      },
+      "structural": {
+        "predicted_n": 103,
+        "ground_truth_n": 102,
+        "matched_n": 102,
+        "missing_samples": [],
+        "extra_samples": [
+          "\u201c - \u201d Below the detection limit for trace elements (typically 0.01 ppm)"
+        ]
+      }
+    },
+    "Lan_et_al_2024": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 71.15,
+        "T2_numerical_%": 99.9,
+        "T3_structural_%": 100.0,
+        "T4_null_%": 100.0,
+        "overall_%": 91.31
+      },
+      "structural": {
+        "predicted_n": 87,
+        "ground_truth_n": 87,
+        "matched_n": 87,
+        "missing_samples": [],
+        "extra_samples": []
+      }
+    },
+    "Liu_et_al_2024": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 68.57,
+        "T2_numerical_%": 90.86,
+        "T3_structural_%": 90.04,
+        "T4_null_%": 99.02,
+        "overall_%": 85.27
+      },
+      "structural": {
+        "predicted_n": 138,
+        "ground_truth_n": 113,
+        "matched_n": 113,
+        "missing_samples": [],
+        "extra_samples": [
+          "10KK-13@5-9",
+          "10KK-H@1-3",
+          "10KK-H@2-1",
+          "10kk-01@2-11",
+          "10kk-01@2-3",
+          "10kk-01@2-6",
+          "10kk-01@2-7",
+          "10kk-01@4-1",
+          "10kk-01@4-11",
+          "10kk-01@4-3"
+        ]
+      }
+    },
+    "Sun_et_al_2024": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 88.79,
+        "T2_numerical_%": 0.0,
+        "T3_structural_%": 0.0,
+        "T4_null_%": 0.0,
+        "overall_%": 26.64
+      },
+      "structural": {
+        "predicted_n": 67,
+        "ground_truth_n": 67,
+        "matched_n": 0,
+        "missing_samples": [
+          "BBJ-1-spot1",
+          "BBJ-1-spot10",
+          "BBJ-1-spot11",
+          "BBJ-1-spot12",
+          "BBJ-1-spot13",
+          "BBJ-1-spot14",
+          "BBJ-1-spot2",
+          "BBJ-1-spot3",
+          "BBJ-1-spot4",
+          "BBJ-1-spot5"
+        ],
+        "extra_samples": [
+          "1.0",
+          "10.0",
+          "11.0",
+          "12.0",
+          "13.0",
+          "14.0",
+          "15.0",
+          "16.0",
+          "17.0",
+          "18.0"
+        ]
+      }
+    },
+    "Wei_et_al_2024": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 57.29,
+        "T2_numerical_%": 0.0,
+        "T3_structural_%": 0.0,
+        "T4_null_%": 0.0,
+        "overall_%": 17.19
+      },
+      "structural": {
+        "predicted_n": 794,
+        "ground_truth_n": 101,
+        "matched_n": 0,
+        "missing_samples": [
+          "Wei-et-al-2024-1",
+          "Wei-et-al-2024-10",
+          "Wei-et-al-2024-100",
+          "Wei-et-al-2024-101",
+          "Wei-et-al-2024-11",
+          "Wei-et-al-2024-12",
+          "Wei-et-al-2024-13",
+          "Wei-et-al-2024-14",
+          "Wei-et-al-2024-15",
+          "Wei-et-al-2024-16"
+        ],
+        "extra_samples": [
+          "1",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18"
+        ]
+      }
+    },
+    "Wu_et_al_2024": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 89.93,
+        "T2_numerical_%": 99.38,
+        "T3_structural_%": 75.25,
+        "T4_null_%": 99.88,
+        "overall_%": 93.0
+      },
+      "structural": {
+        "predicted_n": 441,
+        "ground_truth_n": 438,
+        "matched_n": 266,
+        "missing_samples": [],
+        "extra_samples": [
+          "160-115-1-1-1",
+          "160-115-1-1-3",
+          "160-115-1-2-2",
+          "160-115-1-2-3",
+          "160-115-1-2-4",
+          "160-117-1-1-1",
+          "160-117-1-1-2",
+          "160-117-1-1-3",
+          "160-117-1-1-5",
+          "160-117-1-2-1"
+        ]
+      }
+    },
+    "Xia_et_al_2024": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 62.21,
+        "T2_numerical_%": 66.82,
+        "T3_structural_%": 90.81,
+        "T4_null_%": 96.02,
+        "overall_%": 73.41
+      },
+      "structural": {
+        "predicted_n": 205,
+        "ground_truth_n": 127,
+        "matched_n": 84,
+        "missing_samples": [
+          "K21-09-12"
+        ],
+        "extra_samples": [
+          "K21-01-04 K21-01-01",
+          "K21-01-05 K21-01-02",
+          "K21-01-06 K21-01-03",
+          "K21-01-11 K21-01-09",
+          "K21-01-12 K21-01-10",
+          "K21-03-05 K21-03-06",
+          "K21-03-11 K21-03-12",
+          "K21-04-05 K21-04-06",
+          "K21-05-03 K21-05-04",
+          "K21-05-10 K21-05-11"
+        ]
+      }
+    },
+    "Zhang_et_al_2024": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 78.29,
+        "T2_numerical_%": 98.42,
+        "T3_structural_%": 94.86,
+        "T4_null_%": 91.94,
+        "overall_%": 90.87
+      },
+      "structural": {
+        "predicted_n": 133,
+        "ground_truth_n": 120,
+        "matched_n": 120,
+        "missing_samples": [],
+        "extra_samples": [
+          "Z5-(2)-1",
+          "Z5-(2)-10",
+          "Z5-(2)-11",
+          "Z5-(2)-12",
+          "Z5-(2)-13",
+          "Z5-(2)-2",
+          "Z5-(2)-3",
+          "Z5-(2)-4",
+          "Z5-(2)-5",
+          "Z5-(2)-6"
+        ]
+      }
+    },
+    "Zhao_et_al_2024": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 64.73,
+        "T2_numerical_%": 100.0,
+        "T3_structural_%": 93.64,
+        "T4_null_%": 94.34,
+        "overall_%": 87.62
+      },
+      "structural": {
+        "predicted_n": 184,
+        "ground_truth_n": 162,
+        "matched_n": 162,
+        "missing_samples": [],
+        "extra_samples": [
+          "sph-10",
+          "sph-11",
+          "sph-12",
+          "sph-13",
+          "sph-13*",
+          "sph-14",
+          "sph-15",
+          "sph-2",
+          "sph-24",
+          "sph-25"
+        ]
+      }
+    },
+    "Zhu_et_al_2024": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 68.05,
+        "T2_numerical_%": 7.76,
+        "T3_structural_%": 13.5,
+        "T4_null_%": 89.35,
+        "overall_%": 38.94
+      },
+      "structural": {
+        "predicted_n": 104,
+        "ground_truth_n": 59,
+        "matched_n": 11,
+        "missing_samples": [
+          "F11-20",
+          "F11-21",
+          "F11-22",
+          "F11-23",
+          "F11-24",
+          "F11-25",
+          "F11-26",
+          "F11-27",
+          "F11-28",
+          "F11-29"
+        ],
+        "extra_samples": [
+          "1.0-1",
+          "1.0-2",
+          "1.0-3",
+          "1.0-4",
+          "1.0-5",
+          "10.0-1",
+          "10.0-2",
+          "11.0-1",
+          "11.0-2",
+          "12.0-1"
+        ]
+      }
+    },
+    "Bertrandsson_Erlandsson_et_al_2025": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 57.08,
+        "T2_numerical_%": 100.0,
+        "T3_structural_%": 37.8,
+        "T4_null_%": 100.0,
+        "overall_%": 77.79
+      },
+      "structural": {
+        "predicted_n": 926,
+        "ground_truth_n": 213,
+        "matched_n": 213,
+        "missing_samples": [],
+        "extra_samples": [
+          "077-24-1 ccp1-1",
+          "077-24-1 ccp2-1",
+          "077-24-1 ccp3-1",
+          "077-24-1 ccp4-1",
+          "077-24-1 ccp5-1",
+          "077-24-1 ccp6-1",
+          "077-24-1 ccp7-1",
+          "077-24-1 ccp8-1",
+          "077-24-1 ccp9-1",
+          "077-24-1 sph1-1"
+        ]
+      }
+    },
+    "Bertrandsson_Erlandsson_et_al_2022_reprocessed": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 57.13,
+        "T2_numerical_%": 100.0,
+        "T3_structural_%": 76.49,
+        "T4_null_%": 100.0,
+        "overall_%": 83.61
+      },
+      "structural": {
+        "predicted_n": 926,
+        "ground_truth_n": 566,
+        "matched_n": 566,
+        "missing_samples": [],
+        "extra_samples": [
+          "B-1-2-1-1",
+          "B-1-2-10-1",
+          "B-1-2-11-1",
+          "B-1-2-12-1",
+          "B-1-2-13-1",
+          "B-1-2-15-1",
+          "B-1-2-5-1",
+          "B-1-2-6-1",
+          "B-1-2-7-1",
+          "B-1-2-8-1"
+        ]
+      }
+    },
+    "Ciccolella_et_al_2025": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 53.91,
+        "T2_numerical_%": 86.79,
+        "T3_structural_%": 88.07,
+        "T4_null_%": 100.0,
+        "overall_%": 79.1
+      },
+      "structural": {
+        "predicted_n": 305,
+        "ground_truth_n": 240,
+        "matched_n": 240,
+        "missing_samples": [],
+        "extra_samples": [
+          "34",
+          "46",
+          "62",
+          "93",
+          "FA04, Ccp, p.100",
+          "FA04, Ccp, p.5",
+          "FA04, Ccp, p.6",
+          "FA04, Ccp, p.87",
+          "FA04, Ccp, p.88",
+          "FA04, Ccp, p.89"
+        ]
+      }
+    },
+    "Foltyn_et_al_2022_reprocessed": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 80.31,
+        "T2_numerical_%": 100.0,
+        "T3_structural_%": 8.76,
+        "T4_null_%": 98.26,
+        "overall_%": 80.15
+      },
+      "structural": {
+        "predicted_n": 150,
+        "ground_truth_n": 131,
+        "matched_n": 12,
+        "missing_samples": [
+          "B-1-2-1",
+          "B-1-2-10",
+          "B-1-2-11",
+          "B-1-2-12",
+          "B-1-2-13",
+          "B-1-2-15",
+          "B-1-2-5",
+          "B-1-2-6",
+          "B-1-2-7",
+          "B-1-2-8"
+        ],
+        "extra_samples": [
+          "B5-1R-1.d",
+          "B5-1R-10.d",
+          "B5-1R-11.d",
+          "B5-1R-12.d",
+          "B5-1R-2.d",
+          "B5-1R-3.d",
+          "B5-1R-4.d",
+          "B5-1R-5.d",
+          "B5-1R-6.d",
+          "B5-1R-7.d"
+        ]
+      }
+    },
+    "Li_et_al_2025": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 60.57,
+        "T2_numerical_%": 0.0,
+        "T3_structural_%": 0.0,
+        "T4_null_%": 0.0,
+        "overall_%": 18.17
+      },
+      "structural": {
+        "predicted_n": 2456,
+        "ground_truth_n": 55,
+        "matched_n": 0,
+        "missing_samples": [
+          "MWS-SP1-01",
+          "MWS-SP1-02",
+          "MWS-SP1-03",
+          "MWS-SP1-04",
+          "MWS-SP1-05",
+          "MWS-SP1-06",
+          "MWS-SP1-07",
+          "MWS-SP1-08",
+          "MWS-SP1-09",
+          "MWS-SP1-10"
+        ],
+        "extra_samples": [
+          "163HTP1-1",
+          "163HTP2-1",
+          "163HTP3-1",
+          "163HTP4-1",
+          "163HTP5-1",
+          "163HTP6-1",
+          "163HTP7-1",
+          "163HTP8-1",
+          "174HTP1-1",
+          "174HTP3-1"
+        ]
+      }
+    },
+    "Sun_et_al_2025": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 59.59,
+        "T2_numerical_%": 100.0,
+        "T3_structural_%": 97.83,
+        "T4_null_%": 100.0,
+        "overall_%": 87.55
+      },
+      "structural": {
+        "predicted_n": 94,
+        "ground_truth_n": 180,
+        "matched_n": 90,
+        "missing_samples": [],
+        "extra_samples": [
+          "Sp1 n = 25",
+          "Sp2 n = 31",
+          "Sp2 n= 31",
+          "Sp3 n = 34"
+        ]
+      }
+    },
+    "Tan_et_al_2025": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 63.29,
+        "T2_numerical_%": 100.0,
+        "T3_structural_%": 3.51,
+        "T4_null_%": 100.0,
+        "overall_%": 74.52
+      },
+      "structural": {
+        "predicted_n": 1734,
+        "ground_truth_n": 31,
+        "matched_n": 31,
+        "missing_samples": [],
+        "extra_samples": [
+          "0.01222",
+          "0.25122",
+          "0.25124",
+          "0.25132",
+          "0.25134",
+          "0.49024",
+          "0.49032",
+          "0.49047",
+          "0.72942",
+          "0.72949"
+        ]
+      }
+    },
+    "Wang_et_al_2025": {
+      "model": "claude-sonnet-4-6",
+      "provider": "claude",
+      "scores": {
+        "T1_metadata_%": 64.48,
+        "T2_numerical_%": 100.0,
+        "T3_structural_%": 100.0,
+        "T4_null_%": 98.65,
+        "overall_%": 89.14
+      },
+      "structural": {
+        "predicted_n": 80,
+        "ground_truth_n": 80,
+        "matched_n": 6,
+        "missing_samples": [],
+        "extra_samples": []
+      }
+    }
+  }
+}

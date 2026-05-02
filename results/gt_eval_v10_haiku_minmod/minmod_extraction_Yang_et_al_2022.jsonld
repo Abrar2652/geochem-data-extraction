@@ -1,0 +1,605 @@
+{
+  "@context": {
+    "@vocab": "https://minmod.isi.edu/ontology/",
+    "minmod": "https://minmod.isi.edu/resource/",
+    "schema": "https://schema.org/",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "geo": "http://www.w3.org/2003/01/geo/wgs84_pos#",
+    "MineralSite": {
+      "@id": "https://minmod.isi.edu/ontology/MineralSite"
+    },
+    "deposit_type_candidate": {
+      "@id": "https://minmod.isi.edu/ontology/deposit_type_candidate"
+    },
+    "mineral_inventory": {
+      "@id": "https://minmod.isi.edu/ontology/mineral_inventory"
+    },
+    "observed_name": {
+      "@id": "rdfs:label"
+    },
+    "normalized_uri": {
+      "@id": "@id"
+    },
+    "confidence": {
+      "@id": "https://minmod.isi.edu/ontology/confidence",
+      "@type": "xsd:decimal"
+    },
+    "source_id": {
+      "@id": "schema:url"
+    },
+    "record_id": {
+      "@id": "schema:identifier"
+    },
+    "name": {
+      "@id": "schema:name"
+    },
+    "country": {
+      "@id": "schema:addressCountry"
+    },
+    "province": {
+      "@id": "schema:addressRegion"
+    },
+    "publication_year": {
+      "@id": "schema:datePublished",
+      "@type": "xsd:integer"
+    },
+    "commodity": {
+      "@id": "https://minmod.isi.edu/ontology/commodity"
+    },
+    "unit": {
+      "@id": "schema:unitText"
+    },
+    "median_value": {
+      "@id": "schema:value",
+      "@type": "xsd:decimal"
+    }
+  },
+  "@graph": [
+    {
+      "source_id": "geochem-benchmark:Yang_et_al_2022",
+      "record_id": "Yang_et_al_2022",
+      "name": "Maoping",
+      "country": [
+        "CHN"
+      ],
+      "province": [
+        "Yunnan, Guizhou"
+      ],
+      "deposit_type_candidate": [
+        {
+          "observed_name": "MVT zinc-lead",
+          "confidence": 0.42,
+          "source": "geochem-benchmark extraction pipeline v1, Jahin et al.",
+          "normalized_uri": "https://minmod.isi.edu/resource/Q380",
+          "justification": "Excellent match for MVT characteristics: Zn-Pb-Ag mineralization in marine carbonate host rocks (limestone, dolostone, dolomitic limestone) from Devonian-Carboniferous-Permian age. Stratabound ore bod"
+        },
+        {
+          "observed_name": "Replacement zinc-lead",
+          "confidence": 0.28,
+          "source": "geochem-benchmark extraction pipeline v1, Jahin et al.",
+          "normalized_uri": "https://minmod.isi.edu/resource/Q441"
+        },
+        {
+          "observed_name": "Siliciclastic-mafic zinc-lead",
+          "confidence": 0.15,
+          "source": "geochem-benchmark extraction pipeline v1, Jahin et al.",
+          "normalized_uri": "https://minmod.isi.edu/resource/Q375"
+        },
+        {
+          "observed_name": "Siliciclastic-carbonate zinc-lead",
+          "confidence": 0.1,
+          "source": "geochem-benchmark extraction pipeline v1, Jahin et al."
+        },
+        {
+          "observed_name": "Non-sulfide zinc-lead \u00b1 Mn",
+          "confidence": 0.05,
+          "source": "geochem-benchmark extraction pipeline v1, Jahin et al.",
+          "normalized_uri": "https://minmod.isi.edu/resource/Q385"
+        }
+      ],
+      "mineral_inventory": [
+        {
+          "commodity": {
+            "observed_name": "Zn",
+            "confidence": 1.0,
+            "source": "geochem-benchmark extraction pipeline v1, Jahin et al."
+          },
+          "reference": {
+            "document": {
+              "uri": "geochem-benchmark:Yang_et_al_2022"
+            }
+          }
+        },
+        {
+          "commodity": {
+            "observed_name": "Pb",
+            "confidence": 1.0,
+            "source": "geochem-benchmark extraction pipeline v1, Jahin et al."
+          },
+          "reference": {
+            "document": {
+              "uri": "geochem-benchmark:Yang_et_al_2022"
+            }
+          }
+        },
+        {
+          "commodity": {
+            "observed_name": "Ag",
+            "confidence": 1.0,
+            "source": "geochem-benchmark extraction pipeline v1, Jahin et al."
+          },
+          "reference": {
+            "document": {
+              "uri": "geochem-benchmark:Yang_et_al_2022"
+            }
+          }
+        },
+        {
+          "commodity": {
+            "observed_name": "Cu",
+            "confidence": 1.0,
+            "source": "geochem-benchmark extraction pipeline v1, Jahin et al."
+          },
+          "reference": {
+            "document": {
+              "uri": "geochem-benchmark:Yang_et_al_2022"
+            }
+          }
+        },
+        {
+          "commodity": {
+            "observed_name": "Ge",
+            "confidence": 1.0,
+            "source": "geochem-benchmark extraction pipeline v1, Jahin et al."
+          },
+          "reference": {
+            "document": {
+              "uri": "geochem-benchmark:Yang_et_al_2022"
+            }
+          }
+        },
+        {
+          "commodity": {
+            "observed_name": "Ga",
+            "confidence": 1.0,
+            "source": "geochem-benchmark extraction pipeline v1, Jahin et al."
+          },
+          "reference": {
+            "document": {
+              "uri": "geochem-benchmark:Yang_et_al_2022"
+            }
+          }
+        },
+        {
+          "commodity": {
+            "observed_name": "Cd",
+            "confidence": 1.0,
+            "source": "geochem-benchmark extraction pipeline v1, Jahin et al."
+          },
+          "reference": {
+            "document": {
+              "uri": "geochem-benchmark:Yang_et_al_2022"
+            }
+          }
+        },
+        {
+          "commodity": {
+            "observed_name": "Co",
+            "confidence": 1.0,
+            "source": "geochem-benchmark extraction pipeline v1, Jahin et al."
+          },
+          "reference": {
+            "document": {
+              "uri": "geochem-benchmark:Yang_et_al_2022"
+            }
+          }
+        },
+        {
+          "commodity": {
+            "observed_name": "Ni",
+            "confidence": 1.0,
+            "source": "geochem-benchmark extraction pipeline v1, Jahin et al."
+          },
+          "reference": {
+            "document": {
+              "uri": "geochem-benchmark:Yang_et_al_2022"
+            }
+          }
+        },
+        {
+          "commodity": {
+            "observed_name": "As",
+            "confidence": 1.0,
+            "source": "geochem-benchmark extraction pipeline v1, Jahin et al."
+          },
+          "reference": {
+            "document": {
+              "uri": "geochem-benchmark:Yang_et_al_2022"
+            }
+          }
+        },
+        {
+          "commodity": {
+            "observed_name": "Sb",
+            "confidence": 1.0,
+            "source": "geochem-benchmark extraction pipeline v1, Jahin et al."
+          },
+          "reference": {
+            "document": {
+              "uri": "geochem-benchmark:Yang_et_al_2022"
+            }
+          }
+        },
+        {
+          "commodity": {
+            "observed_name": "sphalerite",
+            "confidence": 1.0,
+            "source": "geochem-benchmark extraction pipeline v1, Jahin et al.",
+            "commodity_type": "analyzed_mineral"
+          },
+          "reference": {
+            "document": {
+              "uri": "geochem-benchmark:Yang_et_al_2022"
+            }
+          }
+        }
+      ],
+      "geochemical_measurements": [
+        {
+          "commodity": {
+            "observed_name": "Silver",
+            "normalized_uri": "https://minmod.isi.edu/resource/Q585"
+          },
+          "n_analyses": 1164,
+          "unit": "ppm",
+          "median_value": 7.83,
+          "min_value": 0.0,
+          "max_value": 2699.0,
+          "n_bdl": 44,
+          "reference": {
+            "document": {
+              "uri": "geochem-benchmark:Yang_et_al_2022"
+            }
+          }
+        },
+        {
+          "commodity": {
+            "observed_name": "Arsenic",
+            "normalized_uri": "https://minmod.isi.edu/resource/Q511"
+          },
+          "n_analyses": 1164,
+          "unit": "ppm",
+          "median_value": 16.5,
+          "min_value": 0.0,
+          "max_value": 16600.0,
+          "n_bdl": 282,
+          "reference": {
+            "document": {
+              "uri": "geochem-benchmark:Yang_et_al_2022"
+            }
+          }
+        },
+        {
+          "commodity": {
+            "observed_name": "Bismuth",
+            "normalized_uri": "https://minmod.isi.edu/resource/Q514"
+          },
+          "n_analyses": 1048,
+          "unit": "ppm",
+          "median_value": 0.07,
+          "min_value": 0.01,
+          "max_value": 5.34,
+          "n_bdl": 938,
+          "reference": {
+            "document": {
+              "uri": "geochem-benchmark:Yang_et_al_2022"
+            }
+          }
+        },
+        {
+          "commodity": {
+            "observed_name": "Cadmium",
+            "normalized_uri": "https://minmod.isi.edu/resource/Q516"
+          },
+          "n_analyses": 1164,
+          "unit": "ppm",
+          "median_value": 1535.0,
+          "min_value": 0.025,
+          "max_value": 13520.0,
+          "n_bdl": 346,
+          "reference": {
+            "document": {
+              "uri": "geochem-benchmark:Yang_et_al_2022"
+            }
+          }
+        },
+        {
+          "commodity": {
+            "observed_name": "Cobalt",
+            "normalized_uri": "https://minmod.isi.edu/resource/Q537"
+          },
+          "n_analyses": 1048,
+          "unit": "ppm",
+          "median_value": 0.07,
+          "min_value": 0.01,
+          "max_value": 54.2,
+          "n_bdl": 750,
+          "reference": {
+            "document": {
+              "uri": "geochem-benchmark:Yang_et_al_2022"
+            }
+          }
+        },
+        {
+          "commodity": {
+            "observed_name": "Chromium",
+            "normalized_uri": "https://minmod.isi.edu/resource/Q519"
+          },
+          "n_analyses": 1048,
+          "unit": "ppm",
+          "median_value": 0.51,
+          "min_value": 0.09,
+          "max_value": 68.3,
+          "n_bdl": 374,
+          "reference": {
+            "document": {
+              "uri": "geochem-benchmark:Yang_et_al_2022"
+            }
+          }
+        },
+        {
+          "commodity": {
+            "observed_name": "Copper",
+            "normalized_uri": "https://minmod.isi.edu/resource/Q538"
+          },
+          "n_analyses": 1164,
+          "unit": "ppm",
+          "median_value": 13.79,
+          "min_value": 0.0,
+          "max_value": 2826.0,
+          "n_bdl": 78,
+          "reference": {
+            "document": {
+              "uri": "geochem-benchmark:Yang_et_al_2022"
+            }
+          }
+        },
+        {
+          "commodity": {
+            "observed_name": "Iron",
+            "normalized_uri": "https://minmod.isi.edu/resource/Q561"
+          },
+          "n_analyses": 626,
+          "unit": "ppm",
+          "median_value": 11860.0,
+          "min_value": 48.7,
+          "max_value": 88270.0,
+          "n_bdl": 0,
+          "reference": {
+            "document": {
+              "uri": "geochem-benchmark:Yang_et_al_2022"
+            }
+          }
+        },
+        {
+          "commodity": {
+            "observed_name": "Gallium",
+            "normalized_uri": "https://minmod.isi.edu/resource/Q594"
+          },
+          "n_analyses": 1048,
+          "unit": "ppm",
+          "median_value": 1.02,
+          "min_value": 0.01,
+          "max_value": 431.0,
+          "n_bdl": 300,
+          "reference": {
+            "document": {
+              "uri": "geochem-benchmark:Yang_et_al_2022"
+            }
+          }
+        },
+        {
+          "commodity": {
+            "observed_name": "Germanium",
+            "normalized_uri": "https://minmod.isi.edu/resource/Q595"
+          },
+          "n_analyses": 1164,
+          "unit": "ppm",
+          "median_value": 2.23,
+          "min_value": 0.0,
+          "max_value": 1257.0,
+          "n_bdl": 8,
+          "reference": {
+            "document": {
+              "uri": "geochem-benchmark:Yang_et_al_2022"
+            }
+          }
+        },
+        {
+          "commodity": {
+            "observed_name": "Indium",
+            "normalized_uri": "https://minmod.isi.edu/resource/Q559"
+          },
+          "n_analyses": 1048,
+          "unit": "ppm",
+          "median_value": 0.94,
+          "min_value": 0.01,
+          "max_value": 248.5,
+          "n_bdl": 568,
+          "reference": {
+            "document": {
+              "uri": "geochem-benchmark:Yang_et_al_2022"
+            }
+          }
+        },
+        {
+          "commodity": {
+            "observed_name": "Manganese",
+            "normalized_uri": "https://minmod.isi.edu/resource/Q571"
+          },
+          "n_analyses": 1114,
+          "unit": "ppm",
+          "median_value": 17.315,
+          "min_value": 0.0,
+          "max_value": 698.0,
+          "n_bdl": 82,
+          "reference": {
+            "document": {
+              "uri": "geochem-benchmark:Yang_et_al_2022"
+            }
+          }
+        },
+        {
+          "commodity": {
+            "observed_name": "Nickel",
+            "normalized_uri": "https://minmod.isi.edu/resource/Q578"
+          },
+          "n_analyses": 1048,
+          "unit": "ppm",
+          "median_value": 1.84,
+          "min_value": 0.07,
+          "max_value": 519.0,
+          "n_bdl": 712,
+          "reference": {
+            "document": {
+              "uri": "geochem-benchmark:Yang_et_al_2022"
+            }
+          }
+        },
+        {
+          "commodity": {
+            "observed_name": "Lead",
+            "normalized_uri": "https://minmod.isi.edu/resource/Q565"
+          },
+          "n_analyses": 1164,
+          "unit": "ppm",
+          "median_value": 11.88,
+          "min_value": 0.0,
+          "max_value": 10050.0,
+          "n_bdl": 12,
+          "reference": {
+            "document": {
+              "uri": "geochem-benchmark:Yang_et_al_2022"
+            }
+          }
+        },
+        {
+          "commodity": {
+            "observed_name": "Antimony",
+            "normalized_uri": "https://minmod.isi.edu/resource/Q510"
+          },
+          "n_analyses": 1164,
+          "unit": "ppm",
+          "median_value": 2.29,
+          "min_value": 0.0,
+          "max_value": 992.0,
+          "n_bdl": 106,
+          "reference": {
+            "document": {
+              "uri": "geochem-benchmark:Yang_et_al_2022"
+            }
+          }
+        },
+        {
+          "commodity": {
+            "observed_name": "Tin",
+            "normalized_uri": "https://minmod.isi.edu/resource/Q587"
+          },
+          "n_analyses": 1048,
+          "unit": "ppm",
+          "median_value": 0.57,
+          "min_value": 0.01,
+          "max_value": 128.0,
+          "n_bdl": 510,
+          "reference": {
+            "document": {
+              "uri": "geochem-benchmark:Yang_et_al_2022"
+            }
+          }
+        },
+        {
+          "commodity": {
+            "observed_name": "Titanium",
+            "normalized_uri": "https://minmod.isi.edu/resource/Q614"
+          },
+          "n_analyses": 422,
+          "unit": "ppm",
+          "median_value": 2.78,
+          "min_value": 0.12,
+          "max_value": 1750.0,
+          "n_bdl": 218,
+          "reference": {
+            "document": {
+              "uri": "geochem-benchmark:Yang_et_al_2022"
+            }
+          }
+        },
+        {
+          "commodity": {
+            "observed_name": "Thallium",
+            "normalized_uri": "https://minmod.isi.edu/resource/Q612"
+          },
+          "n_analyses": 1048,
+          "unit": "ppm",
+          "median_value": 0.18,
+          "min_value": 0.01,
+          "max_value": 360.0,
+          "n_bdl": 322,
+          "reference": {
+            "document": {
+              "uri": "geochem-benchmark:Yang_et_al_2022"
+            }
+          }
+        },
+        {
+          "commodity": {
+            "observed_name": "Vanadium",
+            "normalized_uri": "https://minmod.isi.edu/resource/Q616"
+          },
+          "n_analyses": 422,
+          "unit": "ppm",
+          "median_value": 0.26,
+          "min_value": 0.01,
+          "max_value": 13.3,
+          "n_bdl": 88,
+          "reference": {
+            "document": {
+              "uri": "geochem-benchmark:Yang_et_al_2022"
+            }
+          }
+        },
+        {
+          "commodity": {
+            "observed_name": "Zinc",
+            "normalized_uri": "https://minmod.isi.edu/resource/Q589"
+          },
+          "n_analyses": 538,
+          "unit": "ppm",
+          "median_value": 2.11,
+          "min_value": 0.61,
+          "max_value": 2850.0,
+          "n_bdl": 12,
+          "reference": {
+            "document": {
+              "uri": "geochem-benchmark:Yang_et_al_2022"
+            }
+          }
+        }
+      ],
+      "analytical_methods": [
+        {
+          "method": "LA-ICPMS",
+          "instrument": "Agilent 7900 ICP-MS coupled with RESOlution 193nm ArF excimer laser",
+          "laboratory": "State Key Laboratory of Geological Processes and Mineral Resources, China University of Geosciences, Wuhan",
+          "standards": "NIST 610 synthetic glass standard, USGS sulfide standard MASS-1",
+          "source": "geochem-benchmark extraction pipeline v1, Jahin et al."
+        }
+      ],
+      "publication_year": 2022,
+      "@id": "https://minmod.isi.edu/resource/Yang_et_al_2022",
+      "@type": "MineralSite"
+    }
+  ]
+}

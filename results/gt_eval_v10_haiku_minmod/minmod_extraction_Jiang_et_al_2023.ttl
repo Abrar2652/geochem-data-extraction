@@ -1,0 +1,115 @@
+@prefix minmod: <https://minmod.isi.edu/resource/> .
+@prefix mno: <https://minmod.isi.edu/ontology/> .
+@prefix schema: <https://schema.org/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+
+minmod:Jiang_et_al_2023
+    a mno:MineralSite ;
+    schema:identifier "Jiang_et_al_2023" ;
+    rdfs:label "Su-Cha"@en ;
+    schema:url <geochem-benchmark:Jiang_et_al_2023> ;
+    schema:addressCountry "CHN" ;
+    schema:addressRegion "Inner Mongolia" ;
+    schema:datePublished "2023"^^xsd:integer ;
+    mno:deposit_type_candidate _:deptype_Jiang_et_al_2023_0 ;
+_:deptype_Jiang_et_al_2023_0
+    rdfs:label "Siliciclastic-mafic zinc-lead"@en ;
+    mno:confidence "0.42"^^xsd:decimal ;
+    mno:source "geochem-benchmark extraction pipeline v1, Jahin et al." ;
+    mno:normalized_uri <https://minmod.isi.edu/resource/Q375> ;
+    .
+    mno:deposit_type_candidate _:deptype_Jiang_et_al_2023_1 ;
+_:deptype_Jiang_et_al_2023_1
+    rdfs:label "Skarn zinc-lead-silver"@en ;
+    mno:confidence "0.28"^^xsd:decimal ;
+    mno:source "geochem-benchmark extraction pipeline v1, Jahin et al." ;
+    mno:normalized_uri <https://minmod.isi.edu/resource/Q450> ;
+    .
+    mno:deposit_type_candidate _:deptype_Jiang_et_al_2023_2 ;
+_:deptype_Jiang_et_al_2023_2
+    rdfs:label "Replacement zinc-lead"@en ;
+    mno:confidence "0.18"^^xsd:decimal ;
+    mno:source "geochem-benchmark extraction pipeline v1, Jahin et al." ;
+    mno:normalized_uri <https://minmod.isi.edu/resource/Q441> ;
+    .
+    mno:deposit_type_candidate _:deptype_Jiang_et_al_2023_3 ;
+_:deptype_Jiang_et_al_2023_3
+    rdfs:label "Vein polymetallic"@en ;
+    mno:confidence "0.08"^^xsd:decimal ;
+    mno:source "geochem-benchmark extraction pipeline v1, Jahin et al." ;
+    mno:normalized_uri <https://minmod.isi.edu/resource/Q430> ;
+    .
+    mno:deposit_type_candidate _:deptype_Jiang_et_al_2023_4 ;
+_:deptype_Jiang_et_al_2023_4
+    rdfs:label "Vein five-element"@en ;
+    mno:confidence "0.04"^^xsd:decimal ;
+    mno:source "geochem-benchmark extraction pipeline v1, Jahin et al." ;
+    mno:normalized_uri <https://minmod.isi.edu/resource/Q386> ;
+    .
+    mno:mineral_inventory _:inv_Jiang_et_al_2023_0 ;
+_:inv_Jiang_et_al_2023_0
+    rdfs:label "Zn"@en ;
+    schema:url <geochem-benchmark:Jiang_et_al_2023> ;
+    .
+    mno:mineral_inventory _:inv_Jiang_et_al_2023_1 ;
+_:inv_Jiang_et_al_2023_1
+    rdfs:label "Pb"@en ;
+    schema:url <geochem-benchmark:Jiang_et_al_2023> ;
+    .
+    mno:mineral_inventory _:inv_Jiang_et_al_2023_2 ;
+_:inv_Jiang_et_al_2023_2
+    rdfs:label "Cu"@en ;
+    schema:url <geochem-benchmark:Jiang_et_al_2023> ;
+    .
+    mno:mineral_inventory _:inv_Jiang_et_al_2023_3 ;
+_:inv_Jiang_et_al_2023_3
+    rdfs:label "Ag"@en ;
+    schema:url <geochem-benchmark:Jiang_et_al_2023> ;
+    .
+    mno:mineral_inventory _:inv_Jiang_et_al_2023_4 ;
+_:inv_Jiang_et_al_2023_4
+    rdfs:label "Sn"@en ;
+    schema:url <geochem-benchmark:Jiang_et_al_2023> ;
+    .
+    mno:mineral_inventory _:inv_Jiang_et_al_2023_5 ;
+_:inv_Jiang_et_al_2023_5
+    rdfs:label "Sb"@en ;
+    schema:url <geochem-benchmark:Jiang_et_al_2023> ;
+    .
+    mno:mineral_inventory _:inv_Jiang_et_al_2023_6 ;
+_:inv_Jiang_et_al_2023_6
+    rdfs:label "Bi"@en ;
+    schema:url <geochem-benchmark:Jiang_et_al_2023> ;
+    .
+    mno:mineral_inventory _:inv_Jiang_et_al_2023_7 ;
+_:inv_Jiang_et_al_2023_7
+    rdfs:label "Cd"@en ;
+    schema:url <geochem-benchmark:Jiang_et_al_2023> ;
+    .
+    mno:mineral_inventory _:inv_Jiang_et_al_2023_8 ;
+_:inv_Jiang_et_al_2023_8
+    rdfs:label "In"@en ;
+    schema:url <geochem-benchmark:Jiang_et_al_2023> ;
+    .
+    mno:mineral_inventory _:inv_Jiang_et_al_2023_9 ;
+_:inv_Jiang_et_al_2023_9
+    rdfs:label "Ge"@en ;
+    schema:url <geochem-benchmark:Jiang_et_al_2023> ;
+    .
+    mno:mineral_inventory _:inv_Jiang_et_al_2023_10 ;
+_:inv_Jiang_et_al_2023_10
+    rdfs:label "Ga"@en ;
+    schema:url <geochem-benchmark:Jiang_et_al_2023> ;
+    .
+    mno:mineral_inventory _:inv_Jiang_et_al_2023_11 ;
+_:inv_Jiang_et_al_2023_11
+    rdfs:label "F"@en ;
+    schema:url <geochem-benchmark:Jiang_et_al_2023> ;
+    .
+    mno:mineral_inventory _:inv_Jiang_et_al_2023_12 ;
+_:inv_Jiang_et_al_2023_12
+    rdfs:label "pyrite"@en ;
+    schema:url <geochem-benchmark:Jiang_et_al_2023> ;
+    . .

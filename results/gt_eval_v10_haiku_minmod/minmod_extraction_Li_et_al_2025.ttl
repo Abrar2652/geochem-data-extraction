@@ -1,0 +1,85 @@
+@prefix minmod: <https://minmod.isi.edu/resource/> .
+@prefix mno: <https://minmod.isi.edu/ontology/> .
+@prefix schema: <https://schema.org/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+
+minmod:Li_et_al_2025
+    a mno:MineralSite ;
+    schema:identifier "Li_et_al_2025" ;
+    rdfs:label "Lawu"@en ;
+    schema:url <geochem-benchmark:Li_et_al_2025> ;
+    schema:addressCountry "CHN" ;
+    schema:addressRegion "Tibet" ;
+    schema:datePublished "2025"^^xsd:integer ;
+    mno:deposit_type_candidate _:deptype_Li_et_al_2025_0 ;
+_:deptype_Li_et_al_2025_0
+    rdfs:label "Skarn zinc-lead-silver"@en ;
+    mno:confidence "0.92"^^xsd:decimal ;
+    mno:source "geochem-benchmark extraction pipeline v1, Jahin et al." ;
+    mno:normalized_uri <https://minmod.isi.edu/resource/Q450> ;
+    .
+    mno:deposit_type_candidate _:deptype_Li_et_al_2025_1 ;
+_:deptype_Li_et_al_2025_1
+    rdfs:label "Skarn tin ± copper ± Mo"@en ;
+    mno:confidence "0.06"^^xsd:decimal ;
+    mno:source "geochem-benchmark extraction pipeline v1, Jahin et al." ;
+    mno:normalized_uri <https://minmod.isi.edu/resource/Q448> ;
+    .
+    mno:deposit_type_candidate _:deptype_Li_et_al_2025_2 ;
+_:deptype_Li_et_al_2025_2
+    rdfs:label "Skarn copper"@en ;
+    mno:confidence "0.01"^^xsd:decimal ;
+    mno:source "geochem-benchmark extraction pipeline v1, Jahin et al." ;
+    mno:normalized_uri <https://minmod.isi.edu/resource/Q446> ;
+    .
+    mno:deposit_type_candidate _:deptype_Li_et_al_2025_3 ;
+_:deptype_Li_et_al_2025_3
+    rdfs:label "Replacement zinc-lead"@en ;
+    mno:confidence "0.01"^^xsd:decimal ;
+    mno:source "geochem-benchmark extraction pipeline v1, Jahin et al." ;
+    mno:normalized_uri <https://minmod.isi.edu/resource/Q441> ;
+    .
+    mno:deposit_type_candidate _:deptype_Li_et_al_2025_4 ;
+_:deptype_Li_et_al_2025_4
+    rdfs:label "Replacement polymetallic"@en ;
+    mno:confidence "0.01"^^xsd:decimal ;
+    mno:source "geochem-benchmark extraction pipeline v1, Jahin et al." ;
+    mno:normalized_uri <https://minmod.isi.edu/resource/Q437> ;
+    .
+    mno:mineral_inventory _:inv_Li_et_al_2025_0 ;
+_:inv_Li_et_al_2025_0
+    rdfs:label "Zn"@en ;
+    schema:url <geochem-benchmark:Li_et_al_2025> ;
+    .
+    mno:mineral_inventory _:inv_Li_et_al_2025_1 ;
+_:inv_Li_et_al_2025_1
+    rdfs:label "Pb"@en ;
+    schema:url <geochem-benchmark:Li_et_al_2025> ;
+    .
+    mno:mineral_inventory _:inv_Li_et_al_2025_2 ;
+_:inv_Li_et_al_2025_2
+    rdfs:label "Cu"@en ;
+    schema:url <geochem-benchmark:Li_et_al_2025> ;
+    .
+    mno:mineral_inventory _:inv_Li_et_al_2025_3 ;
+_:inv_Li_et_al_2025_3
+    rdfs:label "In"@en ;
+    schema:url <geochem-benchmark:Li_et_al_2025> ;
+    .
+    mno:mineral_inventory _:inv_Li_et_al_2025_4 ;
+_:inv_Li_et_al_2025_4
+    rdfs:label "Ag"@en ;
+    schema:url <geochem-benchmark:Li_et_al_2025> ;
+    .
+    mno:mineral_inventory _:inv_Li_et_al_2025_5 ;
+_:inv_Li_et_al_2025_5
+    rdfs:label "Bi"@en ;
+    schema:url <geochem-benchmark:Li_et_al_2025> ;
+    .
+    mno:mineral_inventory _:inv_Li_et_al_2025_6 ;
+_:inv_Li_et_al_2025_6
+    rdfs:label "sphalerite"@en ;
+    schema:url <geochem-benchmark:Li_et_al_2025> ;
+    . .
